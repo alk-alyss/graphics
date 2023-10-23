@@ -12,8 +12,6 @@
 #include <common/shader.h>
 #include <common/util.h>
 
-using namespace std;
-
 // Function prototypes
 void initialize();
 void createTriangleContext();
@@ -161,7 +159,7 @@ void mainLoop() {
 void initialize() {
     // Initialize GLFW
     if (!glfwInit()) {
-        throw runtime_error("Failed to initialize GLFW\n");
+        throw std::runtime_error("Failed to initialize GLFW\n");
     }
 
     glfwWindowHint(GLFW_SAMPLES, 4);  // 4x antialiasing
@@ -174,7 +172,7 @@ void initialize() {
     window = glfwCreateWindow(W_WIDTH, W_HEIGHT, TITLE, NULL, NULL);
     if (window == NULL) {
         glfwTerminate();
-        throw runtime_error(string(string("Failed to open GLFW window.") +
+        throw std::runtime_error(std::string(std::string("Failed to open GLFW window.") +
                             " If you have an Intel GPU, they are not 3.3 compatible." +
                             "Try the 2.1 version.\n"));
     }
@@ -189,7 +187,7 @@ void initialize() {
     // Initialize GLEW
     if (glewInit() != GLEW_OK) {
         glfwTerminate();
-        throw runtime_error("Failed to initialize GLEW\n");
+        throw std::runtime_error("Failed to initialize GLEW\n");
     }
 
     // Ensure we can capture the escape key being pressed below
@@ -214,8 +212,8 @@ int main(void) {
 
         mainLoop();
         free();
-    } catch (exception& ex) {
-        cout << ex.what() << endl;
+    } catch (std::exception& ex) {
+        std::cout << ex.what() << std::endl;
         getchar();
         free();
         return -1;
