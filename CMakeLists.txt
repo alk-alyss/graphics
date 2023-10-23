@@ -30,6 +30,8 @@ include_directories(
 
 add_executable(${PROJECT_NAME}
   src/main.cpp
+  src/mesh.h
+  src/mesh.cpp
   src/common/shader.cpp
   src/common/util.cpp
   )
