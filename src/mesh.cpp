@@ -4,7 +4,7 @@ Mesh::Mesh(std::string filename) {
 
 }
 
-Mesh::loadVram() {
+void Mesh::loadVram() {
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
@@ -20,15 +20,15 @@ Mesh::loadVram() {
     glEnableVertexAttribArray(0);
 }
 
-Mesh::render() {
+void Mesh::render() {
     glUseProgram(shaderProgram);
     glBindVertexArray(vao);
     glDrawElements(GL_TRIANGLES, indices.size()/3, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
 
-Mesh::unloadVram() {
-    glDeleteBuffers(1, *vertexVbo);
-    glDeleteBuffers(1, *ebo);
-    glDeleteVertexArrays(1, vao);
+void Mesh::unloadVram() {
+    glDeleteBuffers(1, &vertexVbo);
+    glDeleteBuffers(1, &ebo);
+    glDeleteVertexArrays(1, &vao);
 }
