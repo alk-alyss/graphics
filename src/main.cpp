@@ -8,7 +8,7 @@
 #include <common/shader.h>
 #include <common/util.h>
 
-#include <mesh.h>
+#include <mesh.hpp>
 
 // Global variables
 GLuint shaderProgram;
