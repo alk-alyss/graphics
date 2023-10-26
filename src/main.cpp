@@ -5,8 +5,8 @@
 #include <context.hpp>
 
 // Shader loading utilities and other
-#include <common/shader.h>
-#include <common/util.h>
+#include <shader.h>
+#include <util.h>
 
 #include <mesh.hpp>
 

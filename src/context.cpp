@@ -2,7 +2,7 @@
 
 #include <context.hpp>
 
-#include <common/util.h>
+#include <util.h>
 
 #define W_WIDTH 1024
 #define W_HEIGHT 768
