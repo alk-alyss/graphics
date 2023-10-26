@@ -1,5 +1,4 @@
 #include <mesh.hpp>
-#include <context.hpp>
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -143,14 +142,14 @@ void Mesh::loadVram() {
     glBindBuffer(GL_ARRAY_BUFFER, colorVbo);
     glBufferData(GL_ARRAY_BUFFER, colors.size() * sizeof(colors[0]), colors.data(), GL_STATIC_DRAW);
 
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), NULL);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
     glEnableVertexAttribArray(1);
 
     // glGenBuffers(1, &ebo);
     // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     // glBufferData(GL_ELEMENT_ARRAY_BUFFER, faces.size(), faces.data(), GL_STATIC_DRAW);
 
-    // glBindVertexArray(0);
+    glBindVertexArray(0);
 }
 
 void Mesh::render() {
@@ -160,11 +159,12 @@ void Mesh::render() {
     glBindVertexArray(vao);
     // glDrawElements(GL_TRIANGLES, faces.size()/3, GL_UNSIGNED_INT, 0);
     glDrawArrays(GL_TRIANGLES, 0, vertices.size());
-    // glBindVertexArray(0);
+    glBindVertexArray(0);
 }
 
 void Mesh::unloadVram() {
     glDeleteBuffers(1, &vertexVbo);
+    glDeleteBuffers(1, &colorVbo);
     glDeleteBuffers(1, &ebo);
     glDeleteVertexArrays(1, &vao);
 }

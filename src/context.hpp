@@ -1,5 +1,5 @@
-#ifndef GLOBALS_HPP
-#define GLOBALS_HPP
+#ifndef CONTEXT_HPP
+#define CONTEXT_HPP
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
