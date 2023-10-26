@@ -34,6 +34,8 @@ add_executable(${PROJECT_NAME}
   src/mesh.cpp
   src/common/shader.cpp
   src/common/util.cpp
+  src/context.cpp
+  src/context.hpp
   )
 
 target_link_libraries(${PROJECT_NAME}
