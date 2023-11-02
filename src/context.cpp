@@ -16,7 +16,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
-void initializeContext() {
+GLFWwindow* createWindow() {
     // Initialize GLFW
     if (!glfwInit()) {
         throw std::runtime_error("Failed to initialize GLFW\n");
@@ -29,7 +29,7 @@ void initializeContext() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // We don't want the old OpenGL
 
     // Open a window and create its OpenGL context
-    window = glfwCreateWindow(W_WIDTH, W_HEIGHT, TITLE, NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(W_WIDTH, W_HEIGHT, TITLE, NULL, NULL);
     if (window == NULL) {
         glfwTerminate();
         throw std::runtime_error(std::string(std::string("Failed to open GLFW window.") +
@@ -63,4 +63,6 @@ void initializeContext() {
 
     // Log
     logGLParameters();
+
+    return window;
 }

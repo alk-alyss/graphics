@@ -11,7 +11,7 @@
 
 int main(void) {
     try {
-        initializeContext();
+        GLFWwindow* window = createWindow();
 
         // Create and compile our GLSL program from the shaders
         glEnable(GL_PROGRAM_POINT_SIZE);

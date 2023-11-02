@@ -4,8 +4,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-inline GLFWwindow* window;
-
-void initializeContext();
+GLFWwindow* createWindow();
 
 #endif
