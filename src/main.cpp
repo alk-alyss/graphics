@@ -32,6 +32,8 @@ int main(void) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             camera.updateAspectRatio(window);
+            camera.translate(glm::vec3(0.01f, 0.0f, 0.0f));
+            camera.rotate(0.002f, glm::vec3(0.0f, 1.0f, 0.0f));
 
             renderer.render(camera, meshList);
 

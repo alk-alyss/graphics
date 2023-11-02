@@ -20,6 +20,8 @@ class Camera {
         glm::mat4 getVP() {return VP;}
 
         void updateAspectRatio(GLFWwindow* window);
+        void translate(glm::vec3 translation);
+        void rotate(float angle, glm::vec3 axis);
 };
 
 #endif
