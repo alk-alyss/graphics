@@ -8,3 +8,11 @@ Camera::Camera() {
 
     VP = projectionMatrix * viewMatrix;
 }
+
+void Camera::updateAspectRatio(GLFWwindow* window) {
+    int width, height;
+    glfwGetFramebufferSize(window, &width, &height);
+    projectionMatrix = glm::perspective(glm::radians(45.0f), (float)width/(float)height, 0.1f, 100.0f);
+
+    VP = projectionMatrix * viewMatrix;
+}

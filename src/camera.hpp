@@ -1,6 +1,7 @@
 #ifndef CAMERA_HPP
 #define CAMERA_HPP
 
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
 class Camera {
@@ -13,6 +14,8 @@ class Camera {
     public:
         Camera();
         glm::mat4 getVP() {return VP;}
+
+        void updateAspectRatio(GLFWwindow* window);
 };
 
 #endif
