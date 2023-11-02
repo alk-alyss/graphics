@@ -128,48 +128,49 @@ Mesh::Mesh(std::string filename) {
 }
 
 void Mesh::loadVram() {
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
 
-    glGenBuffers(1, &vertexVbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexVbo);
+    glGenBuffers(1, &vertexVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexVBO);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertices[0]), vertices.data(), GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
     glEnableVertexAttribArray(0);
 
-    glGenBuffers(1, &colorVbo);
-    glBindBuffer(GL_ARRAY_BUFFER, colorVbo);
+    glGenBuffers(1, &colorVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, colorVBO);
     glBufferData(GL_ARRAY_BUFFER, colors.size() * sizeof(colors[0]), colors.data(), GL_STATIC_DRAW);
 
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
     glEnableVertexAttribArray(1);
 
-    // glGenBuffers(1, &ebo);
-    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    // glGenBuffers(1, &EBO);
+    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     // glBufferData(GL_ELEMENT_ARRAY_BUFFER, faces.size(), faces.data(), GL_STATIC_DRAW);
 
     glBindVertexArray(0);
 }
 
-void Mesh::render() {
-    glUseProgram(shaderProgram);
+glm::mat4 Mesh::modelMatrix() {
+    glm::mat4 modelMatrix;
+    // modelMatrix = glm::scale(modelMatrix, scale);
+    // modelMatrix = glm::translate(modelMatrix, position);
+
     // glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, &modelMatrix[0][0]);
 
-    glBindVertexArray(vao);
-    // glDrawElements(GL_TRIANGLES, faces.size()/3, GL_UNSIGNED_INT, 0);
-    glDrawArrays(GL_TRIANGLES, 0, vertices.size());
-    glBindVertexArray(0);
+    return modelMatrix;
 }
 
 void Mesh::unloadVram() {
-    glDeleteBuffers(1, &vertexVbo);
-    glDeleteBuffers(1, &colorVbo);
-    glDeleteBuffers(1, &ebo);
-    glDeleteVertexArrays(1, &vao);
+    glDeleteBuffers(1, &vertexVBO);
+    glDeleteBuffers(1, &colorVBO);
+    glDeleteBuffers(1, &EBO);
+    glDeleteVertexArrays(1, &VAO);
 }
 
-void Mesh::assignShader(GLuint program) {
-    shaderProgram = program;
-    modelMatrixLocation = glGetUniformLocation(shaderProgram, "model");
+void Mesh::draw() {
+    glBindVertexArray(VAO);
+    glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+    glBindVertexArray(0);
 }
