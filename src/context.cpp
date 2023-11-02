@@ -56,6 +56,11 @@ void initializeContext() {
     // Set background color (gray) [r, g, b, a]
     glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
 
+    // Enable depth test
+    glEnable(GL_DEPTH_TEST);
+    // Accept fragment if it closer to the camera than the former one
+    glDepthFunc(GL_LESS);
+
     // Log
     logGLParameters();
 }
