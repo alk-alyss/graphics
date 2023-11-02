@@ -8,14 +8,10 @@
 
 #include <mesh.hpp>
 #include <shader.hpp>
+#include <camera.hpp>
 
 class Renderer {
     private:
-        glm::mat4 viewMatrix;
-        glm::mat4 projectionMatrix;
-        
-        glm::mat4 VP;
-
         Shader& shader;
         GLuint VPLocation;
         GLuint ModelLocation;
@@ -23,7 +19,7 @@ class Renderer {
     public:
         Renderer(Shader& shader);
 
-        void render(std::vector<std::shared_ptr<Mesh>> meshList);
+        void render(Camera& camera, std::vector<std::shared_ptr<Mesh>> meshList);
 };
 
 #endif

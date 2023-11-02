@@ -30,16 +30,24 @@ include_directories(
 
 add_executable(${PROJECT_NAME}
   src/main.cpp
+
   src/mesh.hpp
   src/mesh.cpp
+
   src/shader.cpp
   src/shader.hpp
+
   src/util.cpp
   src/util.h
+
   src/context.cpp
   src/context.hpp
+
   src/renderer.cpp
   src/renderer.hpp
+
+  src/camera.cpp
+  src/camera.hpp
   )
 
 target_link_libraries(${PROJECT_NAME}

@@ -24,6 +24,8 @@ int main(void) {
 
         meshList.push_back(mesh);
 
+        Camera camera;
+
         Renderer renderer(shader);
 
         // Draw wire frame triangles or fill: GL_LINE, or GL_FILL
@@ -33,7 +35,7 @@ int main(void) {
             // Clear the screen.
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            renderer.render(meshList);
+            renderer.render(camera, meshList);
 
             // Swap buffers
             glfwSwapBuffers(window);
