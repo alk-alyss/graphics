@@ -121,10 +121,13 @@ Mesh::Mesh() {
         0.820f,  0.883f,  0.371f,
         0.982f,  0.099f,  0.879f
     };
+
+    loadVram();
 }
 
 Mesh::Mesh(std::string filename) {
 
+    loadVram();
 }
 
 void Mesh::loadVram() {

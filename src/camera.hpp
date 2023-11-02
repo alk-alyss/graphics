@@ -6,6 +6,10 @@
 
 class Camera {
     private:
+        float fov;
+        float nearCP;
+        float farCP;
+
         glm::mat4 viewMatrix;
         glm::mat4 projectionMatrix;
 

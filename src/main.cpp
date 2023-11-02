@@ -18,11 +18,7 @@ int main(void) {
         Shader shader("shaders/simple.vert", "shaders/simple.frag");
 
         std::vector<std::shared_ptr<Mesh>> meshList;
-
-        auto mesh = std::make_shared<Mesh>();
-        mesh->loadVram();
-
-        meshList.push_back(mesh);
+        meshList.push_back(std::make_shared<Mesh>());
 
         Camera camera;
 
