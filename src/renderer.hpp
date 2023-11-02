@@ -17,7 +17,8 @@ class Renderer {
         glm::mat4 VP;
 
         Shader& shader;
-        GLuint MVPLocation;
+        GLuint VPLocation;
+        GLuint ModelLocation;
 
     public:
         Renderer(Shader& shader);
