@@ -13,8 +13,7 @@
 class Renderer {
     private:
         Shader& shader;
-        GLuint VPLocation;
-        GLuint ModelLocation;
+        GLuint MVPLocation;
 
     public:
         Renderer(Shader& shader);
