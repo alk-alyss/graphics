@@ -5,16 +5,21 @@
 #include <glm/gtx/string_cast.hpp>
 
 Camera::Camera() {
+    Camera(glm::vec3(0, 0, -10), glm::vec3(0, 0, 0));
+}
+
+Camera::Camera(glm::vec3 position, glm::vec3 rotation) {
     nearCP = 0.1f;
     farCP = 100.0f;
 
     fov = 45.0f;
     aspectRatio = 16.0f/9.0f;
 
-    position = glm::vec3(0, 0, -10);
-    rotation = glm::vec3(0, 0, 0);
+    this->position = position;
+    this->rotation = rotation;
 
     updateViewMatrix();
+
     updateProjectionMatrix();
 }
 
