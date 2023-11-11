@@ -5,12 +5,51 @@
 #include <glm/gtx/string_cast.hpp>
 
 Camera::Camera() {
-    fov = 45.0f;
     nearCP = 0.1f;
     farCP = 100.0f;
 
-    viewMatrix = glm::lookAt(glm::vec3(5, 3, 2), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-    projectionMatrix = glm::perspective(glm::radians(fov), 16.0f/9.0f, nearCP, farCP);
+    fov = 45.0f;
+    aspectRatio = 16.0f/9.0f;
+
+    position = glm::vec3(0, 0, -10);
+    rotation = glm::vec3(0, 0, 0);
+
+    updateViewMatrix();
+    updateProjectionMatrix();
+}
+
+glm::vec3 Camera::getDirectionVector() {
+    glm::vec3 direction(
+        cos(glm::radians(rotation.y)) * cos(glm::radians(rotation.x)),
+        sin(glm::radians(rotation.x)),
+        -sin(glm::radians(rotation.y)) * cos(glm::radians(rotation.x))
+    );
+    return direction;
+}
+
+glm::vec3 Camera::getUpVector() {
+    return glm::vec3(0, 1, 0);
+}
+
+glm::vec3 Camera::getRightVector() {
+    glm::vec3 direction = getDirectionVector();
+    glm::vec3 up = getUpVector();
+
+    return glm::cross(direction, up);
+}
+
+void Camera::updateViewMatrix() {
+    glm::vec3 direction = getDirectionVector();
+
+    glm::vec3 up = getUpVector();
+
+    viewMatrix = glm::lookAt(position, position + direction, up);
+
+    VP = projectionMatrix * viewMatrix;
+}
+
+void Camera::updateProjectionMatrix() {
+    projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, nearCP, farCP);
 
     VP = projectionMatrix * viewMatrix;
 }
@@ -18,23 +57,29 @@ Camera::Camera() {
 void Camera::updateAspectRatio(GLFWwindow* window) {
     int width, height;
     glfwGetFramebufferSize(window, &width, &height);
-    projectionMatrix = glm::perspective(glm::radians(fov), (float)width/(float)height, nearCP, farCP);
-
-    VP = projectionMatrix * viewMatrix;
+    aspectRatio = (float) width / (float) height;
 }
 
 void Camera::translate(glm::vec3 translation) {
-    viewMatrix = glm::translate(viewMatrix, translation);
+    position += translation;
 
-    VP = projectionMatrix * viewMatrix;
+    updateViewMatrix();
 }
 
-void Camera::rotate(float angle, glm::vec3 axis) {
-    glm::vec3 cameraPosition = glm::inverse(viewMatrix)[3];
+void Camera::rotate(float pitch, float yaw, float roll) {
+    rotation.x += pitch;
+    rotation.y += yaw;
+    rotation.z += roll;
 
-    viewMatrix = glm::translate(viewMatrix, cameraPosition);
-    viewMatrix = glm::rotate(viewMatrix, angle, axis);
-    viewMatrix = glm::translate(viewMatrix, -cameraPosition);
+    updateViewMatrix();
+}
 
-    VP = projectionMatrix * viewMatrix;
+void Camera::rotate(float pitch, float yaw) {
+    rotate(pitch, yaw, 0);
+}
+
+void Camera::zoom(float amount) {
+    fov += amount;
+
+    updateProjectionMatrix();
 }
