@@ -11,14 +11,14 @@
 #include <camera.hpp>
 
 class Renderer {
-    private:
-        Shader& shader;
-        GLuint MVPLocation;
+private:
+    Shader& shader;
+    GLuint MVPLocation;
 
-    public:
-        Renderer(Shader& shader);
+public:
+    Renderer(Shader& shader);
 
-        void render(Camera& camera, std::vector<std::shared_ptr<Mesh>> meshList);
+    void render(Camera& camera, std::vector<std::shared_ptr<Mesh>> meshList);
 };
 
 #endif

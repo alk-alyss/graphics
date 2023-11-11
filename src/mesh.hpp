@@ -11,33 +11,33 @@
 #include <shader.hpp>
 
 class Mesh {
-    private:
-        std::vector<GLfloat> vertices;
-        std::vector<GLuint> faces;
-        std::vector<GLfloat> colors;
+private:
+    std::vector<GLfloat> vertices;
+    std::vector<GLuint> faces;
+    std::vector<GLfloat> colors;
 
-        GLuint VAO;
-        GLuint vertexVBO;
-        GLuint colorVBO;
-        GLuint EBO;
-        
-        glm::vec3 position = glm::vec3(0.0f);
-        glm::vec3 scale = glm::vec3(1.0f);
+    GLuint VAO;
+    GLuint vertexVBO;
+    GLuint colorVBO;
+    GLuint EBO;
     
-    public:
-        Mesh();
-        Mesh(std::string filename);
-        ~Mesh() {unloadVram();}
+    glm::vec3 position = glm::vec3(0.0f);
+    glm::vec3 scale = glm::vec3(1.0f);
 
-        void loadVram();
-        void unloadVram();
+public:
+    Mesh();
+    Mesh(std::string filename);
+    ~Mesh() {unloadVram();}
 
-        glm::mat4 modelMatrix();
+    void loadVram();
+    void unloadVram();
 
-        int vertexCount() {return vertices.size();}
-        GLuint getVao() {return VAO;}
+    glm::mat4 modelMatrix();
 
-        void draw();
+    int vertexCount() {return vertices.size();}
+    GLuint getVao() {return VAO;}
+
+    void draw();
 };
 
 #endif

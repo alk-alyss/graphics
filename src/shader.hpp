@@ -6,18 +6,18 @@
 #include <GL/glew.h>
 
 class Shader {
-    private:
-        GLuint programId;
+private:
+    GLuint programId;
 
-        GLuint vertId;
-        GLuint fragId;
-        GLuint geomId;
+    GLuint vertId;
+    GLuint fragId;
+    GLuint geomId;
 
-    public:
-        Shader(const std::string vertFile, const std::string fragFile, const std::string geomFile="");
-        ~Shader();
+public:
+    Shader(const std::string vertFile, const std::string fragFile, const std::string geomFile="");
+    ~Shader();
 
-        GLuint getProgram() {return programId;}
+    GLuint getProgram() {return programId;}
 };
 
 #endif
