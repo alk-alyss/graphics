@@ -5,7 +5,7 @@
 #include <glm/glm.hpp>
 
 class Camera {
-private:
+protected:
     float nearCP;
     float farCP;
 
@@ -33,6 +33,9 @@ public:
     Camera(glm::vec3 position, glm::vec3 rotation);
 
     glm::mat4 getVP() {return VP;}
+
+    void setPosition(glm::vec3 position) {this->position = position;}
+    void setRotation(glm::vec3 rotation) {this->rotation = rotation;}
 
     void updateAspectRatio(GLFWwindow* window);
 
