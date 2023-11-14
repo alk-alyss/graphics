@@ -69,10 +69,10 @@ void Camera::translate(glm::vec3 translation) {
     updateViewMatrix();
 }
 
-void Camera::rotate(float pitch, float yaw, float roll) {
-    rotation.x += pitch;
-    rotation.y += yaw;
-    rotation.z += roll;
+void Camera::rotate(glm::vec3 rotation) {
+    this->rotation.x += rotation.x;
+    this->rotation.y += rotation.y;
+    this->rotation.z += rotation.z;
 
     updateViewMatrix();
 }

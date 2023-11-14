@@ -48,10 +48,12 @@ public:
 
     void updateAspectRatio(GLFWwindow* window);
 
+    void translate(float x, float y, float z) {translate(glm::vec3(x, y, z));}
     void translate(glm::vec3 translation);
 
-    void rotate(float pitch, float yaw, float roll);
-    void rotate(float pitch, float yaw);
+    void rotate(float pitch, float yaw, float roll) {rotate(glm::vec3(pitch, yaw, roll));}
+    void rotate(float pitch, float yaw) {rotate(pitch, yaw, 0.0f);}
+    void rotate(glm::vec3 rotation);
     void rotate(float angle, glm::vec3 axis);
 
     void zoom(float amount);
