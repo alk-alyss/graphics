@@ -4,10 +4,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
 
-Camera::Camera() {
-    Camera(glm::vec3(0, 0, -10), glm::vec3(0, 0, 0));
-}
-
 Camera::Camera(glm::vec3 position, glm::vec3 rotation) {
     nearCP = 0.1f;
     farCP = 100.0f;
@@ -63,6 +59,8 @@ void Camera::updateAspectRatio(GLFWwindow* window) {
     int width, height;
     glfwGetFramebufferSize(window, &width, &height);
     aspectRatio = (float) width / (float) height;
+
+    updateProjectionMatrix();
 }
 
 void Camera::translate(glm::vec3 translation) {
@@ -83,6 +81,7 @@ void Camera::rotate(float pitch, float yaw) {
     rotate(pitch, yaw, 0);
 }
 
+// TODO: This is wrong fix it
 void Camera::rotate(float angle, glm::vec3 axis) {
     glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), angle, axis);
 
