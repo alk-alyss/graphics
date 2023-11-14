@@ -19,11 +19,12 @@ Camera::Camera(glm::vec3 position, glm::vec3 rotation) {
     updateProjectionMatrix();
 }
 
+// Rotation (0, 0, 0) corresponds to directionVector (0, 0, -1)
 glm::vec3 Camera::getDirectionVector() {
     glm::vec3 direction(
-        cos(glm::radians(rotation.y)) * cos(glm::radians(rotation.x)),
-        sin(glm::radians(rotation.x)),
-        -sin(glm::radians(rotation.y)) * cos(glm::radians(rotation.x))
+        glm::sin(glm::radians(rotation.y)) * glm::cos(glm::radians(rotation.x)),
+        glm::sin(glm::radians(rotation.x)),
+        -glm::cos(glm::radians(rotation.y)) * glm::cos(glm::radians(rotation.x))
     );
     return direction;
 }
@@ -75,10 +76,6 @@ void Camera::rotate(glm::vec3 rotation) {
     this->rotation.z += rotation.z;
 
     updateViewMatrix();
-}
-
-void Camera::rotate(float pitch, float yaw) {
-    rotate(pitch, yaw, 0);
 }
 
 // TODO: This is wrong fix it
