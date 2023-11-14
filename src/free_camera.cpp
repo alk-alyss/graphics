@@ -1,23 +1,19 @@
 #include <free_camera.hpp>
 
 void FreeCamera::moveForward(float deltaTime) {
-    glm::vec3 direction = getDirectionVector();
-    translate(direction * movementSpeed * deltaTime);
+    translate(direction(rotation) * movementSpeed * deltaTime);
 }
 
 void FreeCamera::moveBackward(float deltaTime) {
-    glm::vec3 direction = getDirectionVector();
-    translate(-direction * movementSpeed * deltaTime);
+    translate(-direction(rotation) * movementSpeed * deltaTime);
 }
 
 void FreeCamera::strafeLeft(float deltaTime) {
-    glm::vec3 right = getRightVector();
-    translate(-right * movementSpeed * deltaTime);
+    translate(-right(rotation) * movementSpeed * deltaTime);
 }
 
 void FreeCamera::strafeRight(float deltaTime) {
-    glm::vec3 right = getRightVector();
-    translate(right * movementSpeed * deltaTime);
+    translate(right(rotation) * movementSpeed * deltaTime);
 }
 
 void FreeCamera::look(float mouseX, float mouseY, float deltaTime) {

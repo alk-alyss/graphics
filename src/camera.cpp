@@ -20,7 +20,7 @@ Camera::Camera(glm::vec3 position, glm::vec3 rotation) {
 }
 
 // Rotation (0, 0, 0) corresponds to directionVector (0, 0, -1)
-glm::vec3 Camera::getDirectionVector() {
+constexpr glm::vec3 Camera::direction(glm::vec3 rotation) {
     glm::vec3 direction(
         glm::sin(glm::radians(rotation.y)) * glm::cos(glm::radians(rotation.x)),
         glm::sin(glm::radians(rotation.x)),
@@ -29,25 +29,22 @@ glm::vec3 Camera::getDirectionVector() {
     return direction;
 }
 
-glm::vec3 Camera::getRightVector() {
+constexpr glm::vec3 Camera::right(glm::vec3 rotation) {
     glm::vec3 right(
         glm::cos(glm::radians(rotation.y)) * glm::cos(glm::radians(rotation.z)),
         glm::sin(glm::radians(rotation.z)),
         -glm::sin(glm::radians(rotation.y)) * glm::cos(glm::radians(rotation.z))
     );
+
     return right;
 }
 
-glm::vec3 Camera::getUpVector() {
-    return glm::cross(getRightVector(), getDirectionVector());
+constexpr glm::vec3 Camera::up(glm::vec3 rotation) {
+    return glm::cross(right(rotation), direction(rotation));
 }
 
 void Camera::updateViewMatrix() {
-    glm::vec3 direction = getDirectionVector();
-
-    glm::vec3 up = getUpVector();
-
-    viewMatrix = glm::lookAt(position, position + direction, up);
+    viewMatrix = glm::lookAt(position, position + direction(rotation), up(rotation));
 
     VP = projectionMatrix * viewMatrix;
 }

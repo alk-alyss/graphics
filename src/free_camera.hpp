@@ -24,6 +24,7 @@ public:
     void strafeRight(float deltaTime);
 
     // mouseX and mouseY are relative to the center of the screen
+    // TODO: find better name for method
     void look(float mouseX, float mouseY, float deltaTime);
 };
 

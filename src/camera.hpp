@@ -24,9 +24,9 @@ protected:
     void updateViewMatrix();
     void updateProjectionMatrix();
 
-    glm::vec3 getDirectionVector();
-    glm::vec3 getUpVector();
-    glm::vec3 getRightVector();
+    constexpr glm::vec3 direction(glm::vec3 rotation);
+    constexpr glm::vec3 up(glm::vec3 rotation);
+    constexpr glm::vec3 right(glm::vec3 rotation);
 
 public:
     Camera() : Camera(glm::vec3(0.0f), glm::vec3(0.0f)) {};
