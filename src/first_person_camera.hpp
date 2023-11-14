@@ -1,3 +1,6 @@
+#ifndef FIRST_PERSON_CAMERA_HPP
+#define FIRST_PERSON_CAMERA_HPP
+
 #include <camera.hpp>
 
 class FirstPersonCamera : public Camera {
@@ -23,3 +26,5 @@ public:
     // mouseX and mouseY are relative to the center of the screen
     void look(float mouseX, float mouseY, float deltaTime);
 };
+
+#endif
