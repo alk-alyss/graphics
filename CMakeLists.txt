@@ -38,7 +38,7 @@ add_executable(${PROJECT_NAME}
   src/shader.hpp
 
   src/util.cpp
-  src/util.h
+  src/util.hpp
 
   src/context.cpp
   src/context.hpp

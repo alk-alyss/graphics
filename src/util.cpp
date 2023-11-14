@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 
-#include "util.h"
+#include <util.hpp>
 
 void logGLParameters() {
     GLenum params[] = {
