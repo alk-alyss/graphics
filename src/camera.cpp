@@ -83,6 +83,14 @@ void Camera::rotate(float pitch, float yaw) {
     rotate(pitch, yaw, 0);
 }
 
+void Camera::rotate(float angle, glm::vec3 axis) {
+    glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), angle, axis);
+
+    rotation = rotationMatrix * glm::vec4(rotation, 1.0f);
+
+    updateViewMatrix();
+}
+
 void Camera::zoom(float amount) {
     fov += amount;
 

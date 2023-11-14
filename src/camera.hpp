@@ -43,6 +43,7 @@ public:
 
     void rotate(float pitch, float yaw, float roll);
     void rotate(float pitch, float yaw);
+    void rotate(float angle, glm::vec3 axis);
 
     void zoom(float amount);
 };
