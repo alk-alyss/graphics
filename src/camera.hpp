@@ -13,7 +13,7 @@ protected:
     float aspectRatio;
 
     glm::vec3 position;
-    glm::vec3 rotation; // tilt, yaw, roll
+    glm::vec3 rotation; // pitch, yaw, roll in degrees
 
     glm::mat4 viewMatrix;
     glm::mat4 projectionMatrix;

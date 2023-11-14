@@ -29,15 +29,17 @@ glm::vec3 Camera::getDirectionVector() {
     return direction;
 }
 
-glm::vec3 Camera::getUpVector() {
-    return glm::vec3(0, 1, 0);
+glm::vec3 Camera::getRightVector() {
+    glm::vec3 right(
+        glm::cos(glm::radians(rotation.y)) * glm::cos(glm::radians(rotation.z)),
+        glm::sin(glm::radians(rotation.z)),
+        -glm::sin(glm::radians(rotation.y)) * glm::cos(glm::radians(rotation.z))
+    );
+    return right;
 }
 
-glm::vec3 Camera::getRightVector() {
-    glm::vec3 direction = getDirectionVector();
-    glm::vec3 up = getUpVector();
-
-    return glm::cross(direction, up);
+glm::vec3 Camera::getUpVector() {
+    return glm::cross(getRightVector(), getDirectionVector());
 }
 
 void Camera::updateViewMatrix() {
