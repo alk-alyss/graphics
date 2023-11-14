@@ -51,6 +51,9 @@ add_executable(${PROJECT_NAME}
 
   src/first_person_camera.cpp
   src/first_person_camera.hpp
+
+  src/free_camera.cpp
+  src/free_camera.hpp
   )
 
 target_link_libraries(${PROJECT_NAME}
