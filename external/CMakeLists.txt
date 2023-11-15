@@ -30,36 +30,9 @@ set(OPENGL_LIBRARY
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 ### GLEW ###
-include_directories(
-    glew-2.2.0/include/
-)
-
-set(GLEW_SOURCE
-    glew-2.2.0/src/glew.c
-)
-
-set(GLEW_HEADERS
-)
-
-add_library( glew STATIC
-    ${GLEW_SOURCE}
-    ${GLEW_INCLUDE}
-)
-
-target_include_directories( glew INTERFACE
-    glew-2.2.0/include/
-)
-
-target_link_libraries(glew
-    ${OPENGL_LIBRARY}
-    ${EXTRA_LIBS}
-)
-
-set_target_properties(glew
-    PROPERTIES
-    PROJECT_LABEL glew
-    FOLDER "Libraries"
-)
+add_subdirectory(glew-2.2.0/build/cmake)
+target_include_directories(glew_s PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/glew-2.2.0/include>")
+add_library(glew ALIAS glew_s)
 
 ### GLM ###
 add_subdirectory(glm)
