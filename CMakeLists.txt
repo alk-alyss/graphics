@@ -1,6 +1,6 @@
 ###############################################################################
-cmake_minimum_required(VERSION 3.5.0 FATAL_ERROR)
-project(graphics_project)
+cmake_minimum_required(VERSION 3.16.0 FATAL_ERROR)
+project(Portal_Maze)
 
 ###############################################################################
 

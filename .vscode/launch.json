@@ -8,7 +8,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/graphics_project",
+            "program": "${workspaceFolder}/build/Portal_Maze",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
