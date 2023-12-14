@@ -9,7 +9,7 @@ out vec3 color;
 
 void main()
 {
-    // gl_PointSize = 10;
+    gl_PointSize = 10;
 
     gl_Position = mvp * vec4(vertexPosition_modelspace, 1.0);
 

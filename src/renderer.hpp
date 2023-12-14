@@ -8,7 +8,7 @@
 
 #include <mesh.hpp>
 #include <shader.hpp>
-#include <camera.hpp>
+#include "camera.hpp"
 
 class Renderer {
 private:

@@ -3,7 +3,7 @@
 #include <vector>
 #include <sstream>
 
-#include <shader.hpp>
+#include "shader.hpp"
 
 void compileShader(GLuint& shaderID, const std::string file) {
     // read shader code from the file

@@ -1,19 +1,27 @@
-#include <free_camera.hpp>
+#include "camera.hpp"
 
 void FreeCamera::moveForward(float deltaTime) {
-    translate(direction(rotation) * movementSpeed * deltaTime);
+    translate(direction * movementSpeed * deltaTime);
+
+    updateViewMatrix();
 }
 
 void FreeCamera::moveBackward(float deltaTime) {
-    translate(-direction(rotation) * movementSpeed * deltaTime);
+    translate(-direction * movementSpeed * deltaTime);
+
+    updateViewMatrix();
 }
 
 void FreeCamera::strafeLeft(float deltaTime) {
-    translate(-right(rotation) * movementSpeed * deltaTime);
+    translate(-right * movementSpeed * deltaTime);
+
+    updateViewMatrix();
 }
 
 void FreeCamera::strafeRight(float deltaTime) {
-    translate(right(rotation) * movementSpeed * deltaTime);
+    translate(right * movementSpeed * deltaTime);
+
+    updateViewMatrix();
 }
 
 void FreeCamera::look(float mouseX, float mouseY, float deltaTime) {
@@ -21,4 +29,6 @@ void FreeCamera::look(float mouseX, float mouseY, float deltaTime) {
     float yaw = mouseY * glm::radians(fov) * mouseSpeed * deltaTime;
 
     rotate(pitch, yaw);
+
+    updateViewMatrix();
 }

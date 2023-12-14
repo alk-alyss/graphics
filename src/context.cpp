@@ -2,7 +2,7 @@
 
 #include <context.hpp>
 
-#include <util.hpp>
+#include "util.hpp"
 
 #define W_WIDTH 1024
 #define W_HEIGHT 768
@@ -11,7 +11,7 @@
 // glfw: whenever the window size changed this callback function executes
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    // make sure the viewport matches the new window dimensions; note that width and 
+    // make sure the viewport matches the new window dimensions; note that width and
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
 }
