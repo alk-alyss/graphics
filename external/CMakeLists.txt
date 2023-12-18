@@ -12,27 +12,19 @@ add_definitions(
 )
 
 ### GLFW ###
+option(GLFW_BUILD_EXAMPLES OFF)
+option(GLFW_BUILD_TESTS OFF)
+option(GLFW_BUILD_DOCS OFF)
+option(GLFW_INSTALL OFF)
+
 add_subdirectory(glfw)
 
-if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-set(OPENGL_LIBRARY
-    ${OPENGL_LIBRARY}
-    -lGL -lGLU -lXrandr -lXext -lX11 -lrt
-    ${CMAKE_DL_LIBS}
-    ${GLFW_LIBRARIES}
-)
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-set(OPENGL_LIBRARY
-    ${OPENGL_LIBRARY}
-    ${CMAKE_DL_LIBS}
-    ${GLFW_LIBRARIES}
-)
-endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-
 ### GLEW ###
+option(BUILD_UTILS OFF)
+set(BUILD_SHARED_LIBS FALSE)
+
 add_subdirectory(glew-2.2.0/build/cmake)
 target_include_directories(glew_s PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/glew-2.2.0/include>")
-add_library(glew ALIAS glew_s)
 
 ### GLM ###
 add_subdirectory(glm)
