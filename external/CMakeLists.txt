@@ -12,7 +12,7 @@ add_definitions(
 )
 
 ### GLFW ###
-add_subdirectory(glfw-3.3.8)
+add_subdirectory(glfw)
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 set(OPENGL_LIBRARY
@@ -36,3 +36,9 @@ add_library(glew ALIAS glew_s)
 
 ### GLM ###
 add_subdirectory(glm)
+
+### SOIL ###
+add_subdirectory(soil)
+
+### TinyOBJLoader ###
+add_subdirectory(tinyobjloader)

@@ -22,7 +22,7 @@ SOURCE_GROUP(obj REGULAR_EXPRESSION ".*/.*obj$" )
 ###############################################################################
 
 add_subdirectory(external)
-set(EXTERNAL_LIBRARIES glew glfw glm)
+set(EXTERNAL_LIBRARIES glew glfw glm SOIL tinyobjloader)
 
 include_directories(src)
 
