@@ -3,48 +3,42 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
 
-glm::quat eulerRotation(glm::vec3 rotation) {
-    glm::quat rotationX = glm::angleAxis(rotation.x, glm::vec3(1, 0, 0));
-    glm::quat rotationY = glm::angleAxis(rotation.y, glm::vec3(0, 1, 0));
-    glm::quat rotationZ = glm::angleAxis(rotation.z, glm::vec3(0, 0, 1));
+using namespace glm;
 
-    return rotationX * rotationY * rotationZ;
+vec3 Orientable::up() {
+    return cross(right, direction);
 }
 
-glm::vec3 Orientable::up() {
-    return glm::cross(right, direction);
-}
-
-void Orientable::translate(glm::vec3 translation) {
+void Orientable::translate(vec3 translation) {
     position += translation;
 }
 
-void Orientable::rotate(glm::vec3 rotation) {
-    glm::quat rotationQuat = eulerRotation(rotation);
+void Orientable::rotate(vec3 rotation) {
+    quat rotationQuat = quat(rotation);
 
     direction = rotationQuat * direction;
     right = rotationQuat * right;
 }
 
-void Orientable::rotate(float angle, glm::vec3 axis) {
-    glm::quat rotationQuat = glm::angleAxis(angle, axis);
+void Orientable::rotate(float angle, vec3 axis) {
+    quat rotationQuat = angleAxis(angle, axis);
 
     direction = rotationQuat * direction;
     right = rotationQuat * right;
 }
 
-void Orientable::setRotation(glm::vec3 rotation) {
-    glm::quat rotationQuat = eulerRotation(rotation);
+void Orientable::setRotation(vec3 rotation) {
+    quat rotationQuat = quat(rotation);
 
-    direction = rotationQuat * glm::vec3(0, 0, -1);
-    right = rotationQuat * glm::vec3(1, 0, 0);
+    direction = rotationQuat * vec3(0, 0, -1);
+    right = rotationQuat * vec3(1, 0, 0);
 }
 
-glm::vec3 Orientable::getRotation() {
-    // TODO: implement
-    return glm::vec3(0,0,0);
+mat4 Orientable::getRotationMatrix() {
+    return glm::lookAt(vec3(0), direction, up());
 }
 
-void lookAt(glm::vec3 target, glm::vec3 up) {
-    // TODO: implement
+void Orientable::lookAt(vec3 target, vec3 up) {
+    direction = normalize(target);
+    right = cross(direction, up);
 }

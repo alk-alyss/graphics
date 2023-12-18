@@ -2,13 +2,16 @@
 #define COMMON_HPP
 
 #include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 class Orientable {
 protected:
-    glm::vec3 position;
+    glm::vec3 position = glm::vec3(0);
 
-    glm::vec3 direction;
-    glm::vec3 right;
+    glm::quat orientation;
+
+    glm::vec3 direction = glm::vec3(0, 0, -1);
+    glm::vec3 right = glm::vec3(1, 0, 0);
 
 protected:
     glm::vec3 up();
@@ -24,7 +27,7 @@ public:
     glm::vec3 getDirection() {return this->direction;}
     glm::vec3 getRight() {return this->right;}
 
-    glm::vec3 getRotation();
+    glm::mat4 getRotationMatrix();
 
     void translate(glm::vec3 translation);
     void translate(float x, float y, float z) {translate(glm::vec3(x, y, z));}
