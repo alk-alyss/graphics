@@ -7,6 +7,8 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
+#include "common.hpp"
+
 static std::vector<unsigned int> VEC_UINT_DEFAUTL_VALUE{};
 static std::vector<glm::vec3> VEC_VEC3_DEFAUTL_VALUE{};
 static std::vector<glm::vec2> VEC_VEC2_DEFAUTL_VALUE{};
@@ -30,7 +32,7 @@ void indexVBO(
     std::vector<glm::vec3> & out_normals
 );
 
-class Mesh {
+class Mesh : public Orientable {
 private:
     std::vector<glm::vec3> vertices, normals, indexedVertices, indexedNormals;
     std::vector<glm::vec2> uvs, indexedUVS;
@@ -38,7 +40,6 @@ private:
 
     GLuint VAO, verticesVBO, uvsVBO, normalsVBO, EBO;
 
-    glm::vec3 position = glm::vec3(0.0f);
     glm::vec3 scale = glm::vec3(1.0f);
 
 public:
