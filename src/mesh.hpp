@@ -33,7 +33,7 @@ void indexVBO(
 );
 
 class Mesh : public Orientable {
-private:
+protected:
     std::vector<glm::vec3> vertices, normals, indexedVertices, indexedNormals;
     std::vector<glm::vec2> uvs, indexedUVS;
     std::vector<unsigned int> indices;
