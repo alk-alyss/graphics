@@ -35,3 +35,23 @@ include_directories(src)
 add_executable(${PROJECT_NAME} ${sources} ${headers})
 
 target_link_libraries(${PROJECT_NAME} ${EXTERNAL_LIBRARIES})
+
+set (resources_src "${CMAKE_SOURCE_DIR}/resources")
+set (resources_dst "${CMAKE_CURRENT_BINARY_DIR}/resources")
+
+add_custom_command(
+ TARGET ${PROJECT_NAME} POST_BUILD
+ COMMAND ${CMAKE_COMMAND} -E create_symlink ${resources_src} ${resources_dst}
+ DEPENDS ${resources_dst}
+ COMMENT "Symbolic link resources folder"
+)
+
+set (shaders_src "${CMAKE_SOURCE_DIR}/shaders")
+set (shaders_dst "${CMAKE_CURRENT_BINARY_DIR}/shaders")
+
+add_custom_command(
+ TARGET ${PROJECT_NAME} POST_BUILD
+ COMMAND ${CMAKE_COMMAND} -E create_symlink ${shaders_src} ${shaders_dst}
+ DEPENDS ${shaders_dst}
+ COMMENT "symbolic link shaders folder"
+)
