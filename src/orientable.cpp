@@ -2,11 +2,20 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 using namespace glm;
 
 vec3 Orientable::up() {
-    return cross(right, direction);
+    return orientation * vec3(0,1,0);
+}
+
+vec3 Orientable::forward() {
+    return orientation * vec3(0,0,-1);
+}
+
+vec3 Orientable::right() {
+    return orientation * vec3(1,0,0);
 }
 
 void Orientable::translate(vec3 translation) {
@@ -16,29 +25,43 @@ void Orientable::translate(vec3 translation) {
 void Orientable::rotate(vec3 rotation) {
     quat rotationQuat = quat(rotation);
 
-    direction = rotationQuat * direction;
-    right = rotationQuat * right;
+    orientation = rotationQuat * orientation;
 }
 
 void Orientable::rotate(float angle, vec3 axis) {
     quat rotationQuat = angleAxis(angle, axis);
 
-    direction = rotationQuat * direction;
-    right = rotationQuat * right;
+    orientation = rotationQuat * orientation;
 }
 
 void Orientable::setRotation(vec3 rotation) {
     quat rotationQuat = quat(rotation);
 
-    direction = rotationQuat * vec3(0, 0, -1);
-    right = rotationQuat * vec3(1, 0, 0);
+    orientation = rotationQuat * quat(vec3(0,0,0));
 }
 
 mat4 Orientable::getRotationMatrix() {
-    return glm::lookAt(vec3(0), direction, up());
+    return toMat4(orientation);
 }
 
-void Orientable::lookAt(vec3 target, vec3 up) {
-    direction = normalize(target);
-    right = cross(direction, up);
+void Orientable::lookAt(vec3 target, vec3 up, vec3 alternativeUp) {
+    assert(target != position);
+
+    vec3 direction = target - position;
+
+    if(length(direction) < 0.0001) {
+        orientation = glm::quat(1, 0, 0, 0);
+        return;
+    }
+
+    direction = normalize(direction);
+
+
+    // Is the normal up (nearly) parallel to direction?
+    if(glm::abs(glm::dot(direction, up)) > .9999f) {
+        orientation = glm::quatLookAt(direction, alternativeUp);
+    }
+    else {
+        orientation = glm::quatLookAt(direction, up);
+    }
 }

@@ -8,13 +8,13 @@ class Orientable {
 protected:
     glm::vec3 position = glm::vec3(0);
 
-    glm::quat orientation;
-
-    glm::vec3 direction = glm::vec3(0, 0, -1);
-    glm::vec3 right = glm::vec3(1, 0, 0);
+    glm::quat orientation = glm::quat(glm::vec3(0,0,0));
 
 protected:
     glm::vec3 up();
+    glm::vec3 forward();
+    glm::vec3 right();
+    glm::vec3 direction() {return forward();}
 
 public:
     void setPosition(float x, float y, float z) {this->position = glm::vec3(x, y, z);}
@@ -22,10 +22,6 @@ public:
 
     void setRotation(glm::vec3 rotation);
     void setRotation(float pitch, float yaw, float roll) {setRotation(glm::vec3(pitch, yaw, roll));}
-
-    glm::vec3 getPosition() {return this->position;}
-    glm::vec3 getDirection() {return this->direction;}
-    glm::vec3 getRight() {return this->right;}
 
     glm::mat4 getRotationMatrix();
 
@@ -37,7 +33,7 @@ public:
     void rotate(float pitch, float yaw) {rotate(pitch, yaw, 0.0f);}
     void rotate(float angle, glm::vec3 axis);
 
-    void lookAt(glm::vec3 target, glm::vec3 up);
+    void lookAt(glm::vec3 target, glm::vec3 up = glm::vec3(0, 1, 0), glm::vec3 alternativeUp = glm::vec3(0,0,1));
 };
 
 #endif

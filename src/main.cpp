@@ -5,11 +5,39 @@
 
 #include "context.hpp"
 #include "shader.hpp"
-#include "mesh.hpp"
+#include "cube.hpp"
 #include "renderer.hpp"
 #include "camera.hpp"
 
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
+Material gold = {
+    glm::vec4(0.628281, 0.555802, 0.366065, 1.0),
+    glm::vec4(0.75164, 0.60648, 0.22648, 1.0),
+    glm::vec4(0.24725, 0.1995, 0.0745, 1.0),
+    51.2
+};
+
+Material silver = {
+    glm::vec4(0.508273, 0.508273, 0.508273, 1),
+    glm::vec4(0.50754, 0.50754, 0.50754, 1),
+    glm::vec4(0.19225, 0.19225, 0.19225, 1),
+    51.2
+};
+
+Material copper = {
+    glm::vec4(0.256777, 0.137622, 0.086014, 1),
+    glm::vec4(0.7038, 0.27048, 0.0828, 1),
+    glm::vec4(0.19125, 0.0735, 0.0225, 1),
+    12.8
+};
+
+Material emerald = {
+    glm::vec4(0.633, 0.727811, 0.633, 1),
+    glm::vec4(0.07568, 0.61424, 0.07568, 1),
+    glm::vec4(0.0215, 0.1745, 0.0215, 1),
+    76.8
+};
 
 int main(void) {
     try {
@@ -21,7 +49,7 @@ int main(void) {
         Shader shader("shaders/simple.vert", "shaders/simple.frag");
 
         std::vector<std::shared_ptr<Mesh>> meshList;
-        meshList.push_back(std::make_shared<Mesh>());
+        meshList.push_back(std::make_shared<Cube>(gold));
 
         FirstPersonCamera camera(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f));
 
@@ -30,6 +58,9 @@ int main(void) {
         // Draw wire frame triangles or fill: GL_LINE, or GL_FILL
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         float lastTime = glfwGetTime();
+
+        meshList[0]->lookAt(glm::vec3(0,5,-5));
+        /* meshList[0]->setRotation(0.5,0.5,0.5); */
 
         do {
             float currentTime = glfwGetTime();

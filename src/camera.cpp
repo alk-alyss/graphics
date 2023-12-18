@@ -27,7 +27,7 @@ Camera::Camera(vec3 position, vec3 target, vec3 up) {
 };
 
 void Camera::updateViewMatrix() {
-    viewMatrix = glm::lookAt(position, position + direction, up());
+    viewMatrix = glm::lookAt(position, position + forward(), up());
 
     VP = projectionMatrix * viewMatrix;
 }

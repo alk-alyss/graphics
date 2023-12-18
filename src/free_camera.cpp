@@ -1,25 +1,25 @@
 #include "camera.hpp"
 
 void FreeCamera::moveForward(float deltaTime) {
-    translate(direction * movementSpeed * deltaTime);
+    translate(direction() * movementSpeed * deltaTime);
 
     updateViewMatrix();
 }
 
 void FreeCamera::moveBackward(float deltaTime) {
-    translate(-direction * movementSpeed * deltaTime);
+    translate(-direction() * movementSpeed * deltaTime);
 
     updateViewMatrix();
 }
 
 void FreeCamera::strafeLeft(float deltaTime) {
-    translate(-right * movementSpeed * deltaTime);
+    translate(-right() * movementSpeed * deltaTime);
 
     updateViewMatrix();
 }
 
 void FreeCamera::strafeRight(float deltaTime) {
-    translate(right * movementSpeed * deltaTime);
+    translate(right() * movementSpeed * deltaTime);
 
     updateViewMatrix();
 }

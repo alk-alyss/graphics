@@ -1,7 +1,7 @@
 #include "camera.hpp"
 
 void FirstPersonCamera::moveForward(float deltaTime) {
-    glm::vec3 directionVector = direction;
+    glm::vec3 directionVector = direction();
     directionVector.y = 0;
     translate(directionVector * movementSpeed * deltaTime);
 
@@ -9,7 +9,7 @@ void FirstPersonCamera::moveForward(float deltaTime) {
 }
 
 void FirstPersonCamera::moveBackward(float deltaTime) {
-    glm::vec3 directionVector = direction;
+    glm::vec3 directionVector = direction();
     directionVector.y = 0;
     translate(-directionVector * movementSpeed * deltaTime);
 
@@ -17,7 +17,7 @@ void FirstPersonCamera::moveBackward(float deltaTime) {
 }
 
 void FirstPersonCamera::strafeLeft(float deltaTime) {
-    glm::vec3 rightVector = right;
+    glm::vec3 rightVector = right();
     rightVector.y = 0;
     translate(-rightVector * movementSpeed * deltaTime);
 
@@ -25,7 +25,7 @@ void FirstPersonCamera::strafeLeft(float deltaTime) {
 }
 
 void FirstPersonCamera::strafeRight(float deltaTime) {
-    glm::vec3 rightVector = right;
+    glm::vec3 rightVector = right();
     rightVector.y = 0;
     translate(rightVector * movementSpeed * deltaTime);
 
