@@ -26,11 +26,9 @@ protected:
 public:
     Camera() : Camera(glm::vec3(0.0f), glm::vec3(0.0f)) {};
     Camera(glm::vec3 position, glm::vec3 rotation);
-    Camera(glm::vec3 position, glm::vec3 target, glm::vec3 up) : Camera(position, calculateRotation(target, up)) {};
+    Camera(glm::vec3 position, glm::vec3 target, glm::vec3 up);
 
     glm::mat4 getVP() {return VP;}
-
-    glm::vec3 calculateRotation(glm::vec3 direction, glm::vec3 up);
 
     void updateAspectRatio(GLFWwindow* window);
 

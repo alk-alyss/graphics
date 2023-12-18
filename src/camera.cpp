@@ -4,7 +4,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
 
-Camera::Camera(glm::vec3 position, glm::vec3 rotation) {
+using namespace glm;
+
+Camera::Camera(vec3 position, vec3 rotation) {
     nearCP = 0.1f;
     farCP = 100.0f;
 
@@ -19,6 +21,11 @@ Camera::Camera(glm::vec3 position, glm::vec3 rotation) {
     updateProjectionMatrix();
 }
 
+Camera::Camera(vec3 position, vec3 target, vec3 up) {
+    this->position = position;
+    lookAt(target, up);
+};
+
 void Camera::updateViewMatrix() {
     viewMatrix = glm::lookAt(position, position + direction, up());
 
@@ -26,7 +33,7 @@ void Camera::updateViewMatrix() {
 }
 
 void Camera::updateProjectionMatrix() {
-    projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, nearCP, farCP);
+    projectionMatrix = perspective(radians(fov), aspectRatio, nearCP, farCP);
 
     VP = projectionMatrix * viewMatrix;
 }
