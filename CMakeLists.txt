@@ -19,6 +19,12 @@ SOURCE_GROUP(headers REGULAR_EXPRESSION ".*/.*hpp$" )
 SOURCE_GROUP(shaders REGULAR_EXPRESSION ".*/.*(vert|frag|comp|geom|tese|tesc)$" )
 SOURCE_GROUP(obj REGULAR_EXPRESSION ".*/.*obj$" )
 
+file(GLOB_RECURSE sources src/*.cpp)
+file(GLOB_RECURSE headers src/*.hpp)
+file(GLOB_RECURSE shaders shaders/*)
+file(GLOB_RECURSE models resources/models/*)
+file(GLOB_RECURSE textures resources/textures/*)
+
 ###############################################################################
 
 add_subdirectory(external)
@@ -26,33 +32,6 @@ set(EXTERNAL_LIBRARIES glew glfw glm SOIL tinyobjloader)
 
 include_directories(src)
 
-set(PROJECT_SOURCE_FILES
-  src/main.cpp
+add_executable(${PROJECT_NAME} ${sources} ${headers})
 
-  src/context.hpp
-  src/context.cpp
-
-  src/context.hpp
-  src/mesh.cpp
-
-  src/renderer.hpp
-  src/renderer.cpp
-
-  src/camera.hpp
-  src/camera.cpp
-  src/first_person_camera.cpp
-  src/free_camera.cpp
-
-  src/shader.hpp
-  src/shader.cpp
-
-  src/util.hpp
-  src/util.cpp
-
-  src/common.hpp
-  src/orientable.cpp
-)
-
-add_executable(${PROJECT_NAME} ${PROJECT_SOURCE_FILES})
-
-target_link_libraries(${PROJECT_NAME} ${EXTERNAL_LIBRARIES} ${INTERNAL_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${EXTERNAL_LIBRARIES})
