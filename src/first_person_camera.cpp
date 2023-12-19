@@ -16,7 +16,7 @@ void FirstPersonCamera::moveBackward(float deltaTime) {
     updateViewMatrix();
 }
 
-void FirstPersonCamera::strafeLeft(float deltaTime) {
+void FirstPersonCamera::moveLeft(float deltaTime) {
     glm::vec3 rightVector = right();
     rightVector.y = 0;
     translate(-rightVector * movementSpeed * deltaTime);
@@ -24,19 +24,10 @@ void FirstPersonCamera::strafeLeft(float deltaTime) {
     updateViewMatrix();
 }
 
-void FirstPersonCamera::strafeRight(float deltaTime) {
+void FirstPersonCamera::moveRight(float deltaTime) {
     glm::vec3 rightVector = right();
     rightVector.y = 0;
     translate(rightVector * movementSpeed * deltaTime);
-
-    updateViewMatrix();
-}
-
-void FirstPersonCamera::look(float mouseX, float mouseY, float deltaTime) {
-    float pitch = mouseX * glm::radians(fov) * aspectRatio * mouseSpeed * deltaTime;
-    float yaw = mouseY * glm::radians(fov) * mouseSpeed * deltaTime;
-
-    rotate(pitch, yaw);
 
     updateViewMatrix();
 }

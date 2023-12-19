@@ -51,3 +51,13 @@ void Camera::zoom(float amount) {
 
     updateProjectionMatrix();
 }
+
+void Camera::look(float mouseX, float mouseY, float deltaTime) {
+    float pitch = -mouseY * mouseSpeed * deltaTime;
+    float yaw = -mouseX * mouseSpeed * deltaTime;
+
+    rotate(yaw, up());
+    rotate(pitch, right());
+
+    updateViewMatrix();
+}

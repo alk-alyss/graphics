@@ -12,23 +12,14 @@ void FreeCamera::moveBackward(float deltaTime) {
     updateViewMatrix();
 }
 
-void FreeCamera::strafeLeft(float deltaTime) {
+void FreeCamera::moveLeft(float deltaTime) {
     translate(-right() * movementSpeed * deltaTime);
 
     updateViewMatrix();
 }
 
-void FreeCamera::strafeRight(float deltaTime) {
+void FreeCamera::moveRight(float deltaTime) {
     translate(right() * movementSpeed * deltaTime);
-
-    updateViewMatrix();
-}
-
-void FreeCamera::look(float mouseX, float mouseY, float deltaTime) {
-    float pitch = mouseX * glm::radians(fov) * aspectRatio * mouseSpeed * deltaTime;
-    float yaw = mouseY * glm::radians(fov) * mouseSpeed * deltaTime;
-
-    rotate(pitch, yaw);
 
     updateViewMatrix();
 }
