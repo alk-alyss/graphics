@@ -1,6 +1,7 @@
-#include <iostream>
+#include <assert.h>
+#include <stdexcept>
 
-#include <context.hpp>
+#include "context.hpp"
 
 #include "util.hpp"
 
@@ -11,12 +12,23 @@
 // glfw: whenever the window size changed this callback function executes
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
+    assert(window != nullptr);
     // make sure the viewport matches the new window dimensions; note that width and
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
 }
 
-GLFWwindow* createWindow() {
+void captureMouse(GLFWwindow* window) {
+    assert(window != nullptr);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
+
+void releaseMouse(GLFWwindow* window) {
+    assert(window != nullptr);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+}
+
+std::shared_ptr<GLFWwindow> createWindow() {
     // Initialize GLFW
     if (!glfwInit()) {
         throw std::runtime_error("Failed to initialize GLFW\n");
@@ -64,5 +76,10 @@ GLFWwindow* createWindow() {
     // Log
     logGLParameters();
 
-    return window;
+    captureMouse(window);
+
+    if (glfwRawMouseMotionSupported())
+        glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+
+    return std::shared_ptr<GLFWwindow>(window, DestroyGLFWwindow());
 }
