@@ -6,7 +6,7 @@ Renderer::Renderer(Shader& shader) : shader(shader) {
     MVPLocation = glGetUniformLocation(shader.getProgram(), "mvp");
 }
 
-void Renderer::render(Camera& camera, std::vector<std::shared_ptr<Mesh>> meshList) {
+void Renderer::render(const Camera& camera, const std::vector<std::shared_ptr<Mesh>> meshList) {
     glUseProgram(shader.getProgram());
 
     glm::mat4 VP = camera.getVP();

@@ -12,13 +12,13 @@
 
 class Renderer {
 private:
-    Shader& shader;
+    Shader shader;
     GLuint MVPLocation;
 
 public:
     Renderer(Shader& shader);
 
-    void render(Camera& camera, std::vector<std::shared_ptr<Mesh>> meshList);
+    void render(const Camera& camera, const std::vector<std::shared_ptr<Mesh>> meshList);
 };
 
 #endif
