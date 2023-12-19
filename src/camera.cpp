@@ -13,7 +13,7 @@ Camera::Camera(vec3 position, vec3 rotation) {
     fov = 45.0f;
     aspectRatio = 16.0f/9.0f;
 
-    this->position = position;
+    setPosition(position);
     setRotation(rotation);
 
     updateViewMatrix();
@@ -22,7 +22,7 @@ Camera::Camera(vec3 position, vec3 rotation) {
 }
 
 Camera::Camera(vec3 position, vec3 target, vec3 up) {
-    this->position = position;
+    setPosition(position);
     lookAt(target, up);
 };
 
@@ -56,8 +56,7 @@ void Camera::look(float mouseX, float mouseY, float deltaTime) {
     float pitch = -mouseY * mouseSpeed * deltaTime;
     float yaw = -mouseX * mouseSpeed * deltaTime;
 
-    rotate(yaw, up());
-    rotate(pitch, right());
+    rotate(pitch, yaw);
 
     updateViewMatrix();
 }

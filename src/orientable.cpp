@@ -23,21 +23,28 @@ void Orientable::translate(vec3 translation) {
 }
 
 void Orientable::rotate(vec3 rotation) {
-    quat rotationQuat = quat(rotation);
+    quat rotationQuat = normalize(quat(rotation));
 
-    orientation = rotationQuat * orientation;
+    orientation = normalize(rotationQuat * orientation);
+}
+
+void Orientable::rotate(float pitch, float yaw) {
+    quat pitchRotation = angleAxis(pitch, vec3(1,0,0));
+    quat yawRotation = angleAxis(yaw, vec3(0,1,0));
+
+    orientation = yawRotation * orientation * pitchRotation;
 }
 
 void Orientable::rotate(float angle, vec3 axis) {
-    quat rotationQuat = angleAxis(angle, axis);
+    quat rotationQuat = normalize(angleAxis(angle, axis));
 
-    orientation = rotationQuat * orientation;
+    orientation = normalize(rotationQuat * orientation);
 }
 
 void Orientable::setRotation(vec3 rotation) {
-    quat rotationQuat = quat(rotation);
+    quat rotationQuat = normalize(quat(rotation));
 
-    orientation = rotationQuat * quat(vec3(0,0,0));
+    orientation = normalize(rotationQuat * quat(vec3(0,0,0)));
 }
 
 mat4 Orientable::getRotationMatrix() {
