@@ -17,8 +17,6 @@ void handleMouse(std::shared_ptr<GLFWwindow> windowPtr, std::shared_ptr<Camera> 
     // Reset mouse position for next frame
     glfwSetCursorPos(window, width / 2.0, height / 2.0);
 
-    std::cout << mouseX << " " << mouseY << std::endl;
-
     camera->look(mouseX, mouseY, deltaTime);
 }
 
