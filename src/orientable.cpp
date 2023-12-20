@@ -66,9 +66,9 @@ void Orientable::lookAt(vec3 target, vec3 up, vec3 alternativeUp) {
 
     // Is the normal up (nearly) parallel to direction?
     if(glm::abs(glm::dot(direction, up)) > .9999f) {
-        orientation = glm::quatLookAt(direction, alternativeUp);
+        orientation = normalize(glm::quatLookAt(direction, alternativeUp));
     }
     else {
-        orientation = glm::quatLookAt(direction, up);
+        orientation = normalize(glm::quatLookAt(direction, up));
     }
 }

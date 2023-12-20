@@ -14,7 +14,6 @@ protected:
     glm::vec3 up();
     glm::vec3 forward();
     glm::vec3 right();
-    glm::vec3 direction() {return forward();}
 
 public:
     void setPosition(float x, float y, float z) {this->position = glm::vec3(x, y, z);}
@@ -32,10 +31,6 @@ public:
     void rotate(float pitch, float yaw, float roll) {rotate(glm::vec3(pitch, yaw, roll));}
     void rotate(float pitch, float yaw);
     void rotate(float angle, glm::vec3 axis);
-
-    void pitch(float angle);
-    void yaw(float angle);
-    void roll(float angle);
 
     void lookAt(glm::vec3 target, glm::vec3 up = glm::vec3(0, 1, 0), glm::vec3 alternativeUp = glm::vec3(0,0,1));
 };

@@ -58,5 +58,14 @@ void Camera::look(float mouseX, float mouseY, float deltaTime) {
 
     rotate(pitch, yaw);
 
+    if (dot(up(), vec3(0,1,0)) <= 0) {
+        vec3 newForward = vec3(0,1,0);
+        if (dot(forward(), vec3(0,-1,0)) > 0.99) {
+            newForward = vec3(0,-1,0);
+        }
+
+        orientation = normalize(quatLookAt(newForward, up()));
+    }
+
     updateViewMatrix();
 }
