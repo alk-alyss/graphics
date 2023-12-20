@@ -6,6 +6,19 @@
 
 using namespace glm;
 
+quat eulerToQuat(vec3 rotation) {
+    quat rotationX = angleAxis(rotation.x, vec3(1,0,0));
+    quat rotationY = angleAxis(rotation.y, vec3(0,1,0));
+    quat rotationZ = angleAxis(rotation.z, vec3(0,0,1));
+
+    return rotationZ * rotationY * rotationX;
+}
+
+Orientable::Orientable(vec3 position, vec3 rotation) {
+    this->position = position;
+    setRotation(rotation);
+}
+
 vec3 Orientable::up() {
     return orientation * vec3(0,1,0);
 }
@@ -23,7 +36,7 @@ void Orientable::translate(vec3 translation) {
 }
 
 void Orientable::rotate(vec3 rotation) {
-    quat rotationQuat = normalize(quat(rotation));
+    quat rotationQuat = normalize(eulerToQuat(rotation));
 
     orientation = normalize(rotationQuat * orientation);
 }
@@ -42,9 +55,7 @@ void Orientable::rotate(float angle, vec3 axis) {
 }
 
 void Orientable::setRotation(vec3 rotation) {
-    quat rotationQuat = normalize(quat(rotation));
-
-    orientation = normalize(rotationQuat * quat(vec3(0,0,0)));
+    orientation = normalize(eulerToQuat(rotation));
 }
 
 mat4 Orientable::getRotationMatrix() {
