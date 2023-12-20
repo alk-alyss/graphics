@@ -4,11 +4,13 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 
+#define DEFAULT_POSITION glm::vec3(0)
+#define DEFAULT_ORIENTATION glm::vec3(0)
+
 class Orientable {
 protected:
-    glm::vec3 position = glm::vec3(0);
-
-    glm::quat orientation = glm::quat(glm::vec3(0,0,0));
+    glm::vec3 position;
+    glm::quat orientation;
 
 protected:
     glm::vec3 up();
@@ -16,6 +18,8 @@ protected:
     glm::vec3 right();
 
 public:
+    Orientable(glm::vec3 position = DEFAULT_POSITION, glm::vec3 rotation = DEFAULT_ORIENTATION);
+
     void setPosition(float x, float y, float z) {this->position = glm::vec3(x, y, z);}
     void setPosition(glm::vec3 position) {this->position = position;}
 
