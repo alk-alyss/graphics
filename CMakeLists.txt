@@ -28,7 +28,7 @@ file(GLOB_RECURSE textures resources/textures/*)
 ###############################################################################
 
 add_subdirectory(external)
-set(EXTERNAL_LIBRARIES glew_s glfw glm SOIL tinyobjloader)
+set(EXTERNAL_LIBRARIES glew_s glfw glm soil2 tinyobjloader)
 
 include_directories(src)
 

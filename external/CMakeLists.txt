@@ -30,7 +30,7 @@ target_include_directories(glew_s PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOUR
 add_subdirectory(glm)
 
 ### SOIL ###
-add_subdirectory(soil)
+add_subdirectory(soil2)
 
 ### TinyOBJLoader ###
 add_subdirectory(tinyobjloader)

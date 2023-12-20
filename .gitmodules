@@ -10,6 +10,6 @@
 [submodule "external/tinyobjloader"]
 	path = external/tinyobjloader
 	url = git@github.com:tinyobjloader/tinyobjloader
-[submodule "external/soil"]
-	path = external/soil
-	url = git@github.com:kbranigan/Simple-OpenGL-Image-Library
+[submodule "external/soil2"]
+	path = external/soil2
+	url = git@github.com:SpartanJ/SOIL2.git
