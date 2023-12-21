@@ -64,18 +64,18 @@ void lighting(float visibility) {
 	vec4 Is;
 	vec4 Id;
 
-	// model ambient intensity (Ia)
+	// Ambient intensity (Ia)
 	Ia += light.La * _Ka;
 
-	// model diffuse intensity (Id)
-	vec4 N = normalize(cameraSpace.vertexNormal);
-	vec4 L = normalize(cameraSpace.lightDirection);
+	// Diffuse intensity (Id)
+	vec4 N = normalize(cameraSpace.vertexNormal); // Fragment normal
+	vec4 L = normalize(cameraSpace.lightDirection); // Light vector
 	float cosTheta = clamp(dot(N, L), 0, 1);
 	Id += light.Ld * _Kd * cosTheta;
 
-	// model specular intensity (Is)
-	vec4 E = normalize(-cameraSpace.vertexPosition);
-	vec4 H = normalize(L+E);
+	// Specular intensity (Is)
+	vec4 E = normalize(-cameraSpace.vertexPosition); // Eye vector
+	vec4 H = normalize(L+E); // Halfway vector
 	float cosAlpha = clamp(dot(N, H), 0, 1);
 	float specular_factor = pow(cosAlpha, _Ns);
 	Is += light.Ls * _Ks * specular_factor;
@@ -87,7 +87,7 @@ void lighting(float visibility) {
 	// final fragment color
 	fragmentColor = vec4(
 		Ia +
-		Id * visibility +   // Task 4.3 Use visibility
+		Id * visibility +
 		Is * visibility
 	);
 }
