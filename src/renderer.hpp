@@ -6,14 +6,17 @@
 
 #include <glm/glm.hpp>
 
-#include <mesh.hpp>
-#include <shader.hpp>
+#include "mesh.hpp"
+#include "shader.hpp"
 #include "camera.hpp"
 
 class Renderer {
 private:
     Shader shader;
-    GLuint MVPLocation;
+    GLuint matricesUBO;
+
+private:
+    void uploadMatrices(const Camera& camera);
 
 public:
     Renderer(Shader& shader);

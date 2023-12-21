@@ -31,6 +31,8 @@ public:
     Camera(glm::vec3 position, glm::vec3 rotation);
     Camera(glm::vec3 position, glm::vec3 target, glm::vec3 up);
 
+    glm::mat4 getView() const {return viewMatrix;}
+    glm::mat4 getProjection() const {return projectionMatrix;}
     glm::mat4 getVP() const {return VP;}
 
     void updateAspectRatio(GLFWwindow* window);

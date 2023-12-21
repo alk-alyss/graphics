@@ -9,13 +9,15 @@ class Shader {
 private:
     GLuint programId;
 
-    GLuint vertId;
-    GLuint fragId;
-    GLuint geomId;
+    GLuint vertId, fragId, geomId;
+
+    GLuint matricesUBOIndex, MLocation;
 
 public:
     Shader(const std::string vertFile, const std::string fragFile, const std::string geomFile="");
     ~Shader();
+
+    GLuint getMLocation() {return MLocation;}
 
     GLuint getProgram() {return programId;}
 };

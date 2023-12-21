@@ -1,10 +1,14 @@
 #version 330 core
 
-in vec3 color;
+in VERTEX_WORLD {
+	vec4 position;
+	vec4 normal;
+	vec2 uv;
+} fragmentWorld;
 
-out vec3 fragmentColor;
+out vec4 fragmentColor;
 
 void main()
 {
-	fragmentColor = color;
+	fragmentColor = fragmentWorld.normal;
 }

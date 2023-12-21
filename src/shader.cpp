@@ -39,9 +39,11 @@ void compileShader(GLuint& shaderID, const std::string file) {
     }
 }
 
-Shader::Shader(const std::string vertexFilePath,
-                   const std::string fragmentFilePath,
-                   const std::string geometryFilePath) {
+Shader::Shader(
+    const std::string vertexFilePath,
+    const std::string fragmentFilePath,
+    const std::string geometryFilePath
+) {
     // Create the shaders
     vertId = glCreateShader(GL_VERTEX_SHADER);
     compileShader(vertId, vertexFilePath);
@@ -87,6 +89,11 @@ Shader::Shader(const std::string vertexFilePath,
     glDeleteShader(fragId);
 
     std::cout << "Shader program complete." << std::endl;
+
+    matricesUBOIndex = glGetUniformBlockIndex(programId, "Matrices");
+    glUniformBlockBinding(programId, matricesUBOIndex, 0);
+
+    MLocation = glGetUniformLocation(programId, "M");
 }
 
 Shader::~Shader() {
