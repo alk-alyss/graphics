@@ -90,10 +90,24 @@ Shader::Shader(
 
     std::cout << "Shader program complete." << std::endl;
 
+
     matricesUBOIndex = glGetUniformBlockIndex(programId, "Matrices");
     glUniformBlockBinding(programId, matricesUBOIndex, 0);
 
+    lightsUBOIndex = glGetUniformBlockIndex(programId, "Lights");
+    glUniformBlockBinding(programId, lightsUBOIndex, 1);
+
     MLocation = glGetUniformLocation(programId, "M");
+
+    KaLocation = glGetUniformLocation(programId, "material.Ka");
+    KdLocation = glGetUniformLocation(programId, "material.Kd");
+    KsLocation = glGetUniformLocation(programId, "material.Ks");
+    NsLocation = glGetUniformLocation(programId, "material.Ns");
+
+    LaLocation = glGetUniformLocation(programId, "light.La");
+    LdLocation = glGetUniformLocation(programId, "light.Ld");
+    LsLocation = glGetUniformLocation(programId, "light.Ls");
+    lightPositionLocation = glGetUniformLocation(programId, "light.position");
 }
 
 Shader::~Shader() {

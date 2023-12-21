@@ -1,14 +1,91 @@
 #version 330 core
 
-in VERTEX_WORLD {
+struct DirectionLight {
+	vec4 La;
+	vec4 Ld;
+	vec4 Ls;
 	vec4 position;
-	vec4 normal;
+};
+
+struct Material {
+	vec4 Ka;
+	vec4 Kd;
+	vec4 Ks;
+	float Ns;
+};
+
+// layout(std140) uniform Lights{
+// 	DirectionLight light;
+// };
+
+
+in WORLD_SPACE {
+	vec4 vertexPosition;
+	vec4 vertexNormal;
 	vec2 uv;
-} fragmentWorld;
+} worldSpace;
+
+in CAMERA_SPACE {
+	vec4 vertexPosition;
+	vec4 vertexNormal;
+	vec4 lightPosition;
+} cameraSpace;
+
+
+uniform DirectionLight light;
+uniform Material material;
+
 
 out vec4 fragmentColor;
 
-void main()
-{
-	fragmentColor = fragmentWorld.normal;
+void phong(float visibility) {
+
+	vec4 _Ks = material.Ks;
+	vec4 _Kd = material.Kd;
+	vec4 _Ka = material.Ka;
+	float _Ns = material.Ns;
+
+	// use texture for materials
+	// if (useTexture == 1) {
+	// 	_Ks = vec4(texture(specularColorSampler, vertex_UV).rgb, 1.0);
+	// 	_Kd = vec4(texture(diffuseColorSampler, vertex_UV).rgb, 1.0);
+	// 	_Ka = vec4(0.05 * _Kd.rgb, _Kd.a);
+	// 	_Ns = 10;
+	// }
+
+	vec4 Ia;
+	vec4 Is;
+	vec4 Id;
+
+	// model ambient intensity (Ia)
+	Ia += light.La * _Ka;
+
+	// model diffuse intensity (Id)
+	vec4 N = normalize(cameraSpace.vertexNormal);
+	vec4 L = normalize(cameraSpace.lightPosition - cameraSpace.vertexPosition);
+	float cosTheta = clamp(dot(N, L), 0, 1);
+	Id += light.Ld * _Kd * cosTheta;
+
+	// model specular intensity (Is)
+	vec4 R = reflect(-L, N);
+	vec4 E = normalize(-cameraSpace.vertexPosition);
+	float cosAlpha = clamp(dot(E, R), 0, 1);
+	float specular_factor = pow(cosAlpha, _Ns);
+	Is += light.Ls * _Ks * specular_factor;
+
+	// here we would normally model the light attenuation effect
+	// but since this is a directional light source that is infinitely far away
+	// attenuating the light intensity does not make sense
+
+	// final fragment color
+	fragmentColor = vec4(
+		Ia +
+		Id * visibility +   // Task 4.3 Use visibility
+		Is * visibility
+	);
+}
+
+void main() {
+	phong(1);
+	// fragmentColor = worldSpace.vertexNormal;
 }

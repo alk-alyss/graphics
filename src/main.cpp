@@ -49,9 +49,19 @@ int main(void) {
         Shader shader("shaders/simple.vert", "shaders/simple.frag");
 
         std::vector<std::shared_ptr<Mesh>> meshList;
-        meshList.push_back(std::make_shared<Cube>(gold));
+        std::shared_ptr<Mesh> suzanne = std::make_shared<Mesh>("resources/models/suzanne.obj");
+        meshList.push_back(suzanne);
 
         std::shared_ptr<Camera> camera = std::make_shared<FirstPersonCamera>(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f));
+
+        Light light = Light(
+                glm::vec4(1,1,1,1),
+                glm::vec4(1,1,1,1),
+                glm::vec4(1,1,1,1),
+                10,
+                glm::vec3(0,5,10),
+                glm::vec3(0,0,0)
+            );
 
         Renderer renderer(shader);
 
@@ -59,7 +69,7 @@ int main(void) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         float lastTime = glfwGetTime();
 
-        meshList[0]->lookAt(glm::vec3(0,5,-5));
+        /* meshList[0]->lookAt(glm::vec3(0,5,-5)); */
 
         do {
             float currentTime = glfwGetTime();
@@ -70,7 +80,7 @@ int main(void) {
 
             camera->updateAspectRatio(window.get());
 
-            renderer.render(*camera, meshList);
+            renderer.render(*camera, meshList, light, gold);
 
             // Swap buffers
             glfwSwapBuffers(window.get());

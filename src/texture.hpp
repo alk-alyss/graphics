@@ -16,5 +16,4 @@ public:
     void bind();
 };
 
-
 #endif
