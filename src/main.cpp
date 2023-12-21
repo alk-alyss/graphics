@@ -53,7 +53,7 @@ int main(void) {
 
         std::shared_ptr<Camera> camera = std::make_shared<FirstPersonCamera>(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f));
 
-        Light light = Light(
+        DirectionLight light(
                 glm::vec4(1,1,1,1),
                 glm::vec4(1,1,1,1),
                 glm::vec4(1,1,1,1),

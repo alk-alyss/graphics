@@ -15,7 +15,7 @@ Renderer::Renderer(Shader& shader) : shader(shader) {
     glGenBuffers(1, &lightsUBO);
 
     glBindBuffer(GL_UNIFORM_BUFFER, lightsUBO);
-    glBufferData(GL_UNIFORM_BUFFER, 1 * Light::sizeofData(), NULL, GL_DYNAMIC_DRAW);
+    glBufferData(GL_UNIFORM_BUFFER, 1 * DirectionLight::sizeofData(), NULL, GL_DYNAMIC_DRAW);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
     glBindBufferBase(GL_UNIFORM_BUFFER, 1, lightsUBO);
@@ -60,7 +60,7 @@ void Renderer::uploadMatrices(const Camera& camera) {
 void Renderer::uploadLights(const Light& light) {
     glBindBuffer(GL_UNIFORM_BUFFER, lightsUBO);
     std::vector<glm::vec4> lightData = light.data();
-    glBufferSubData(GL_UNIFORM_BUFFER, 0, Light::sizeofData(), lightData.data());
+    glBufferSubData(GL_UNIFORM_BUFFER, 0, lightData.size() * sizeof(lightData[0]), lightData.data());
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
