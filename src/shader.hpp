@@ -11,11 +11,8 @@ private:
 
     GLuint vertId, fragId, geomId;
 
-    GLuint matricesUBOIndex, lightsUBOIndex, MLocation;
-
-public:
-    GLuint LaLocation, LdLocation, LsLocation, lightPositionLocation;
-    GLuint KaLocation, KdLocation, KsLocation, NsLocation;
+    GLuint matricesUBOIndex, lightsUBOIndex, materialUBOIndex;
+    GLuint MLocation;
 
 public:
     Shader(const std::string vertFile, const std::string fragFile, const std::string geomFile="");

@@ -42,7 +42,6 @@ Material emerald = {
 int main(void) {
     try {
         std::shared_ptr<GLFWwindow> window = createWindow();
-        // glfwSetKeyCallback(window, keyCallback);
 
         // Create and compile our GLSL program from the shaders
         glEnable(GL_PROGRAM_POINT_SIZE);
@@ -60,7 +59,7 @@ int main(void) {
                 glm::vec4(1,1,1,1),
                 10,
                 glm::vec3(0,5,10),
-                glm::vec3(0,0,0)
+                glm::vec3(glm::radians(180.0),0,0)
             );
 
         Renderer renderer(shader);
@@ -68,8 +67,6 @@ int main(void) {
         // Draw wire frame triangles or fill: GL_LINE, or GL_FILL
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         float lastTime = glfwGetTime();
-
-        /* meshList[0]->lookAt(glm::vec3(0,5,-5)); */
 
         do {
             float currentTime = glfwGetTime();

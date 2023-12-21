@@ -15,7 +15,7 @@
 class Renderer {
 private:
     Shader shader;
-    GLuint matricesUBO, lightsUBO;
+    GLuint matricesUBO, lightsUBO, materialUBO;
 
 private:
     void uploadMatrices(const Camera& camera);

@@ -1,10 +1,11 @@
 #version 330 core
 
+// STRUCTS
 struct DirectionLight {
 	vec4 La;
 	vec4 Ld;
 	vec4 Ls;
-	vec4 position;
+	vec4 direction;
 };
 
 struct Material {
@@ -14,11 +15,16 @@ struct Material {
 	float Ns;
 };
 
-// layout(std140) uniform Lights{
-// 	DirectionLight light;
-// };
+// UBOs
+layout(std140) uniform Lights{
+	DirectionLight light;
+};
 
+layout(std140) uniform Materials {
+	Material material;
+};
 
+// FRAGMENT SHADER IN
 in WORLD_SPACE {
 	vec4 vertexPosition;
 	vec4 vertexNormal;
@@ -28,17 +34,18 @@ in WORLD_SPACE {
 in CAMERA_SPACE {
 	vec4 vertexPosition;
 	vec4 vertexNormal;
-	vec4 lightPosition;
+	vec4 lightDirection;
 } cameraSpace;
 
-
-uniform DirectionLight light;
-uniform Material material;
-
-
+// FRAGMENT SHADER OUT
 out vec4 fragmentColor;
 
-void phong(float visibility) {
+float shadows() {
+	return 1.0;
+}
+
+// BLINN-PHONG LIGHTING
+void lighting(float visibility) {
 
 	vec4 _Ks = material.Ks;
 	vec4 _Kd = material.Kd;
@@ -62,14 +69,14 @@ void phong(float visibility) {
 
 	// model diffuse intensity (Id)
 	vec4 N = normalize(cameraSpace.vertexNormal);
-	vec4 L = normalize(cameraSpace.lightPosition - cameraSpace.vertexPosition);
+	vec4 L = normalize(cameraSpace.lightDirection);
 	float cosTheta = clamp(dot(N, L), 0, 1);
 	Id += light.Ld * _Kd * cosTheta;
 
 	// model specular intensity (Is)
-	vec4 R = reflect(-L, N);
 	vec4 E = normalize(-cameraSpace.vertexPosition);
-	float cosAlpha = clamp(dot(E, R), 0, 1);
+	vec4 H = normalize(L+E);
+	float cosAlpha = clamp(dot(N, H), 0, 1);
 	float specular_factor = pow(cosAlpha, _Ns);
 	Is += light.Ls * _Ks * specular_factor;
 
@@ -86,6 +93,6 @@ void phong(float visibility) {
 }
 
 void main() {
-	phong(1);
-	// fragmentColor = worldSpace.vertexNormal;
+	float visibility = shadows();
+	lighting(visibility);
 }

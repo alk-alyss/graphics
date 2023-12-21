@@ -6,7 +6,7 @@ std::vector<glm::vec4> Light::data() const {
     data.push_back(La);
     data.push_back(Ld);
     data.push_back(Ls);
-    data.push_back(glm::vec4(position, 1));
+    data.push_back(glm::vec4(forward(), 0));
 
     return data;
 }

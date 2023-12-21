@@ -19,6 +19,14 @@ Renderer::Renderer(Shader& shader) : shader(shader) {
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
     glBindBufferBase(GL_UNIFORM_BUFFER, 1, lightsUBO);
+
+    glGenBuffers(1, &materialUBO);
+
+    glBindBuffer(GL_UNIFORM_BUFFER, materialUBO);
+    glBufferData(GL_UNIFORM_BUFFER, 1 * sizeof(Material), NULL, GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+    glBindBufferBase(GL_UNIFORM_BUFFER, 2, materialUBO);
 }
 
 void Renderer::render(
@@ -50,23 +58,14 @@ void Renderer::uploadMatrices(const Camera& camera) {
 }
 
 void Renderer::uploadLights(const Light& light) {
-    /* glBindBuffer(GL_UNIFORM_BUFFER, lightsUBO); */
-    /* std::vector<glm::vec4> lightData = light.data(); */
-
-    /* glBufferSubData(GL_UNIFORM_BUFFER, 0, Light::sizeofData(), lightData.data()); */
-    /* glBindBuffer(GL_UNIFORM_BUFFER, 0); */
-
-
+    glBindBuffer(GL_UNIFORM_BUFFER, lightsUBO);
     std::vector<glm::vec4> lightData = light.data();
-    glUniform4fv(shader.LaLocation, 1, glm::value_ptr(lightData[0]));
-    glUniform4fv(shader.LdLocation, 1, glm::value_ptr(lightData[1]));
-    glUniform4fv(shader.LsLocation, 1, glm::value_ptr(lightData[2]));
-    glUniform3fv(shader.lightPositionLocation, 1, glm::value_ptr(lightData[3]));
+    glBufferSubData(GL_UNIFORM_BUFFER, 0, Light::sizeofData(), lightData.data());
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
 void Renderer::uploadMaterial(const Material& mtl) {
-    glUniform4f(shader.KaLocation, mtl.Ka.r, mtl.Ka.g, mtl.Ka.b, mtl.Ka.a);
-    glUniform4f(shader.KdLocation, mtl.Kd.r, mtl.Kd.g, mtl.Kd.b, mtl.Kd.a);
-    glUniform4f(shader.KsLocation, mtl.Ks.r, mtl.Ks.g, mtl.Ks.b, mtl.Ks.a);
-    glUniform1f(shader.NsLocation, mtl.Ns);
+    glBindBuffer(GL_UNIFORM_BUFFER, materialUBO);
+    glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Material), &mtl);
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
