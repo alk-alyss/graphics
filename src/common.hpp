@@ -13,9 +13,9 @@ protected:
     glm::quat orientation;
 
 protected:
-    glm::vec3 up();
-    glm::vec3 forward();
-    glm::vec3 right();
+    glm::vec3 up() const;
+    glm::vec3 forward() const;
+    glm::vec3 right() const;
 
 public:
     Orientable(glm::vec3 position = DEFAULT_POSITION, glm::vec3 rotation = DEFAULT_ORIENTATION);
@@ -26,7 +26,7 @@ public:
     void setRotation(glm::vec3 rotation);
     void setRotation(float pitch, float yaw, float roll) {setRotation(glm::vec3(pitch, yaw, roll));}
 
-    glm::mat4 getRotationMatrix();
+    glm::mat4 getRotationMatrix() const;
 
     void translate(glm::vec3 translation);
     void translate(float x, float y, float z) {translate(glm::vec3(x, y, z));}

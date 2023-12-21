@@ -19,15 +19,15 @@ Orientable::Orientable(vec3 position, vec3 rotation) {
     setRotation(rotation);
 }
 
-vec3 Orientable::up() {
+vec3 Orientable::up() const {
     return orientation * vec3(0,1,0);
 }
 
-vec3 Orientable::forward() {
+vec3 Orientable::forward() const {
     return orientation * vec3(0,0,-1);
 }
 
-vec3 Orientable::right() {
+vec3 Orientable::right() const {
     return orientation * vec3(1,0,0);
 }
 
@@ -58,7 +58,7 @@ void Orientable::setRotation(vec3 rotation) {
     orientation = normalize(eulerToQuat(rotation));
 }
 
-mat4 Orientable::getRotationMatrix() {
+mat4 Orientable::getRotationMatrix() const {
     return toMat4(orientation);
 }
 
