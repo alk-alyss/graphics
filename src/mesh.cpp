@@ -164,16 +164,6 @@ void Mesh::loadVram() {
     glBindVertexArray(0);
 }
 
-glm::mat4 Mesh::modelMatrix() {
-    glm::mat4 modelMatrix = glm::mat4(1.0f);
-
-    modelMatrix = glm::scale(modelMatrix, scale);
-    modelMatrix = getRotationMatrix() * modelMatrix;
-    modelMatrix = glm::translate(modelMatrix, position);
-
-    return modelMatrix;
-}
-
 void Mesh::unloadVram() {
     glDeleteBuffers(1, &verticesVBO);
     glDeleteBuffers(1, &normalsVBO);

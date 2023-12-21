@@ -14,9 +14,10 @@ quat eulerToQuat(vec3 rotation) {
     return rotationZ * rotationY * rotationX;
 }
 
-Orientable::Orientable(vec3 position, vec3 rotation) {
+Orientable::Orientable(vec3 position, vec3 rotation, vec3 scale) {
     this->position = position;
     setRotation(rotation);
+    this->scale = scale;
 }
 
 vec3 Orientable::up() const {
@@ -58,8 +59,20 @@ void Orientable::setRotation(vec3 rotation) {
     orientation = normalize(eulerToQuat(rotation));
 }
 
-mat4 Orientable::getRotationMatrix() const {
+mat4 Orientable::translationMatrix() const {
+    return glm::translate(glm::mat4(1), position);
+}
+
+mat4 Orientable::rotationMatrix() const {
     return toMat4(orientation);
+}
+
+mat4 Orientable::scallingMatrix() const {
+    return glm::scale(glm::mat4(1), scale);
+}
+
+mat4 Orientable::modelMatrix() const {
+    return translationMatrix() * rotationMatrix() * scallingMatrix();
 }
 
 void Orientable::lookAt(vec3 target, vec3 up, vec3 alternativeUp) {

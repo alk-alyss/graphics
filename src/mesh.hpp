@@ -54,8 +54,6 @@ public:
     void loadVram();
     void unloadVram();
 
-    glm::mat4 modelMatrix();
-
     int vertexCount() {return vertices.size();}
     GLuint getVao() {return VAO;}
 
