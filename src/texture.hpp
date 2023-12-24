@@ -8,10 +8,13 @@
 class Texture {
 private:
     GLuint textureId = 0;
+    std::string path;
 
 public:
     Texture(const std::string imagePath);
     ~Texture();
+
+    std::string getPath() {return path;}
 
     void bind();
 };

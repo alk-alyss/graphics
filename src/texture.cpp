@@ -7,6 +7,8 @@ using namespace std;
 Texture::Texture(const string imagePath) {
     cout << "Reading image: " << imagePath << endl;
 
+    path = imagePath;
+
     //Load Image File Directly into an OpenGL Texture
     textureId = SOIL_load_OGL_texture
     (
