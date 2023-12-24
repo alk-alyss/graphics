@@ -37,7 +37,7 @@ public:
     }
 };
 
-class DirectionLight : public Light {
+class DirectionalLight : public Light {
 public:
     using Light::Light;
 

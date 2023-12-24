@@ -11,7 +11,7 @@ std::vector<glm::vec4> PointLight::data() const {
     return data;
 }
 
-std::vector<glm::vec4> DirectionLight::data() const {
+std::vector<glm::vec4> DirectionalLight::data() const {
     std::vector<glm::vec4> data = {
         La,
         Ld,

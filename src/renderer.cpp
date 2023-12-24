@@ -15,7 +15,7 @@ Renderer::Renderer(Shader& shader) : shader(shader) {
     glGenBuffers(1, &lightsUBO);
 
     glBindBuffer(GL_UNIFORM_BUFFER, lightsUBO);
-    glBufferData(GL_UNIFORM_BUFFER, 1 * DirectionLight::sizeofData(), NULL, GL_DYNAMIC_DRAW);
+    glBufferData(GL_UNIFORM_BUFFER, 1 * DirectionalLight::sizeofData(), NULL, GL_DYNAMIC_DRAW);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
     glBindBufferBase(GL_UNIFORM_BUFFER, 1, lightsUBO);
