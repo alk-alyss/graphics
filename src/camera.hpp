@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-#include "common.hpp"
+#include "orientable.hpp"
 
 class Camera : public Orientable {
 protected:
