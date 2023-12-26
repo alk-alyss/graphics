@@ -41,7 +41,7 @@ Material::Material(const std::string materialPath) {
     // TODO: load material textures from directory
 }
 
-void Material::load() const {
+void Material::draw(glm::mat4 modelMatrix, Shader& shader) const {
     glActiveTexture(GL_TEXTURE0);
     if (albedo.get() != nullptr) {
         albedo->bind();
@@ -83,4 +83,6 @@ void Material::load() const {
     } else {
         Texture::bindDefault();
     }
+
+    Node::draw(modelMatrix, shader);
 }

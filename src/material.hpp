@@ -7,6 +7,8 @@
 #include <GL/glew.h>
 #include <SOIL2.h>
 
+#include "common.hpp"
+
 struct Texture {
     GLuint textureId = 0;
     std::string path;
@@ -19,7 +21,7 @@ struct Texture {
     static void bindDefault();
 };
 
-struct Material {
+struct Material : Node{
     std::shared_ptr<Texture> albedo;
     std::shared_ptr<Texture> ao;
     std::shared_ptr<Texture> height;
@@ -29,7 +31,7 @@ struct Material {
 
     Material(const std::string materialPath);
 
-    void load() const;
+    void draw(glm::mat4 modelMatrix, Shader& shader) const override;
 };
 
 #endif
