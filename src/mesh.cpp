@@ -172,7 +172,9 @@ void Mesh::unloadVram() {
     glDeleteVertexArrays(1, &VAO);
 }
 
-void Mesh::draw() {
+void Mesh::draw(glm::mat4 modelMatrix, Shader& shader) const {
+    glUniformMatrix4fv(shader.getMLocation(), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);

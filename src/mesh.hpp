@@ -8,6 +8,8 @@
 #include <glm/glm.hpp>
 
 #include "common.hpp"
+#include "material.hpp"
+#include "shader.hpp"
 
 static std::vector<unsigned int> VEC_UINT_DEFAUTL_VALUE{};
 static std::vector<glm::vec3> VEC_VEC3_DEFAUTL_VALUE{};
@@ -32,15 +34,13 @@ void indexVBO(
     std::vector<glm::vec3> & out_normals
 );
 
-class Mesh : public Orientable {
+class Mesh : Leaf{
 protected:
     std::vector<glm::vec3> vertices, normals, indexedVertices, indexedNormals;
     std::vector<glm::vec2> uvs, indexedUVS;
     std::vector<unsigned int> indices;
 
     GLuint VAO, verticesVBO, uvsVBO, normalsVBO, EBO;
-
-    glm::vec3 scale = glm::vec3(1.0f);
 
 public:
     Mesh(
@@ -54,10 +54,10 @@ public:
     void loadVram();
     void unloadVram();
 
-    int vertexCount() {return vertices.size();}
-    GLuint getVao() {return VAO;}
+    int vertexCount() const {return vertices.size();}
+    GLuint getVao() const {return VAO;}
 
-    void draw();
+    void draw(glm::mat4 modelMatrix, Shader& shader) const;
 };
 
 #endif
