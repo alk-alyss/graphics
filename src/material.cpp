@@ -32,34 +32,55 @@ void Texture::bind() const{
     glBindTexture(GL_TEXTURE_2D, textureId);
 }
 
+void Texture::bindDefault() {
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+
+Material::Material(const std::string materialPath) {
+    // TODO: load material textures from directory
+}
+
 void Material::load() const {
+    glActiveTexture(GL_TEXTURE0);
     if (albedo.get() != nullptr) {
-        glActiveTexture(GL_TEXTURE0);
         albedo->bind();
+    } else {
+        Texture::bindDefault();
     }
 
+    glActiveTexture(GL_TEXTURE1);
     if (ao.get() != nullptr) {
-        glActiveTexture(GL_TEXTURE1);
         ao->bind();
+    } else {
+        Texture::bindDefault();
     }
 
+    glActiveTexture(GL_TEXTURE2);
     if (height.get() != nullptr) {
-        glActiveTexture(GL_TEXTURE2);
         height->bind();
+    } else {
+        Texture::bindDefault();
     }
 
+    glActiveTexture(GL_TEXTURE3);
     if (metallic.get() != nullptr) {
-        glActiveTexture(GL_TEXTURE3);
         metallic->bind();
+    } else {
+        Texture::bindDefault();
     }
 
+    glActiveTexture(GL_TEXTURE4);
     if (normal.get() != nullptr) {
-        glActiveTexture(GL_TEXTURE4);
         normal->bind();
+    } else {
+        Texture::bindDefault();
     }
 
+    glActiveTexture(GL_TEXTURE5);
     if (roughness.get() != nullptr) {
-        glActiveTexture(GL_TEXTURE5);
         roughness->bind();
+    } else {
+        Texture::bindDefault();
     }
 }

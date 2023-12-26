@@ -15,6 +15,8 @@ struct Texture {
     ~Texture();
 
     void bind() const;
+
+    static void bindDefault();
 };
 
 struct Material {
@@ -24,6 +26,8 @@ struct Material {
     std::shared_ptr<Texture> metallic;
     std::shared_ptr<Texture> normal;
     std::shared_ptr<Texture> roughness;
+
+    Material(const std::string materialPath);
 
     void load() const;
 };
