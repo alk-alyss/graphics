@@ -39,7 +39,7 @@ void compileShader(GLuint& shaderID, const std::string file) {
     }
 }
 
-Shader::Shader(
+void Shader::createShaderProgram(
     const std::string vertexFilePath,
     const std::string fragmentFilePath,
     const std::string geometryFilePath
@@ -89,18 +89,39 @@ Shader::Shader(
     glDeleteShader(fragId);
 
     std::cout << "Shader program complete." << std::endl;
+}
 
-
+void Shader::getUniformLocations() {
     matricesUBOIndex = glGetUniformBlockIndex(programId, "Matrices");
     glUniformBlockBinding(programId, matricesUBOIndex, 0);
 
     lightsUBOIndex = glGetUniformBlockIndex(programId, "Lights");
     glUniformBlockBinding(programId, lightsUBOIndex, 1);
 
-    materialUBOIndex = glGetUniformBlockIndex(programId, "Materials");
-    glUniformBlockBinding(programId, materialUBOIndex, 2);
-
     MLocation = glGetUniformLocation(programId, "M");
+
+    albedoLocation = glGetUniformLocation(programId, "albedoMap");
+    aoLocation = glGetUniformLocation(programId, "aoMap");
+    heightLocation = glGetUniformLocation(programId, "heightMap");
+    metallicLocation = glGetUniformLocation(programId, "metallicMap");
+    normalLocation = glGetUniformLocation(programId, "normalMap");
+    roughnessLocation = glGetUniformLocation(programId, "roughnessMap");
+
+    glUniform1i(albedoLocation, 0);
+    glUniform1i(aoLocation, 1);
+    glUniform1i(heightLocation, 2);
+    glUniform1i(metallicLocation, 3);
+    glUniform1i(normalLocation, 4);
+    glUniform1i(roughnessLocation, 5);
+}
+
+Shader::Shader(
+    const std::string vertexFilePath,
+    const std::string fragmentFilePath,
+    const std::string geometryFilePath
+) {
+    createShaderProgram(vertexFilePath, fragmentFilePath, geometryFilePath);
+    getUniformLocations();
 }
 
 Shader::~Shader() {

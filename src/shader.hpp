@@ -11,8 +11,12 @@ private:
 
     GLuint vertId, fragId, geomId;
 
-    GLuint matricesUBOIndex, lightsUBOIndex, materialUBOIndex;
+    GLuint matricesUBOIndex, lightsUBOIndex;
+    GLuint albedoLocation, aoLocation, heightLocation, metallicLocation, normalLocation, roughnessLocation;
     GLuint MLocation;
+
+    void createShaderProgram(const std::string vertFile, const std::string fragFile, const std::string geomFile="");
+    void getUniformLocations();
 
 public:
     Shader(const std::string vertFile, const std::string fragFile, const std::string geomFile="");
