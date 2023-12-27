@@ -1,13 +1,12 @@
 #include "model.hpp"
 
-#include <glm/gtc/type_ptr.hpp>
-
 Model::Model(
     std::shared_ptr<Node> mesh,
     std::shared_ptr<Material> material,
     glm::vec3 position,
-    glm::vec3 rotation
-) : Orientable(position, rotation) {
+    glm::vec3 rotation,
+    glm::vec3 scale
+) : Orientable(position, rotation, scale) {
     material->children.push_back(mesh);
     this->children.push_back(material);
 }
