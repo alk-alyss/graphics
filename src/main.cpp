@@ -50,7 +50,7 @@ int main(void) {
 
         std::shared_ptr<Camera> camera = std::make_shared<FirstPersonCamera>(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f));
 
-        Shader shader("shaders/simple.vert", "shaders/simple.frag");
+        Shader shader("shaders/pbr.vert", "shaders/pbr.frag");
         Renderer renderer(shader);
 
         // Draw wire frame triangles or fill: GL_LINE, or GL_FILL
