@@ -8,12 +8,10 @@
 #include "orientable.hpp"
 #include "shader.hpp"
 
-struct Leaf {
-    virtual void draw(glm::mat4 modelMatrix, Shader& shader) const = 0;
-};
-
-struct Node : Leaf {
+struct Node {
     std::vector<std::shared_ptr<Node>> children;
+
+    virtual ~Node() = default;
 
     virtual void draw(glm::mat4 modelMatrix, Shader& shader) const {
         for (auto& child : children) {
@@ -23,6 +21,8 @@ struct Node : Leaf {
 };
 
 struct Transformation : private Orientable, public Node {
+    using Orientable::Orientable;
+
     void draw(glm::mat4 modelMatrix, Shader& shader) const override {
         modelMatrix = modelMatrix * this->modelMatrix();
 
