@@ -29,6 +29,21 @@ struct Material : Node{
     std::shared_ptr<Texture> normal;
     std::shared_ptr<Texture> roughness;
 
+    Material(
+        std::shared_ptr<Texture> albedo,
+        std::shared_ptr<Texture> ao,
+        std::shared_ptr<Texture> height,
+        std::shared_ptr<Texture> metallic,
+        std::shared_ptr<Texture> normal,
+        std::shared_ptr<Texture> roughness
+    ) : albedo(albedo),
+        ao(ao),
+        height(height),
+        metallic(metallic),
+        normal(normal),
+        roughness(roughness)
+    {};
+
     Material(const std::string materialPath);
 
     void draw(glm::mat4 modelMatrix, Shader& shader) const override;
