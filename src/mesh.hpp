@@ -8,8 +8,6 @@
 #include <glm/glm.hpp>
 
 #include "common.hpp"
-#include "material.hpp"
-#include "shader.hpp"
 
 static std::vector<unsigned int> VEC_UINT_DEFAUTL_VALUE{};
 static std::vector<glm::vec3> VEC_VEC3_DEFAUTL_VALUE{};
@@ -34,7 +32,7 @@ void indexVBO(
     std::vector<glm::vec3> & out_normals
 );
 
-class Mesh : Leaf{
+class Mesh : public Node{
 protected:
     std::vector<glm::vec3> vertices, normals, indexedVertices, indexedNormals;
     std::vector<glm::vec2> uvs, indexedUVS;
