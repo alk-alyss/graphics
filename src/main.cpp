@@ -13,27 +13,44 @@
 
 int main(void) {
     try {
-        std::shared_ptr<GLFWwindow> window = createWindow();
+        const std::shared_ptr<GLFWwindow> window = createWindow();
 
-        // Create and compile our GLSL program from the shaders
-        glEnable(GL_PROGRAM_POINT_SIZE);
-        Shader shader("shaders/simple.vert", "shaders/simple.frag");
+        const std::shared_ptr<Node> suzanneMesh = std::make_shared<Mesh>("resources/models/suzanne.obj");
+        const std::shared_ptr<Texture> suzanneDiffuse = std::make_shared<Texture>("resources/textures/suzanne_diffuse.bmp");
+        const std::shared_ptr<Texture> suzanneSpecular = std::make_shared<Texture>("resources/textures/suzanne_diffuse.bmp");
 
-        std::vector<std::shared_ptr<Mesh>> meshList;
-        std::shared_ptr<Mesh> suzanne = std::make_shared<Mesh>("resources/models/suzanne.obj");
-        meshList.push_back(suzanne);
+        const std::shared_ptr<Material> suzanneMaterial = std::make_shared<Material>(
+            suzanneDiffuse,
+            suzanneSpecular,
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr
+        );
 
-        std::shared_ptr<Camera> camera = std::make_shared<FirstPersonCamera>(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f));
+        std::vector<std::shared_ptr<Model>> models;
+        models.push_back(std::make_shared<Model>(suzanneMesh, suzanneMaterial));
 
-        DirectionLight light(
+        std::vector<DirectionalLight> dirLights;
+        dirLights.push_back(
+            DirectionalLight(
                 glm::vec4(1,1,1,1),
                 glm::vec4(1,1,1,1),
                 glm::vec4(1,1,1,1),
                 10,
                 glm::vec3(0,5,10),
                 glm::vec3(glm::radians(180.0),0,0)
-            );
+            )
+        );
 
+        const Scene scene(
+            models,
+            dirLights
+        );
+
+        std::shared_ptr<Camera> camera = std::make_shared<FirstPersonCamera>(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f));
+
+        Shader shader("shaders/simple.vert", "shaders/simple.frag");
         Renderer renderer(shader);
 
         // Draw wire frame triangles or fill: GL_LINE, or GL_FILL
@@ -49,7 +66,7 @@ int main(void) {
 
             camera->updateAspectRatio(window.get());
 
-            renderer.render(*camera, meshList, light, gold);
+            renderer.render(*camera, scene);
 
             // Swap buffers
             glfwSwapBuffers(window.get());
