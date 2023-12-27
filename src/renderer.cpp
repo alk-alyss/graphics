@@ -19,32 +19,19 @@ Renderer::Renderer(Shader& shader) : shader(shader) {
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
     glBindBufferBase(GL_UNIFORM_BUFFER, 1, lightsUBO);
-
-    glGenBuffers(1, &materialUBO);
-
-    glBindBuffer(GL_UNIFORM_BUFFER, materialUBO);
-    glBufferData(GL_UNIFORM_BUFFER, 1 * sizeof(Material), NULL, GL_DYNAMIC_DRAW);
-    glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-    glBindBufferBase(GL_UNIFORM_BUFFER, 2, materialUBO);
 }
 
 void Renderer::render(
     const Camera& camera,
-    const std::vector<std::shared_ptr<Mesh>>& meshList,
-    const Light& light,
-    const Material& material
+    const Scene& scene
 ) {
     glUseProgram(shader.getProgram());
 
     uploadMatrices(camera);
-    uploadLights(light);
-    uploadMaterial(material);
+    uploadLights(scene.directionalLights, scene.pointLights);
 
-    for(auto& mesh : meshList) {
-        glUniformMatrix4fv(shader.getMLocation(), 1, GL_FALSE, glm::value_ptr(mesh->modelMatrix()));
-
-        mesh->draw();
+    for(auto& model : scene.models) {
+        model->draw(glm::mat4(1), shader);
     }
 
     glUseProgram(0);
@@ -57,15 +44,12 @@ void Renderer::uploadMatrices(const Camera& camera) {
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-void Renderer::uploadLights(const Light& light) {
+void Renderer::uploadLights(
+    const std::vector<DirectionalLight> directionalLights,
+    const std::vector<PointLight> pointLights
+) {
     glBindBuffer(GL_UNIFORM_BUFFER, lightsUBO);
-    std::vector<glm::vec4> lightData = light.data();
+    std::vector<glm::vec4> lightData = directionalLights[0].data();
     glBufferSubData(GL_UNIFORM_BUFFER, 0, lightData.size() * sizeof(lightData[0]), lightData.data());
-    glBindBuffer(GL_UNIFORM_BUFFER, 0);
-}
-
-void Renderer::uploadMaterial(const Material& mtl) {
-    glBindBuffer(GL_UNIFORM_BUFFER, materialUBO);
-    glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Material), &mtl);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
