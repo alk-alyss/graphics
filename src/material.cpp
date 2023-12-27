@@ -1,11 +1,10 @@
 #include "material.hpp"
 
 #include <iostream>
+#include <filesystem>
 
-using namespace std;
-
-Texture::Texture(const string imagePath) {
-    cout << "Reading image: " << imagePath << endl;
+Texture::Texture(const std::string imagePath) {
+    std::cout << "Reading image: " << imagePath << std::endl;
 
     path = imagePath;
 
@@ -20,7 +19,7 @@ Texture::Texture(const string imagePath) {
 
     // error check
     if (textureId == 0) {
-        cout << "SOIL loading error: " << SOIL_last_result() << endl;
+        std::cout << "SOIL loading error: " << SOIL_last_result() << std::endl;
     }
 }
 
@@ -38,7 +37,32 @@ void Texture::bindDefault() {
 
 
 Material::Material(const std::string materialPath) {
-    // TODO: load material textures from directory
+    const std::filesystem::path directory(materialPath);
+
+    for (auto const& dir_entry : std::filesystem::directory_iterator(directory)) {
+        if (!dir_entry.is_regular_file()) continue;
+
+        std::string filepath = dir_entry.path();
+
+        if (filepath.find("albedo") != std::string::npos) {
+            albedo = std::make_shared<Texture>(filepath);
+        }
+        else if (filepath.find("ao") != std::string::npos) {
+            ao = std::make_shared<Texture>(filepath);
+        }
+        else if (filepath.find("height") != std::string::npos) {
+            height = std::make_shared<Texture>(filepath);
+        }
+        else if (filepath.find("metallic") != std::string::npos) {
+            metallic = std::make_shared<Texture>(filepath);
+        }
+        else if (filepath.find("normal") != std::string::npos) {
+            normal = std::make_shared<Texture>(filepath);
+        }
+        else if (filepath.find("roughness") != std::string::npos) {
+            roughness = std::make_shared<Texture>(filepath);
+        }
+    }
 }
 
 void Material::draw(glm::mat4 modelMatrix, Shader& shader) const {
