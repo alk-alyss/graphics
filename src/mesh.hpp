@@ -56,6 +56,8 @@ public:
     GLuint getVao() const {return VAO;}
 
     void draw(glm::mat4 modelMatrix, Shader& shader) const;
+
+    static std::shared_ptr<Mesh> plane();
 };
 
 #endif

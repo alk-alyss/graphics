@@ -180,3 +180,35 @@ void Mesh::draw(glm::mat4 modelMatrix, Shader& shader) const {
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
+
+std::shared_ptr<Mesh> Mesh::plane() {
+    vector<vec3> vertices = {
+        vec3(-1.0f, 0, -1.0f),
+        vec3(-1.0f, 0,  1.0f),
+        vec3(1.0f,  0,  1.0f),
+        vec3(1.0f,  0,  1.0f),
+        vec3(1.0f,  0, -1.0f),
+        vec3(-1.0f, 0, -1.0f),
+
+    };
+
+    vector<vec3> normals = {
+        vec3(0.0f, 1.0f, 0.0f),
+        vec3(0.0f, 1.0f, 0.0f),
+        vec3(0.0f, 1.0f, 0.0f),
+        vec3(0.0f, 1.0f, 0.0f),
+        vec3(0.0f, 1.0f, 0.0f),
+        vec3(0.0f, 1.0f, 0.0f)
+    };
+
+    vector<vec2> uvs = {
+        vec2(0.0f, 0.0f),
+        vec2(0.0f, 1.0f),
+        vec2(1.0f, 1.0f),
+        vec2(1.0f, 1.0f),
+        vec2(1.0f, 0.0f),
+        vec2(0.0f, 0.0f),
+    };
+
+    return std::make_shared<Mesh>(vertices, uvs, normals);
+}
