@@ -44,9 +44,14 @@ float shadows() {
 	return 1.0;
 }
 
+// Normal mapping
+//https://learnopengl.com/Advanced-Lighting/Normal-Mapping
+vec4 normalFromMap(vec4 normal) {
+	return normalize(normal * 2.0 - 1.0);
+}
+
 vec3 sRGB2Linear(vec3 color) {
-	// return pow(color, 2.2);
-	return color;
+	return pow(color, vec3(2.2));
 }
 
 // PBR LIGHTING
@@ -89,7 +94,7 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0) {
 vec3 pbrLighting(float visibility, vec3 defaultF0) {
 	// Lighting parameters for fragment
 	vec3 albedo     = sRGB2Linear(texture(albedoMap, uvCoords).rgb);
-    // vec3 normal     = getNormalFromNormalMap();
+    // vec3 normal     = normalFromMap(texture(normalMap, uvCoords)).xyz;
     float metallic  = texture(metallicMap, uvCoords).r;
     float roughness = texture(roughnessMap, uvCoords).r;
     float ao        = texture(aoMap, uvCoords).r;
@@ -108,7 +113,8 @@ vec3 pbrLighting(float visibility, vec3 defaultF0) {
 	// Light parameters
 	float distance = length(L);
 	float attenuation = 1.0 / distance * distance;
-	vec3 radiance = light.La.xyz * attenuation;
+	float lightPower = 10;
+	vec3 radiance = light.La.xyz * lightPower;
 
 	// Cook-Torance BRDF
 	float NDF = DistributionGGX(N, H, roughness);
