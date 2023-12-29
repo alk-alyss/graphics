@@ -29,10 +29,7 @@ private:
 public:
     Renderer(const Shader& shader);
 
-    void render(
-            const Camera& camera,
-            const Scene& scene
-        );
+    void render(const Scene& scene);
 };
 
 #endif

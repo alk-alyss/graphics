@@ -7,7 +7,7 @@
 #include "context.hpp"
 #include "shader.hpp"
 #include "renderer.hpp"
-#include "camera.hpp"
+#include "player.hpp"
 #include "controls.hpp"
 
 std::vector<std::pair<int, int>> mazeMap{
@@ -67,9 +67,6 @@ int main(void) {
     try {
         const std::shared_ptr<GLFWwindow> window = createWindow();
 
-        /* const std::shared_ptr<Node> suzanneMesh = std::make_shared<Mesh>("resources/models/suzanne.obj"); */
-        /* const std::shared_ptr<Model> suzanne = std::make_shared<Model>(suzanneMesh, grass); */
-
         std::vector<std::shared_ptr<Material>> materials = loadMaterials();
 
         std::vector<std::shared_ptr<Model>> models;
@@ -103,12 +100,16 @@ int main(void) {
             ),
         };
 
+        /* const std::shared_ptr<Node> suzanneMesh = std::make_shared<Mesh>("resources/models/suzanne.obj"); */
+        /* const std::shared_ptr<Model> suzanne = std::make_shared<Model>(suzanneMesh, materials[0]); */
+
+        std::shared_ptr<Player> player = std::make_shared<Player>(glm::vec3(0.0f, 3.0f, 10.0f));
+
         const Scene scene(
+            player,
             models,
             dirLights
         );
-
-        std::shared_ptr<Camera> camera = std::make_shared<FirstPersonCamera>(glm::vec3(0.0f, 3.0f, 10.0f), glm::vec3(0.0f));
 
         const Shader forwardPBR("shaders/pbr.vert", "shaders/pbr.frag");
         Renderer renderer(forwardPBR);
@@ -124,9 +125,9 @@ int main(void) {
             // Clear the screen.
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            camera->updateAspectRatio(window.get());
+            player->updateCamera(window.get());
 
-            renderer.render(*camera, scene);
+            renderer.render(scene);
 
             // Swap buffers
             glfwSwapBuffers(window.get());
@@ -134,8 +135,8 @@ int main(void) {
             // Events
             glfwPollEvents();
 
-            handleMouse(window, camera, deltaTime);
-            handleKeyboard(window, camera, deltaTime);
+            handleMouse(window, player, deltaTime);
+            handleKeyboard(window, player, deltaTime);
 
             lastTime = currentTime;
         } // Check if the window should be closed

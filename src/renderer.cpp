@@ -25,12 +25,11 @@ Renderer::Renderer(const Shader& shader) : shader(shader) {
 }
 
 void Renderer::render(
-    const Camera& camera,
     const Scene& scene
 ) {
     glUseProgram(shader.getProgram());
 
-    uploadMatrices(camera);
+    uploadMatrices(scene.player->getCamera());
     uploadLights(scene.directionalLights, scene.pointLights);
 
     for(auto& model : scene.models) {

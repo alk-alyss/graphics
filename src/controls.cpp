@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-void handleMouse(std::shared_ptr<GLFWwindow> windowPtr, std::shared_ptr<Camera> camera, float deltaTime) {
+void handleMouse(std::shared_ptr<GLFWwindow> windowPtr, std::shared_ptr<Player> player, float deltaTime) {
     GLFWwindow* window = windowPtr.get();
 
     int width, height;
@@ -17,32 +17,36 @@ void handleMouse(std::shared_ptr<GLFWwindow> windowPtr, std::shared_ptr<Camera> 
     // Reset mouse position for next frame
     glfwSetCursorPos(window, width / 2.0, height / 2.0);
 
-    camera->look(mouseX, mouseY, deltaTime);
+    player->look(mouseX, mouseY, deltaTime);
 }
 
-void handleKeyboard(std::shared_ptr<GLFWwindow> windowPtr, std::shared_ptr<Camera> camera, float deltaTime) {
+void handleKeyboard(std::shared_ptr<GLFWwindow> windowPtr, std::shared_ptr<Player> player, float deltaTime) {
     GLFWwindow* window = windowPtr.get();
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        camera->moveForward(deltaTime);
+        player->moveForward(deltaTime);
     }
     // Move backward
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        camera->moveBackward(deltaTime);
+        player->moveBackward(deltaTime);
     }
     // Strafe right
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        camera->moveRight(deltaTime);
+        player->moveRight(deltaTime);
     }
     // Strafe left
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        camera->moveLeft(deltaTime);
+        player->moveLeft(deltaTime);
     }
 
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-        camera->zoom(deltaTime);
+        player->zoom(deltaTime);
     }
     if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-        camera->zoom(-deltaTime);
+        player->zoom(-deltaTime);
     }
+
+    /* if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS) { */
+    /*     player->toggleNoClip(); */
+    /* } */
 }

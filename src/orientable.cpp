@@ -42,13 +42,6 @@ void Orientable::rotate(vec3 rotation) {
     orientation = normalize(rotationQuat * orientation);
 }
 
-void Orientable::rotate(float pitch, float yaw) {
-    quat pitchRotation = angleAxis(pitch, vec3(1,0,0));
-    quat yawRotation = angleAxis(yaw, vec3(0,1,0));
-
-    orientation = yawRotation * orientation * pitchRotation;
-}
-
 void Orientable::rotate(float angle, vec3 axis) {
     quat rotationQuat = normalize(angleAxis(angle, axis));
 

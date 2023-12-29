@@ -49,11 +49,47 @@ void Camera::zoom(float amount) {
     updateProjectionMatrix();
 }
 
-void Camera::look(float mouseX, float mouseY, float deltaTime) {
-    float pitch = -mouseY * mouseSpeed * deltaTime;
-    float yaw = -mouseX * mouseSpeed * deltaTime;
 
-    rotate(pitch, yaw);
+void Camera::setPosition(glm::vec3 position) {
+    Orientable::setPosition(position);
+    updateViewMatrix();
+}
+
+void Camera::setRotation(glm::vec3 rotation) {
+    Orientable::setRotation(rotation);
+    updateViewMatrix();
+}
+
+void Camera::setScale(glm::vec3 newScale) {
+    Orientable::setScale(newScale);
+    updateViewMatrix();
+}
+
+void Camera::translate(glm::vec3 translation) {
+    Orientable::translate(translation);
+    updateViewMatrix();
+}
+
+void Camera::changeScale(glm::vec3 scaleFactor) {
+    Orientable::changeScale(scaleFactor);
+    updateViewMatrix();
+}
+
+void Camera::rotate(glm::vec3 rotation) {
+    Orientable::rotate(rotation);
+    updateViewMatrix();
+}
+
+void Camera::rotate(float angle, glm::vec3 axis) {
+    Orientable::rotate(angle, axis);
+    updateViewMatrix();
+}
+
+void Camera::look(float pitch, float yaw) {
+    quat pitchRotation = angleAxis(pitch, vec3(1,0,0));
+    quat yawRotation = angleAxis(yaw, vec3(0,1,0));
+
+    orientation = yawRotation * orientation * pitchRotation;
 
     if (dot(up(), vec3(0,1,0)) <= 0) {
         vec3 newForward = vec3(0,1,0);
@@ -64,5 +100,11 @@ void Camera::look(float mouseX, float mouseY, float deltaTime) {
         orientation = normalize(quatLookAt(newForward, up()));
     }
 
+
+    updateViewMatrix();
+}
+
+void Camera::lookAt(glm::vec3 target, glm::vec3 up, glm::vec3 alternativeUp) {
+    Orientable::lookAt(target, up, alternativeUp);
     updateViewMatrix();
 }

@@ -15,7 +15,7 @@ protected:
     glm::quat orientation;
     glm::vec3 scale;
 
-protected:
+public:
     glm::vec3 up() const;
     glm::vec3 forward() const;
     glm::vec3 right() const;
@@ -27,32 +27,31 @@ public:
         glm::vec3 scale = DEFAULT_SCALE
     );
 
-    void setPosition(float x, float y, float z) {this->position = glm::vec3(x, y, z);}
-    void setPosition(glm::vec3 position) {this->position = position;}
+    virtual void setPosition(glm::vec3 position) {this->position = position;}
+    void setPosition(float x, float y, float z) {setPosition(glm::vec3(x, y, z));}
 
-    void setRotation(glm::vec3 rotation);
+    virtual void setRotation(glm::vec3 rotation);
     void setRotation(float pitch, float yaw, float roll) {setRotation(glm::vec3(pitch, yaw, roll));}
 
-    void setScale(glm::vec3 newScale) {this->scale = newScale;}
-    void setScale(float newScale) {changeScale(glm::vec3(newScale, newScale, newScale));}
+    virtual void setScale(glm::vec3 newScale) {this->scale = newScale;}
+    void setScale(float newScale) {setScale(glm::vec3(newScale, newScale, newScale));}
 
     glm::mat4 translationMatrix() const;
     glm::mat4 rotationMatrix() const;
     glm::mat4 scallingMatrix() const;
     glm::mat4 modelMatrix() const;
 
-    void translate(glm::vec3 translation);
+    virtual void translate(glm::vec3 translation);
     void translate(float x, float y, float z) {translate(glm::vec3(x, y, z));}
 
-    void changeScale(glm::vec3 scaleFactor);
+    virtual void changeScale(glm::vec3 scaleFactor);
     void changeScale(float scaleFactor) {changeScale(glm::vec3(scaleFactor, scaleFactor, scaleFactor));}
 
-    void rotate(glm::vec3 rotation);
+    virtual void rotate(glm::vec3 rotation);
     void rotate(float pitch, float yaw, float roll) {rotate(glm::vec3(pitch, yaw, roll));}
-    void rotate(float pitch, float yaw);
-    void rotate(float angle, glm::vec3 axis);
+    virtual void rotate(float angle, glm::vec3 axis);
 
-    void lookAt(glm::vec3 target, glm::vec3 up = glm::vec3(0, 1, 0), glm::vec3 alternativeUp = glm::vec3(0,0,1));
+    virtual void lookAt(glm::vec3 target, glm::vec3 up = glm::vec3(0, 1, 0), glm::vec3 alternativeUp = glm::vec3(0,0,1));
 };
 
 #endif
