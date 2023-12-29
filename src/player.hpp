@@ -15,6 +15,9 @@ class Player : public Orientable {
     float movementSpeed = 10.0f;
     float mouseSpeed = 0.1f;
 
+    glm::vec3 originalPosition;
+    glm::quat originalOrientation;
+
 public:
     Player(
         glm::vec3 position = DEFAULT_POSITION,
