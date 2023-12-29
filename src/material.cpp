@@ -3,10 +3,14 @@
 #include <iostream>
 #include <filesystem>
 
-Texture::Texture(const std::string imagePath) {
+Texture::Texture(const std::string imagePath, bool sRGB = false) {
     std::cout << "Reading image: " << imagePath << std::endl;
 
     path = imagePath;
+
+    uint flags = SOIL_FLAG_TEXTURE_REPEATS | SOIL_FLAG_POWER_OF_TWO | SOIL_FLAG_MIPMAPS;
+
+    if (sRGB) flags |= SOIL_FLAG_SRGB_COLOR_SPACE;
 
     //Load Image File Directly into an OpenGL Texture
     textureId = SOIL_load_OGL_texture
@@ -14,13 +18,20 @@ Texture::Texture(const std::string imagePath) {
         imagePath.c_str(),
         SOIL_LOAD_RGB,
         SOIL_CREATE_NEW_ID,
-        SOIL_FLAG_TEXTURE_REPEATS | SOIL_FLAG_POWER_OF_TWO | SOIL_FLAG_MIPMAPS
+        flags
     );
 
     // error check
     if (textureId == 0) {
         std::cout << "SOIL loading error: " << SOIL_last_result() << std::endl;
     }
+
+    glActiveTexture(textureId);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glActiveTexture(0);
 }
 
 Texture::~Texture() {
@@ -49,7 +60,7 @@ Material::Material(const std::string materialPath) {
         std::string filepath = dir_entry.path();
 
         if (filepath.find("albedo") != std::string::npos) {
-            albedo = std::make_shared<Texture>(filepath);
+            albedo = std::make_shared<Texture>(filepath, true);
         }
         else if (filepath.find("ao") != std::string::npos) {
             ao = std::make_shared<Texture>(filepath);

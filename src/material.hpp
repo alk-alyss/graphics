@@ -13,7 +13,7 @@ struct Texture {
     GLuint textureId = 0;
     std::string path;
 
-    Texture(const std::string imagePath);
+    Texture(const std::string imagePath, bool sRGB);
     ~Texture();
 
     //Delete the copy constructor/assignment.

@@ -50,10 +50,6 @@ vec4 normalFromMap(vec4 normal) {
 	return normalize(normal * 2.0 - 1.0);
 }
 
-vec3 sRGB2Linear(vec3 color) {
-	return pow(color, vec3(2.2));
-}
-
 // PBR LIGHTING
 // https://learnopengl.com/PBR/Lighting
 float DistributionGGX(vec3 N, vec3 H, float roughness) {
@@ -121,7 +117,7 @@ vec3 CookToranceBRDF(
 
 vec3 pbrLighting(float visibility, vec3 defaultF0) {
 	// Lighting parameters for fragment
-	vec3 albedo     = sRGB2Linear(texture(albedoMap, uvCoords).rgb);
+	vec3 albedo     = texture(albedoMap, uvCoords).rgb;
     // vec3 normal     = normalFromMap(texture(normalMap, uvCoords)).xyz;
     float metallic  = texture(metallicMap, uvCoords).r;
     float roughness = texture(roughnessMap, uvCoords).r;
@@ -147,7 +143,7 @@ vec3 pbrLighting(float visibility, vec3 defaultF0) {
 		Lo += CookToranceBRDF(N, E, L, H, radiance, albedo, metallic, roughness, F0);
 	}
 
-	vec3 ambient = vec3(0.03) * albedo * ao;
+	vec3 ambient = vec3(0.3) * albedo * ao;
     vec3 color = ambient + Lo;
 
 	return color;
