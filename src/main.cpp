@@ -6,30 +6,80 @@
 
 #include "context.hpp"
 #include "shader.hpp"
-#include "cube.hpp"
 #include "renderer.hpp"
 #include "camera.hpp"
 #include "controls.hpp"
+
+std::vector<std::pair<int, int>> mazeMap{
+    std::pair<int, int> (0,0),
+    std::pair<int, int> (0,1),
+    std::pair<int, int> (0,2),
+    std::pair<int, int> (0,3),
+    std::pair<int, int> (0,4),
+    std::pair<int, int> (1,2),
+    std::pair<int, int> (1,4),
+    std::pair<int, int> (2,0),
+    std::pair<int, int> (2,2),
+    std::pair<int, int> (2,4),
+    std::pair<int, int> (3,0),
+    std::pair<int, int> (4,0),
+    std::pair<int, int> (4,1),
+    std::pair<int, int> (4,2),
+    std::pair<int, int> (4,3),
+    std::pair<int, int> (4,4)
+};
+
+std::vector<std::shared_ptr<Material>> loadMaterials() {
+    std::vector<std::shared_ptr<Material>> materials;
+    materials.push_back(std::make_shared<Material>("resources/textures/whispy-grass-meadow-bl"));
+    return materials;
+}
+
+std::vector<std::shared_ptr<Model>> generateMaze(
+        std::vector<std::pair<int, int>> mazeMap,
+        std::vector<std::shared_ptr<Material>> materials
+    ) {
+    const std::shared_ptr<Node> cubeMesh = std::make_shared<Mesh>("resources/models/cube.obj");
+
+    std::vector<std::shared_ptr<Model>> maze;
+
+    float scalling = 2.5;
+
+    for (int i=0; i<mazeMap.size(); i++) {
+        auto pair = mazeMap[i];
+
+        const std::shared_ptr<Model> cube = std::make_shared<Model>(
+                cubeMesh,
+                materials[i % materials.size()],
+                glm::vec3(scalling * pair.first, scalling/2, -scalling * pair.second),
+                glm::vec3(0, 0, 0),
+                glm::vec3(scalling/2, scalling/4, scalling/2)
+            );
+
+        maze.push_back(cube);
+    }
+
+    return maze;
+}
 
 int main(void) {
     try {
         const std::shared_ptr<GLFWwindow> window = createWindow();
 
-        const std::shared_ptr<Node> suzanneMesh = std::make_shared<Mesh>("resources/models/suzanne.obj");
-        const std::shared_ptr<Texture> suzanneDiffuse = std::make_shared<Texture>("resources/textures/suzanne_diffuse.bmp");
-        const std::shared_ptr<Texture> suzanneSpecular = std::make_shared<Texture>("resources/textures/suzanne_diffuse.bmp");
+        /* const std::shared_ptr<Node> suzanneMesh = std::make_shared<Mesh>("resources/models/suzanne.obj"); */
+        /* const std::shared_ptr<Model> suzanne = std::make_shared<Model>(suzanneMesh, grass); */
 
-        const std::shared_ptr<Material> suzanneMaterial = std::make_shared<Material>(
-            suzanneDiffuse,
-            suzanneSpecular,
-            nullptr,
-            nullptr,
-            nullptr,
-            nullptr
-        );
+        std::vector<std::shared_ptr<Material>> materials = loadMaterials();
 
-        std::vector<std::shared_ptr<Model>> models;
-        models.push_back(std::make_shared<Model>(suzanneMesh, suzanneMaterial));
+        auto models = generateMaze(mazeMap, materials);
+
+        const std::shared_ptr<Node> plane = Mesh::plane();
+        const std::shared_ptr<Model> planeModel = std::make_shared<Model>(plane, materials[0]);
+        planeModel->translate(0, 0.001, 0);
+        planeModel->setScale(glm::vec3(100, 0, 100));
+
+        /* std::vector<std::shared_ptr<Model>> models; */
+        models.push_back(planeModel);
 
         std::vector<DirectionalLight> dirLights;
         dirLights.push_back(
@@ -38,8 +88,8 @@ int main(void) {
                 glm::vec4(1,1,1,1),
                 glm::vec4(1,1,1,1),
                 10,
-                glm::vec3(0,5,10),
-                glm::vec3(glm::radians(180.0),0,0)
+                glm::vec3(5,5,10),
+                glm::vec3(glm::radians(-45.0),glm::radians(180.0),0)
             )
         );
 
@@ -48,10 +98,10 @@ int main(void) {
             dirLights
         );
 
-        std::shared_ptr<Camera> camera = std::make_shared<FirstPersonCamera>(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f));
+        std::shared_ptr<Camera> camera = std::make_shared<FirstPersonCamera>(glm::vec3(0.0f, 3.0f, 10.0f), glm::vec3(0.0f));
 
-        Shader shader("shaders/pbr.vert", "shaders/pbr.frag");
-        Renderer renderer(shader);
+        Shader forwardPBR("shaders/pbr.vert", "shaders/pbr.frag");
+        Renderer renderer(forwardPBR);
 
         // Draw wire frame triangles or fill: GL_LINE, or GL_FILL
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
