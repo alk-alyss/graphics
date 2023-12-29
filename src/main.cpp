@@ -29,16 +29,16 @@ std::vector<std::pair<int, int>> mazeMap{
     std::pair<int, int> (4,4)
 };
 
-std::vector<std::shared_ptr<Material>> loadMaterials() {
-    std::vector<std::shared_ptr<Material>> materials;
-    materials.push_back(std::make_shared<Material>("resources/textures/whispy-grass-meadow-bl"));
+std::vector<Material> loadMaterials() {
+    std::vector<Material> materials;
+    materials.push_back(Material("resources/textures/whispy-grass-meadow-bl"));
     /* materials.push_back(std::make_shared<Material>("resources/textures/Grass001_2K-PNG")); */
     return materials;
 }
 
 std::vector<std::shared_ptr<Model>> generateMaze(
         std::vector<std::pair<int, int>> mazeMap,
-        std::vector<std::shared_ptr<Material>> materials
+        std::vector<Material> materials
     ) {
     const std::shared_ptr<Node> cubeMesh = std::make_shared<Mesh>("resources/models/cube.obj");
 
@@ -67,7 +67,7 @@ int main(void) {
     try {
         const std::shared_ptr<GLFWwindow> window = createWindow();
 
-        std::vector<std::shared_ptr<Material>> materials = loadMaterials();
+        auto materials = loadMaterials();
 
         std::vector<std::shared_ptr<Model>> models;
 
