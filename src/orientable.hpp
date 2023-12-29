@@ -33,6 +33,9 @@ public:
     void setRotation(glm::vec3 rotation);
     void setRotation(float pitch, float yaw, float roll) {setRotation(glm::vec3(pitch, yaw, roll));}
 
+    void setScale(glm::vec3 newScale) {this->scale = newScale;}
+    void setScale(float newScale) {changeScale(glm::vec3(newScale, newScale, newScale));}
+
     glm::mat4 translationMatrix() const;
     glm::mat4 rotationMatrix() const;
     glm::mat4 scallingMatrix() const;
@@ -40,6 +43,9 @@ public:
 
     void translate(glm::vec3 translation);
     void translate(float x, float y, float z) {translate(glm::vec3(x, y, z));}
+
+    void changeScale(glm::vec3 scaleFactor);
+    void changeScale(float scaleFactor) {changeScale(glm::vec3(scaleFactor, scaleFactor, scaleFactor));}
 
     void rotate(glm::vec3 rotation);
     void rotate(float pitch, float yaw, float roll) {rotate(glm::vec3(pitch, yaw, roll));}

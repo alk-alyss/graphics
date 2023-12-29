@@ -59,6 +59,10 @@ void Orientable::setRotation(vec3 rotation) {
     orientation = normalize(eulerToQuat(rotation));
 }
 
+void Orientable::changeScale(vec3 scaleFactor) {
+    scale += scaleFactor;
+}
+
 mat4 Orientable::translationMatrix() const {
     return glm::translate(glm::mat4(1), position);
 }
