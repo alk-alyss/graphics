@@ -24,7 +24,11 @@ Texture::Texture(const std::string imagePath) {
 }
 
 Texture::~Texture() {
-   glDeleteTextures(1, &textureId);
+    releaseTexture();
+}
+
+void Texture::releaseTexture() {
+    glDeleteTextures(1, &textureId);
 }
 
 void Texture::bind() const{

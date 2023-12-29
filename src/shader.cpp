@@ -45,13 +45,13 @@ void Shader::createShaderProgram(
     const std::string geometryFilePath
 ) {
     // Create the shaders
-    vertId = glCreateShader(GL_VERTEX_SHADER);
+    GLuint vertId = glCreateShader(GL_VERTEX_SHADER);
     compileShader(vertId, vertexFilePath);
 
-    fragId = glCreateShader(GL_FRAGMENT_SHADER);
+    GLuint fragId = glCreateShader(GL_FRAGMENT_SHADER);
     compileShader(fragId, fragmentFilePath);
 
-    geomId = 0;
+    GLuint geomId = 0;
     if (geometryFilePath != "") {
         geomId = glCreateShader(GL_GEOMETRY_SHADER);
         compileShader(geomId, geometryFilePath);
@@ -125,5 +125,9 @@ Shader::Shader(
 }
 
 Shader::~Shader() {
+    releaseShader();
+}
+
+void Shader::releaseShader() {
     glDeleteProgram(programId);
 }

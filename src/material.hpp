@@ -16,6 +16,31 @@ struct Texture {
     Texture(const std::string imagePath);
     ~Texture();
 
+    //Delete the copy constructor/assignment.
+    Texture(const Texture&) = delete;
+    Texture &operator=(const Texture&) = delete;
+
+    Texture(Texture&& other) :
+        textureId(other.textureId),
+        path(other.path)
+    {
+        other.textureId = 0; //Use the "null" texture for the old object.
+    }
+
+    Texture &operator=(Texture&& other) {
+        //ALWAYS check for self-assignment.
+        if(this != &other)
+        {
+            releaseTexture();
+            std::swap(textureId, other.textureId);
+            std::swap(path, other.path);
+        }
+
+        return *this;
+    }
+
+    void releaseTexture();
+
     void bind() const;
 
     static void bindDefault();

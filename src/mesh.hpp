@@ -49,6 +49,49 @@ public:
     Mesh(std::string filename);
     ~Mesh() {unloadVram();}
 
+    //Delete the copy constructor/assignment.
+    Mesh(const Mesh&) = delete;
+    Mesh &operator=(const Mesh&) = delete;
+
+    Mesh(Mesh&& other) :
+        VAO(other.VAO),
+        verticesVBO(other.verticesVBO),
+        uvsVBO(other.uvsVBO),
+        normalsVBO(other.normalsVBO),
+        EBO(other.EBO),
+        vertices(other.vertices),
+        indexedVertices(other.indexedVertices),
+        normals(other.normals),
+        indexedNormals(other.indexedNormals),
+        uvs(other.uvs),
+        indexedUVS(other.indexedUVS),
+        indices(other.indices)
+    {
+        other.VAO = 0; //Use the "null" VAO for the old object.
+    }
+
+    Mesh &operator=(Mesh&& other) {
+        //ALWAYS check for self-assignment.
+        if(this != &other)
+        {
+            unloadVram();
+            std::swap(VAO, other.VAO);
+            std::swap(verticesVBO, other.verticesVBO);
+            std::swap(uvsVBO, other.uvsVBO);
+            std::swap(normalsVBO, other.normalsVBO);
+            std::swap(EBO, other.EBO);
+            std::swap(vertices, other.vertices);
+            std::swap(indexedVertices, other.indexedVertices);
+            std::swap(normals, other.normals);
+            std::swap(indexedNormals, other.indexedNormals);
+            std::swap(uvs, other.uvs);
+            std::swap(indexedUVS, other.indexedUVS);
+            std::swap(indices, other.indices);
+        }
+
+        return *this;
+    }
+
     void loadVram();
     void unloadVram();
 
