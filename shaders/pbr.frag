@@ -2,15 +2,15 @@
 
 // STRUCTS
 struct DirectionLight {
-	vec4 La;
-	vec4 Ld;
-	vec4 Ls;
+	vec4 colorPower; // first three floats are color, last one is power
 	vec4 direction;
 };
 
+#define MAX_DIR_LIGHTS 2
+
 // LIGHTS UBO
 layout(std140) uniform Lights{
-	DirectionLight light;
+	DirectionLight lights[MAX_DIR_LIGHTS];
 };
 
 // TEXTURES
@@ -32,7 +32,7 @@ in WORLD_SPACE {
 in CAMERA_SPACE {
 	vec4 vertexPosition;
 	vec4 vertexNormal;
-	vec4 lightDirection;
+	vec4 lightDirections[MAX_DIR_LIGHTS];
 } cameraSpace;
 
 // FRAGMENT SHADER OUT
@@ -91,6 +91,34 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0) {
     return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
 }
 
+vec3 CookToranceBRDF(
+		vec3 N,
+		vec3 E,
+		vec3 L,
+		vec3 H,
+		vec3 radiance,
+		vec3 albedo,
+		float metallic,
+		float roughness,
+		vec3 F0
+	) {
+	float NDF = DistributionGGX(N, H, roughness);
+	float G   = GeometrySmith(N, E, L, roughness);
+	vec3 F    = fresnelSchlick(max(dot(H, E), 0.0), F0);
+
+	vec3 kS = F;
+	vec3 kD = vec3(1.0) - kS;
+	kD *= 1.0 - metallic;
+
+	vec3 numerator    = NDF * G * F;
+	float denominator = 4.0 * max(dot(N, E), 0.0) * max(dot(N, L), 0.0) + 0.0001;
+	vec3 specular     = numerator / denominator;
+
+	// add to outgoing radiance Lo
+	float NdotL = max(dot(N, L), 0.0);
+	return (kD * albedo / PI + specular) * radiance * NdotL;
+}
+
 vec3 pbrLighting(float visibility, vec3 defaultF0) {
 	// Lighting parameters for fragment
 	vec3 albedo     = sRGB2Linear(texture(albedoMap, uvCoords).rgb);
@@ -107,31 +135,17 @@ vec3 pbrLighting(float visibility, vec3 defaultF0) {
 	// Reflectance equation output
 	vec3 Lo = vec3(0.0);
 
-	vec3 L = normalize(cameraSpace.lightDirection).xyz; // Light vector
-	vec3 H = normalize(L+E); // Halfway vector
+	for (int i=0; i<MAX_DIR_LIGHTS; i++) {
+		vec3 L = normalize(-cameraSpace.lightDirections[i]).xyz; // Light vector
+		vec3 H = normalize(L+E); // Halfway vector
 
-	// Light parameters
-	float distance = length(L);
-	float attenuation = 1.0 / distance * distance;
-	float lightPower = 10;
-	vec3 radiance = light.La.xyz * lightPower;
+		// Light parameters
+		// float distance = length(L);
+		// float attenuation = 1.0 / distance * distance;
+		vec3 radiance = lights[i].colorPower.xyz * lights[i].colorPower.w;
 
-	// Cook-Torance BRDF
-	float NDF = DistributionGGX(N, H, roughness);
-	float G   = GeometrySmith(N, E, L, roughness);
-	vec3 F    = fresnelSchlick(max(dot(H, E), 0.0), F0);
-
-	vec3 kS = F;
-	vec3 kD = vec3(1.0) - kS;
-	kD *= 1.0 - metallic;
-
-	vec3 numerator    = NDF * G * F;
-	float denominator = 4.0 * max(dot(N, E), 0.0) * max(dot(N, L), 0.0) + 0.0001;
-	vec3 specular     = numerator / denominator;
-
-	// add to outgoing radiance Lo
-	float NdotL = max(dot(N, L), 0.0);
-	Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+		Lo += CookToranceBRDF(N, E, L, H, radiance, albedo, metallic, roughness, F0);
+	}
 
 	vec3 ambient = vec3(0.03) * albedo * ao;
     vec3 color = ambient + Lo;

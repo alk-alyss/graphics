@@ -81,17 +81,20 @@ int main(void) {
         /* std::vector<std::shared_ptr<Model>> models; */
         models.push_back(planeModel);
 
-        std::vector<DirectionalLight> dirLights;
-        dirLights.push_back(
+        std::vector<DirectionalLight> dirLights{
             DirectionalLight(
-                glm::vec4(1,1,1,1),
-                glm::vec4(1,1,1,1),
                 glm::vec4(1,1,1,1),
                 10,
                 glm::vec3(5,5,10),
-                glm::vec3(glm::radians(-45.0),glm::radians(180.0),0)
-            )
-        );
+                glm::vec3(glm::radians(-45.0),glm::radians(45.0),0)
+            ),
+            DirectionalLight(
+                glm::vec4(1,1,1,1),
+                10,
+                glm::vec3(5,5,10),
+                glm::vec3(glm::radians(-45.0),glm::radians(180.0+45),0)
+            ),
+        };
 
         const Scene scene(
             models,

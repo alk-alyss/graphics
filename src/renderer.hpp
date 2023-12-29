@@ -11,6 +11,9 @@
 #include "material.hpp"
 #include "scene.hpp"
 
+#define MAX_DIR_LIGHTS 2
+#define MAX_POINT_LIGHTS 0
+
 class Renderer {
 private:
     Shader shader;

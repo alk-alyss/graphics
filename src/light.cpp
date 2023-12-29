@@ -2,9 +2,7 @@
 
 std::vector<glm::vec4> PointLight::data() const {
     std::vector<glm::vec4> data = {
-        La,
-        Ld,
-        Ls,
+        glm::vec4(color, power),
         glm::vec4(position, 1)
     };
 
@@ -13,9 +11,7 @@ std::vector<glm::vec4> PointLight::data() const {
 
 std::vector<glm::vec4> DirectionalLight::data() const {
     std::vector<glm::vec4> data = {
-        La,
-        Ld,
-        Ls,
+        glm::vec4(color, power),
         glm::vec4(forward(), 0)
     };
 
@@ -24,9 +20,7 @@ std::vector<glm::vec4> DirectionalLight::data() const {
 
 std::vector<glm::vec4> FlashLight::data() const {
     std::vector<glm::vec4> data = {
-        La,
-        Ld,
-        Ls,
+        glm::vec4(color, power),
         glm::vec4(position, 1),
         glm::vec4(forward(), 0)
     };

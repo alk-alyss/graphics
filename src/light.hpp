@@ -8,20 +8,16 @@
 
 class Light : public Orientable {
 protected:
-    glm::vec4 La;
-    glm::vec4 Ld;
-    glm::vec4 Ls;
+    glm::vec3 color;
     float power;
 
 public:
     Light(
-        glm::vec4 La,
-        glm::vec4 Ld,
-        glm::vec4 Ls,
+        glm::vec3 color,
         float power,
         glm::vec3 position,
         glm::vec3 rotation
-    ) : La(La), Ld(Ld), Ls(Ls), power(power), Orientable(position, rotation){}
+    ) : color(color), power(power), Orientable(position, rotation){}
 
     virtual std::vector<glm::vec4> data() const = 0;
 };
@@ -33,7 +29,7 @@ public:
     std::vector<glm::vec4> data() const;
 
     constexpr static size_t sizeofData() {
-        return 4*sizeof(glm::vec4);
+        return 2*sizeof(glm::vec4);
     }
 };
 
@@ -44,7 +40,7 @@ public:
     std::vector<glm::vec4> data() const;
 
     constexpr static size_t sizeofData() {
-        return 4*sizeof(glm::vec4);
+        return 2*sizeof(glm::vec4);
     }
 };
 
@@ -55,7 +51,7 @@ public:
     std::vector<glm::vec4> data() const;
 
     constexpr static size_t sizeofData() {
-        return 5*sizeof(glm::vec4);
+        return 3*sizeof(glm::vec4);
     }
 };
 

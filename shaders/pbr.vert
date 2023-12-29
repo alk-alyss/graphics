@@ -2,9 +2,7 @@
 
 // STRUCTS
 struct DirectionLight {
-    vec4 La;
-    vec4 Ld;
-    vec4 Ls;
+    vec4 colorPower; // first three floats are color, last one is power
     vec4 direction;
 };
 
@@ -19,9 +17,11 @@ layout(std140) uniform Matrices {
     mat4 P;
 };
 
+#define MAX_DIR_LIGHTS 2
+
 // LIGHTS UBO
 layout(std140) uniform Lights {
-    DirectionLight light;
+    DirectionLight lights[MAX_DIR_LIGHTS];
 };
 
 // MODEL MATRIX
@@ -46,7 +46,7 @@ out WORLD_SPACE {
 out CAMERA_SPACE {
     vec4 vertexPosition;
     vec4 vertexNormal;
-    vec4 lightDirection;
+    vec4 lightDirections[MAX_DIR_LIGHTS];
 } cameraSpace;
 
 
@@ -56,7 +56,10 @@ void main() {
 
     cameraSpace.vertexPosition = V * worldSpace.vertexPosition;
     cameraSpace.vertexNormal = V * worldSpace.vertexNormal;
-    cameraSpace.lightDirection = V * light.direction;
+
+    for (int i=0; i<MAX_DIR_LIGHTS; i++) {
+        cameraSpace.lightDirections[i] = V * lights[i].direction;
+    }
 
     uvCoords = vertexUV;
 

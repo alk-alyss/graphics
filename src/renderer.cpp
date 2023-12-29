@@ -2,6 +2,9 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/string_cast.hpp>
+
+#include <iostream>
 
 Renderer::Renderer(Shader& shader) : shader(shader) {
     glGenBuffers(1, &matricesUBO);
@@ -15,7 +18,7 @@ Renderer::Renderer(Shader& shader) : shader(shader) {
     glGenBuffers(1, &lightsUBO);
 
     glBindBuffer(GL_UNIFORM_BUFFER, lightsUBO);
-    glBufferData(GL_UNIFORM_BUFFER, 1 * DirectionalLight::sizeofData(), NULL, GL_DYNAMIC_DRAW);
+    glBufferData(GL_UNIFORM_BUFFER, MAX_DIR_LIGHTS * DirectionalLight::sizeofData(), NULL, GL_DYNAMIC_DRAW);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
     glBindBufferBase(GL_UNIFORM_BUFFER, 1, lightsUBO);
@@ -48,8 +51,13 @@ void Renderer::uploadLights(
     const std::vector<DirectionalLight> directionalLights,
     const std::vector<PointLight> pointLights
 ) {
+    std::vector<glm::vec4> lightData;
+    for (auto& dirLight : directionalLights) {
+        auto nextLightData = dirLight.data();
+        lightData.insert(lightData.end(), nextLightData.begin(), nextLightData.end());
+    }
+
     glBindBuffer(GL_UNIFORM_BUFFER, lightsUBO);
-    std::vector<glm::vec4> lightData = directionalLights[0].data();
     glBufferSubData(GL_UNIFORM_BUFFER, 0, lightData.size() * sizeof(lightData[0]), lightData.data());
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
