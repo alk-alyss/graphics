@@ -21,17 +21,19 @@ void Player::look(float mouseX, float mouseY, float deltaTime) {
 void Player::moveForward(float deltaTime) {
     glm::vec3 forwardVector = forward();
 
-    // if forward vector is vertical
-    if (dot(up(), vec3(0,1,0)) < 0.0001) {
-        // use inverse up vector if looking up
-        forwardVector = -up();
-        // use up vector if looking down
-        if (dot(forward(), vec3(0,-1,0)) > 0.99) {
-            forwardVector = up();
+    if (!noClip) {
+        // if forward vector is vertical
+        if (dot(up(), vec3(0,1,0)) < 0.0001) {
+            // use inverse up vector if looking up
+            forwardVector = -up();
+            // use up vector if looking down
+            if (dot(forward(), vec3(0,-1,0)) > 0.99) {
+                forwardVector = up();
+            }
         }
-    }
 
-    if (!noClip) forwardVector.y = 0;
+        forwardVector.y = 0;
+    }
 
     translate(normalize(forwardVector) * movementSpeed * deltaTime);
     camera->setPosition(position);
@@ -40,17 +42,19 @@ void Player::moveForward(float deltaTime) {
 void Player::moveBackward(float deltaTime) {
     glm::vec3 forwardVector = forward();
 
-    // if forward vector is vertical
-    if (dot(up(), vec3(0,1,0)) < 0.0001) {
-        // use inverse up vector if looking up
-        forwardVector = -up();
-        // use up vector if looking down
-        if (dot(forward(), vec3(0,-1,0)) > 0.99) {
-            forwardVector = up();
+    if (!noClip) {
+        // if forward vector is vertical
+        if (dot(up(), vec3(0,1,0)) < 0.0001) {
+            // use inverse up vector if looking up
+            forwardVector = -up();
+            // use up vector if looking down
+            if (dot(forward(), vec3(0,-1,0)) > 0.99) {
+                forwardVector = up();
+            }
         }
-    }
 
-    if (!noClip) forwardVector.y = 0;
+        forwardVector.y = 0;
+    }
 
     translate(-normalize(forwardVector) * movementSpeed * deltaTime);
     camera->setPosition(position);
