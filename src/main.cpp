@@ -32,6 +32,7 @@ std::vector<std::pair<int, int>> mazeMap{
 std::vector<std::shared_ptr<Material>> loadMaterials() {
     std::vector<std::shared_ptr<Material>> materials;
     materials.push_back(std::make_shared<Material>("resources/textures/whispy-grass-meadow-bl"));
+    /* materials.push_back(std::make_shared<Material>("resources/textures/Grass001_2K-PNG")); */
     return materials;
 }
 
@@ -74,15 +75,17 @@ int main(void) {
         std::vector<std::shared_ptr<Model>> models;
 
         const std::shared_ptr<Node> plane = Mesh::plane();
-        const std::shared_ptr<Model> planeModel = std::make_shared<Model>(plane, materials[0]);
-        planeModel->translate(0, 0.001, 0);
-        planeModel->rotate(glm::radians(45.0), 0, 0);
-        planeModel->setScale(glm::vec3(100, 0, 100));
+        const std::shared_ptr<Model> planeModel = std::make_shared<Model>(
+                plane,
+                materials[0],
+                glm::vec3(0, 0.001, 0),
+                glm::vec3(0, 0, 0),
+                glm::vec3(100, 0, 100)
+        );
 
         models.push_back(planeModel);
 
         auto mazeModels = generateMaze(mazeMap, materials);
-
         models.insert(models.end(), mazeModels.begin(), mazeModels.end());
 
         std::vector<DirectionalLight> dirLights{
