@@ -27,7 +27,7 @@ private:
     );
 
 public:
-    Renderer(Shader& shader);
+    Renderer(const Shader& shader);
 
     void render(
             const Camera& camera,

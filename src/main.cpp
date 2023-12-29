@@ -71,15 +71,19 @@ int main(void) {
 
         std::vector<std::shared_ptr<Material>> materials = loadMaterials();
 
-        auto models = generateMaze(mazeMap, materials);
+        std::vector<std::shared_ptr<Model>> models;
 
         const std::shared_ptr<Node> plane = Mesh::plane();
         const std::shared_ptr<Model> planeModel = std::make_shared<Model>(plane, materials[0]);
         planeModel->translate(0, 0.001, 0);
+        planeModel->rotate(glm::radians(45.0), 0, 0);
         planeModel->setScale(glm::vec3(100, 0, 100));
 
-        /* std::vector<std::shared_ptr<Model>> models; */
         models.push_back(planeModel);
+
+        auto mazeModels = generateMaze(mazeMap, materials);
+
+        models.insert(models.end(), mazeModels.begin(), mazeModels.end());
 
         std::vector<DirectionalLight> dirLights{
             DirectionalLight(
@@ -103,7 +107,7 @@ int main(void) {
 
         std::shared_ptr<Camera> camera = std::make_shared<FirstPersonCamera>(glm::vec3(0.0f, 3.0f, 10.0f), glm::vec3(0.0f));
 
-        Shader forwardPBR("shaders/pbr.vert", "shaders/pbr.frag");
+        const Shader forwardPBR("shaders/pbr.vert", "shaders/pbr.frag");
         Renderer renderer(forwardPBR);
 
         // Draw wire frame triangles or fill: GL_LINE, or GL_FILL

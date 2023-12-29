@@ -6,7 +6,7 @@
 
 #include <iostream>
 
-Renderer::Renderer(Shader& shader) : shader(shader) {
+Renderer::Renderer(const Shader& shader) : shader(shader) {
     glGenBuffers(1, &matricesUBO);
 
     glBindBuffer(GL_UNIFORM_BUFFER, matricesUBO);
