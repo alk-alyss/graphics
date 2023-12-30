@@ -25,13 +25,6 @@ Texture::Texture(const std::string imagePath, bool sRGB = false) {
     if (textureId == 0) {
         std::cout << "SOIL loading error: " << SOIL_last_result() << std::endl;
     }
-
-    glActiveTexture(textureId);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    glActiveTexture(0);
 }
 
 Texture::~Texture() {

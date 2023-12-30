@@ -8,7 +8,7 @@ using namespace glm;
 
 Camera::Camera(vec3 position, vec3 rotation) : Orientable(position, rotation){
     nearCP = 0.1f;
-    farCP = 100.0f;
+    farCP = 500.0f;
 
     fov = 45.0f;
     aspectRatio = 16.0f/9.0f;
