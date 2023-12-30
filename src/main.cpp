@@ -32,7 +32,7 @@ std::vector<std::pair<int, int>> mazeMap{
 std::vector<Material> loadMaterials() {
     std::vector<Material> materials;
     materials.push_back(Material("resources/textures/whispy-grass-meadow-bl"));
-    /* materials.push_back(std::make_shared<Material>("resources/textures/Grass001_2K-PNG")); */
+    materials.push_back(Material("resources/textures/dry-dirt2-bl"));
     return materials;
 }
 
@@ -51,8 +51,8 @@ std::vector<std::shared_ptr<Model>> generateMaze(
 
         const std::shared_ptr<Model> cube = std::make_shared<Model>(
                 cubeMesh,
-                materials[i % materials.size()],
-                glm::vec3(scalling * pair.first, scalling/2, -scalling * pair.second),
+                materials[0 % materials.size()],
+                glm::vec3(scalling * pair.first, scalling/4, -scalling * pair.second),
                 glm::vec3(0, 0, 0),
                 glm::vec3(scalling/2, scalling/4, scalling/2)
             );
@@ -74,7 +74,7 @@ int main(void) {
         const std::shared_ptr<Node> plane = Mesh::plane();
         const std::shared_ptr<Model> planeModel = std::make_shared<Model>(
                 plane,
-                materials[0],
+                materials[1],
                 glm::vec3(0, 0.001, 0),
                 glm::vec3(0, 0, 0),
                 glm::vec3(100, 0, 100)

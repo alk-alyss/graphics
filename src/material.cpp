@@ -68,7 +68,11 @@ Material::Material(const std::string materialPath) {
         else if (filepath.find("height") != std::string::npos || filepath.find("Displacement") != std::string::npos) {
             height = std::make_shared<Texture>(filepath);
         }
-        else if (filepath.find("metallic") != std::string::npos || filepath.find("Metallic") != std::string::npos) {
+        else if (
+            filepath.find("metallic") != std::string::npos ||
+            filepath.find("metalness") != std::string::npos ||
+            filepath.find("Metallic") != std::string::npos
+        ) {
             metallic = std::make_shared<Texture>(filepath);
         }
         else if (filepath.find("normal") != std::string::npos || filepath.find("NormalGL") != std::string::npos) {
