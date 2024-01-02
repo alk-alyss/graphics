@@ -5,19 +5,19 @@ Project for the Graphics & Virtual Reality subject of the ECE course from Univer
 ### Build instructions
 
 ```bash
-    cmake -B build
-    cmake --build build
+cmake -B build
+cmake --build build
 ```
 
 ### Run project
 
 ```bash
-    ./build/Portal_Maze
+./build/Portal_Maze
 ```
 
 or
 
 ```bash
-    cd build
-    ./Portal_Maze
+cd build
+./Portal_Maze
 ```
