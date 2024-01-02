@@ -3,11 +3,17 @@
 using namespace glm;
 
 Player::Player(
+    std::shared_ptr<Model> model,
     glm::vec3 position,
     glm::vec3 rotation,
     glm::vec3 scale
-) : Orientable(position, rotation, scale) {
+) : Orientable(position, rotation, scale), model(model) {
     camera = std::make_unique<Camera>(position, rotation);
+    camera->setNC(1.0);
+
+    model->setPosition(position);
+    model->setRotation(rotation);
+    model->setScale(scale);
 };
 
 void Player::look(float mouseX, float mouseY, float deltaTime) {
@@ -16,6 +22,8 @@ void Player::look(float mouseX, float mouseY, float deltaTime) {
 
     camera->look(pitch, yaw);
     lookAt(camera->forward() + position, camera->up());
+
+    if(!noClip) model->rotate(0,yaw,0);
 }
 
 void Player::moveForward(float deltaTime) {
@@ -33,6 +41,8 @@ void Player::moveForward(float deltaTime) {
         }
 
         forwardVector.y = 0;
+
+        model->setPosition(position);
     }
 
     translate(normalize(forwardVector) * movementSpeed * deltaTime);
@@ -54,6 +64,8 @@ void Player::moveBackward(float deltaTime) {
         }
 
         forwardVector.y = 0;
+
+        model->setPosition(position);
     }
 
     translate(-normalize(forwardVector) * movementSpeed * deltaTime);
@@ -63,7 +75,11 @@ void Player::moveBackward(float deltaTime) {
 void Player::moveLeft(float deltaTime) {
     glm::vec3 rightVector = right();
 
-    if (!noClip)  rightVector.y = 0;
+    if (!noClip) {
+        rightVector.y = 0;
+
+        model->setPosition(position);
+    }
 
     translate(-normalize(rightVector) * movementSpeed * deltaTime);
     camera->setPosition(position);
@@ -72,7 +88,11 @@ void Player::moveLeft(float deltaTime) {
 void Player::moveRight(float deltaTime) {
     glm::vec3 rightVector = right();
 
-    if (!noClip)  rightVector.y = 0;
+    if (!noClip) {
+        rightVector.y = 0;
+
+        model->setPosition(position);
+    }
 
     translate(normalize(rightVector) * movementSpeed * deltaTime);
     camera->setPosition(position);
@@ -91,4 +111,8 @@ void Player::toggleNoClip() {
     }
 
     noClip = !noClip;
+}
+
+void Player::draw(glm::mat4 modelMatrix, Shader& shader) const {
+    model->draw(modelMatrix, shader);
 }

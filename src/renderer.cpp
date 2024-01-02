@@ -32,9 +32,13 @@ void Renderer::render(
     uploadMatrices(scene.player->getCamera());
     uploadLights(scene.directionalLights, scene.pointLights);
 
+    glm::mat4 initialTransformation{1};
+
     for(auto& model : scene.models) {
-        model->draw(glm::mat4(1), shader);
+        model->draw(initialTransformation, shader);
     }
+
+    scene.player->draw(initialTransformation, shader);
 
     glUseProgram(0);
 }

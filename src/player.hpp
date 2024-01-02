@@ -7,8 +7,9 @@
 #include "orientable.hpp"
 #include "camera.hpp"
 
-class Player : public Orientable {
+class Player : public Orientable, Node {
     std::unique_ptr<Camera> camera;
+    std::shared_ptr<Model> model;
 
     bool noClip = false;
 
@@ -18,8 +19,11 @@ class Player : public Orientable {
     glm::vec3 originalPosition;
     glm::quat originalOrientation;
 
+    glm::vec3 cameraOffset();
+
 public:
     Player(
+        std::shared_ptr<Model> model,
         glm::vec3 position = DEFAULT_POSITION,
         glm::vec3 rotation = DEFAULT_ORIENTATION,
         glm::vec3 scale = DEFAULT_SCALE
@@ -39,6 +43,8 @@ public:
     void zoom(float amount) {camera->zoom(amount);}
 
     void toggleNoClip();
+
+    void draw(glm::mat4 modelMatrix, Shader& shader) const;
 };
 
 #endif

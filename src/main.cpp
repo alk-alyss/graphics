@@ -63,6 +63,18 @@ std::vector<std::shared_ptr<Model>> generateMaze(
     return maze;
 }
 
+const std::shared_ptr<Model> loadSuzanne(Material material) {
+    const std::shared_ptr<Node> suzanneMesh = std::make_shared<Mesh>("resources/models/suzanne.obj");
+    const std::shared_ptr<Node> suzanneMeshTransformation = std::make_shared<Transformation>(
+            glm::vec3(0, 0, 0.5),
+            glm::vec3(0, glm::radians(180.0), 0),
+            glm::vec3(0.9)
+        );
+    suzanneMeshTransformation->children.push_back(suzanneMesh);
+
+    return std::make_shared<Model>(suzanneMeshTransformation, material);
+}
+
 int main(void) {
     try {
         const std::shared_ptr<GLFWwindow> window = createWindow();
@@ -100,10 +112,7 @@ int main(void) {
             ),
         };
 
-        /* const std::shared_ptr<Node> suzanneMesh = std::make_shared<Mesh>("resources/models/suzanne.obj"); */
-        /* const std::shared_ptr<Model> suzanne = std::make_shared<Model>(suzanneMesh, materials[0]); */
-
-        std::shared_ptr<Player> player = std::make_shared<Player>(glm::vec3(0.0f, 3.0f, 10.0f));
+        std::shared_ptr<Player> player = std::make_shared<Player>(loadSuzanne(materials[0]), glm::vec3(0.0f, 3.0f, 10.0f));
 
         const Scene scene(
             player,

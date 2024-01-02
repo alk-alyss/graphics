@@ -32,6 +32,9 @@ public:
     glm::mat4 getProjection() const {return projectionMatrix;}
     glm::mat4 getVP() const {return VP;}
 
+    void setNC(float value) {nearCP = value;}
+    void setFC(float value) {farCP = value;}
+
     void updateAspectRatio(GLFWwindow* window);
 
     void zoom(float amount);
