@@ -48,11 +48,11 @@ void handleKeyboard(std::shared_ptr<GLFWwindow> windowPtr, std::shared_ptr<Playe
         player->zoom(-deltaTime);
     }
 
-    if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS) {
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
         if (!toggle) player->toggleNoClip();
         toggle = true;
     }
-    if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_RELEASE) {
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE) {
         toggle = false;
     }
 }
