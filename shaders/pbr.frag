@@ -34,15 +34,15 @@ uniform sampler2D roughnessMap;
 in vec2 uvCoords;
 
 in WORLD_SPACE {
-	vec4 vertexPosition;
-	vec4 vertexNormal;
+	vec3 vertexPosition;
+	vec3 vertexNormal;
 } worldSpace;
 
 in CAMERA_SPACE {
-	vec4 vertexPosition;
-	vec4 vertexNormal;
-	vec4 lightDirections[MAX_DIR_LIGHTS];
-	vec4 lightPositions[MAX_POINT_LIGHTS];
+	vec3 vertexPosition;
+	vec3 vertexNormal;
+	vec3 lightDirections[MAX_DIR_LIGHTS];
+	vec3 lightPositions[MAX_POINT_LIGHTS];
 } cameraSpace;
 
 // FRAGMENT SHADER OUT
@@ -133,9 +133,9 @@ vec3 pbrLighting(float visibility, vec3 defaultF0) {
     float roughness = texture(roughnessMap, uvCoords).r;
     float ao        = texture(aoMap, uvCoords).r;
 
-	vec3 N = normalize(cameraSpace.vertexNormal).xyz; // Fragment normal
+	vec3 N = normalize(cameraSpace.vertexNormal); // Fragment normal
 	// vec3 N = normal.xyz; // Fragment normal
-	vec3 E = normalize(-cameraSpace.vertexPosition).xyz; // Eye vector
+	vec3 E = normalize(-cameraSpace.vertexPosition); // Eye vector
 
 	vec3 F0 = mix(defaultF0, albedo, metallic);
 
@@ -143,7 +143,7 @@ vec3 pbrLighting(float visibility, vec3 defaultF0) {
 	vec3 Lo = vec3(0.0);
 
 	for (int i=0; i<dirLightsCount; i++) {
-		vec3 L = normalize(-cameraSpace.lightDirections[i]).xyz; // Light vector
+		vec3 L = normalize(-cameraSpace.lightDirections[i]); // Light vector
 		vec3 H = normalize(L+E); // Halfway vector
 
 		vec3 radiance = dirLights[i].colorPower.xyz * dirLights[i].colorPower.w;
@@ -152,7 +152,7 @@ vec3 pbrLighting(float visibility, vec3 defaultF0) {
 	}
 
 	for (int i=0; i<pointLightsCount; i++) {
-		vec3 L = normalize(cameraSpace.lightPositions[i] - cameraSpace.vertexPosition).xyz; // Light vector
+		vec3 L = normalize(cameraSpace.lightPositions[i] - cameraSpace.vertexPosition); // Light vector
 		vec3 H = normalize(L+E); // Halfway vector
 
 		// Light parameters

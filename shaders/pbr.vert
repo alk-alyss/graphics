@@ -15,6 +15,8 @@ struct PointLight {
 layout(location = 0) in vec3 vertexPosition;
 layout(location = 1) in vec3 vertexNormal;
 layout(location = 2) in vec2 vertexUV;
+layout(location = 3) in vec3 vertexTangent;
+layout(location = 4) in vec3 vertexBitangent;
 
 // MATRICES UBO
 layout(std140) uniform Matrices {
@@ -48,34 +50,39 @@ uniform sampler2D roughness;
 out vec2 uvCoords;
 
 out WORLD_SPACE {
-    vec4 vertexPosition;
-    vec4 vertexNormal;
+    vec3 vertexPosition;
+    vec3 vertexNormal;
 } worldSpace;
 
 out CAMERA_SPACE {
-    vec4 vertexPosition;
-    vec4 vertexNormal;
-    vec4 lightDirections[MAX_DIR_LIGHTS];
-    vec4 lightPositions[MAX_POINT_LIGHTS];
+    vec3 vertexPosition;
+    vec3 vertexNormal;
+    vec3 lightDirections[MAX_DIR_LIGHTS];
+    vec3 lightPositions[MAX_POINT_LIGHTS];
 } cameraSpace;
 
 
 void main() {
-    worldSpace.vertexPosition = M * vec4(vertexPosition, 1);
-    worldSpace.vertexNormal = M * vec4(vertexNormal, 0);
+    vec4 vertexPosition_worldSpace = M * vec4(vertexPosition, 1);
+    vec4 vertexNormal_worldSpace = M * vec4(vertexNormal, 0);
 
-    cameraSpace.vertexPosition = V * worldSpace.vertexPosition;
-    cameraSpace.vertexNormal = V * worldSpace.vertexNormal;
+    worldSpace.vertexPosition = vertexPosition_worldSpace.xyz;
+    worldSpace.vertexNormal = vertexNormal_worldSpace.xyz;
+
+    vec4 vertexPosition_cameraSpace = V * vertexPosition_worldSpace;
+
+    cameraSpace.vertexPosition = vertexPosition_cameraSpace.xyz;
+    cameraSpace.vertexNormal = (V * vertexNormal_worldSpace).xyz;
 
     for (int i=0; i<dirLightsCount; i++) {
-        cameraSpace.lightDirections[i] = V * dirLights[i].direction;
+        cameraSpace.lightDirections[i] = (V * dirLights[i].direction).xyz;
     }
 
     for (int i=0; i<pointLightsCount; i++) {
-        cameraSpace.lightPositions[i] = V * pointLights[i].position;
+        cameraSpace.lightPositions[i] = (V * pointLights[i].position).xyz;
     }
 
     uvCoords = vertexUV;
 
-    gl_Position = P * cameraSpace.vertexPosition;
+    gl_Position = P * vertexPosition_cameraSpace;
 }
