@@ -87,10 +87,10 @@ int main(void) {
         const std::shared_ptr<Model> planeModel = std::make_shared<Model>(
                 plane,
                 materials[1],
-                glm::vec3(0, 0.001, 0),
                 glm::vec3(0, 0, 0),
-                glm::vec3(100, 0, 100)
-        );
+                glm::vec3(0, 0, 0),
+                glm::vec3(10, 10, 10)
+            );
 
         models.push_back(planeModel);
 
@@ -99,25 +99,31 @@ int main(void) {
 
         std::vector<DirectionalLight> dirLights{
             DirectionalLight(
-                glm::vec4(1,1,1,1),
-                10,
                 glm::vec3(5,5,10),
                 glm::vec3(glm::radians(-45.0),glm::radians(45.0),0)
             ),
             DirectionalLight(
-                glm::vec4(1,1,1,1),
-                10,
                 glm::vec3(5,5,10),
                 glm::vec3(glm::radians(-45.0),glm::radians(180.0+45),0)
             ),
         };
 
-        std::shared_ptr<Player> player = std::make_shared<Player>(loadSuzanne(materials[0]), glm::vec3(0.0f, 3.0f, 10.0f));
+        std::vector<PointLight> pointLights{
+            PointLight(
+                glm::vec3(0,0,100)
+            )
+        };
+
+        std::shared_ptr<Player> player = std::make_shared<Player>(
+                loadSuzanne(materials[0]),
+                glm::vec3(0.0f, 3.0f, 10.0f)
+            );
 
         const Scene scene(
             player,
             models,
-            dirLights
+            dirLights,
+            pointLights
         );
 
         const Shader forwardPBR("shaders/pbr.vert", "shaders/pbr.frag");

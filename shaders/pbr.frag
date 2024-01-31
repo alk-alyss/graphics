@@ -6,11 +6,18 @@ struct DirectionLight {
 	vec4 direction;
 };
 
+struct PointLight {
+	vec4 colorPower; // first three floats are color, last one is power
+	vec4 position;
+};
+
 #define MAX_DIR_LIGHTS 2
+#define MAX_POINT_LIGHTS 1
 
 // LIGHTS UBO
 layout(std140) uniform Lights{
-	DirectionLight lights[MAX_DIR_LIGHTS];
+	DirectionLight dirLights[MAX_DIR_LIGHTS];
+	PointLight pointLights[MAX_POINT_LIGHTS];
 };
 
 // TEXTURES
@@ -33,6 +40,7 @@ in CAMERA_SPACE {
 	vec4 vertexPosition;
 	vec4 vertexNormal;
 	vec4 lightDirections[MAX_DIR_LIGHTS];
+	vec4 lightPositions[MAX_POINT_LIGHTS];
 } cameraSpace;
 
 // FRAGMENT SHADER OUT
@@ -46,7 +54,7 @@ float shadows() {
 
 // Normal mapping
 //https://learnopengl.com/Advanced-Lighting/Normal-Mapping
-vec4 normalFromMap(vec4 normal) {
+vec3 normalFromMap(vec3 normal) {
 	return normalize(normal * 2.0 - 1.0);
 }
 
@@ -118,12 +126,13 @@ vec3 CookToranceBRDF(
 vec3 pbrLighting(float visibility, vec3 defaultF0) {
 	// Lighting parameters for fragment
 	vec3 albedo     = texture(albedoMap, uvCoords).rgb;
-    // vec3 normal     = normalFromMap(texture(normalMap, uvCoords)).xyz;
+    vec3 normal     = normalFromMap(texture(normalMap, uvCoords).rgb);
     float metallic  = texture(metallicMap, uvCoords).r;
     float roughness = texture(roughnessMap, uvCoords).r;
     float ao        = texture(aoMap, uvCoords).r;
 
 	vec3 N = normalize(cameraSpace.vertexNormal).xyz; // Fragment normal
+	// vec3 N = normal.xyz; // Fragment normal
 	vec3 E = normalize(-cameraSpace.vertexPosition).xyz; // Eye vector
 
 	vec3 F0 = mix(defaultF0, albedo, metallic);
@@ -135,10 +144,19 @@ vec3 pbrLighting(float visibility, vec3 defaultF0) {
 		vec3 L = normalize(-cameraSpace.lightDirections[i]).xyz; // Light vector
 		vec3 H = normalize(L+E); // Halfway vector
 
+		vec3 radiance = dirLights[i].colorPower.xyz * dirLights[i].colorPower.w;
+
+		Lo += CookToranceBRDF(N, E, L, H, radiance, albedo, metallic, roughness, F0);
+	}
+
+	for (int i=0; i<MAX_POINT_LIGHTS; i++) {
+		vec3 L = normalize(cameraSpace.lightPositions[i] - cameraSpace.vertexPosition).xyz; // Light vector
+		vec3 H = normalize(L+E); // Halfway vector
+
 		// Light parameters
 		// float distance = length(L);
 		// float attenuation = 1.0 / distance * distance;
-		vec3 radiance = lights[i].colorPower.xyz * lights[i].colorPower.w;
+		vec3 radiance = pointLights[i].colorPower.xyz * pointLights[i].colorPower.w;
 
 		Lo += CookToranceBRDF(N, E, L, H, radiance, albedo, metallic, roughness, F0);
 	}

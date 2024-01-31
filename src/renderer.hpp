@@ -12,12 +12,13 @@
 #include "scene.hpp"
 
 #define MAX_DIR_LIGHTS 2
-#define MAX_POINT_LIGHTS 0
+#define MAX_POINT_LIGHTS 1
 
 class Renderer {
 private:
     Shader shader;
     GLuint matricesUBO, lightsUBO;
+    size_t lightsUBOsize;
 
 private:
     void uploadMatrices(const Camera& camera);

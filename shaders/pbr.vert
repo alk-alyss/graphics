@@ -6,6 +6,11 @@ struct DirectionLight {
     vec4 direction;
 };
 
+struct PointLight {
+    vec4 colorPower; // first three floats are color, last one is power
+    vec4 position;
+};
+
 // VERTEX SHADER IN
 layout(location = 0) in vec3 vertexPosition;
 layout(location = 1) in vec3 vertexNormal;
@@ -18,10 +23,12 @@ layout(std140) uniform Matrices {
 };
 
 #define MAX_DIR_LIGHTS 2
+#define MAX_POINT_LIGHTS 1
 
 // LIGHTS UBO
 layout(std140) uniform Lights {
-    DirectionLight lights[MAX_DIR_LIGHTS];
+    DirectionLight dirLights[MAX_DIR_LIGHTS];
+    PointLight pointLights[MAX_POINT_LIGHTS];
 };
 
 // MODEL MATRIX
@@ -47,6 +54,7 @@ out CAMERA_SPACE {
     vec4 vertexPosition;
     vec4 vertexNormal;
     vec4 lightDirections[MAX_DIR_LIGHTS];
+    vec4 lightPositions[MAX_POINT_LIGHTS];
 } cameraSpace;
 
 
@@ -58,7 +66,11 @@ void main() {
     cameraSpace.vertexNormal = V * worldSpace.vertexNormal;
 
     for (int i=0; i<MAX_DIR_LIGHTS; i++) {
-        cameraSpace.lightDirections[i] = V * lights[i].direction;
+        cameraSpace.lightDirections[i] = V * dirLights[i].direction;
+    }
+
+    for (int i=0; i<MAX_POINT_LIGHTS; i++) {
+        cameraSpace.lightPositions[i] = V * pointLights[i].position;
     }
 
     uvCoords = vertexUV;

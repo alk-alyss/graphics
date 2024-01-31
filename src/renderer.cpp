@@ -17,8 +17,15 @@ Renderer::Renderer(const Shader& shader) : shader(shader) {
 
     glGenBuffers(1, &lightsUBO);
 
+    lightsUBOsize = MAX_DIR_LIGHTS * DirectionalLight::sizeofData();
+    lightsUBOsize += MAX_POINT_LIGHTS * PointLight::sizeofData();
+
     glBindBuffer(GL_UNIFORM_BUFFER, lightsUBO);
-    glBufferData(GL_UNIFORM_BUFFER, MAX_DIR_LIGHTS * DirectionalLight::sizeofData(), NULL, GL_DYNAMIC_DRAW);
+    glBufferData(
+        GL_UNIFORM_BUFFER,
+        lightsUBOsize,
+        NULL, GL_DYNAMIC_DRAW
+    );
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
     glBindBufferBase(GL_UNIFORM_BUFFER, 1, lightsUBO);
@@ -55,8 +62,14 @@ void Renderer::uploadLights(
     const std::vector<PointLight> pointLights
 ) {
     std::vector<glm::vec4> lightData;
+
     for (auto& dirLight : directionalLights) {
         auto nextLightData = dirLight.data();
+        lightData.insert(lightData.end(), nextLightData.begin(), nextLightData.end());
+    }
+
+    for (auto& pointLight : pointLights) {
+        auto nextLightData = pointLight.data();
         lightData.insert(lightData.end(), nextLightData.begin(), nextLightData.end());
     }
 
