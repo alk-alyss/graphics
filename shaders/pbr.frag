@@ -18,6 +18,8 @@ struct PointLight {
 layout(std140) uniform Lights{
 	DirectionLight dirLights[MAX_DIR_LIGHTS];
 	PointLight pointLights[MAX_POINT_LIGHTS];
+	int dirLightsCount;
+	int pointLightsCount;
 };
 
 // TEXTURES
@@ -140,7 +142,7 @@ vec3 pbrLighting(float visibility, vec3 defaultF0) {
 	// Reflectance equation output
 	vec3 Lo = vec3(0.0);
 
-	for (int i=0; i<MAX_DIR_LIGHTS; i++) {
+	for (int i=0; i<dirLightsCount; i++) {
 		vec3 L = normalize(-cameraSpace.lightDirections[i]).xyz; // Light vector
 		vec3 H = normalize(L+E); // Halfway vector
 
@@ -149,7 +151,7 @@ vec3 pbrLighting(float visibility, vec3 defaultF0) {
 		Lo += CookToranceBRDF(N, E, L, H, radiance, albedo, metallic, roughness, F0);
 	}
 
-	for (int i=0; i<MAX_POINT_LIGHTS; i++) {
+	for (int i=0; i<pointLightsCount; i++) {
 		vec3 L = normalize(cameraSpace.lightPositions[i] - cameraSpace.vertexPosition).xyz; // Light vector
 		vec3 H = normalize(L+E); // Halfway vector
 

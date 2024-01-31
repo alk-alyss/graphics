@@ -19,6 +19,7 @@ Renderer::Renderer(const Shader& shader) : shader(shader) {
 
     lightsUBOsize = MAX_DIR_LIGHTS * DirectionalLight::sizeofData();
     lightsUBOsize += MAX_POINT_LIGHTS * PointLight::sizeofData();
+    lightsUBOsize += 2 * sizeof(size_t);
 
     glBindBuffer(GL_UNIFORM_BUFFER, lightsUBO);
     glBufferData(
@@ -61,19 +62,33 @@ void Renderer::uploadLights(
     const std::vector<DirectionalLight> directionalLights,
     const std::vector<PointLight> pointLights
 ) {
-    std::vector<glm::vec4> lightData;
-
-    for (auto& dirLight : directionalLights) {
-        auto nextLightData = dirLight.data();
-        lightData.insert(lightData.end(), nextLightData.begin(), nextLightData.end());
-    }
-
-    for (auto& pointLight : pointLights) {
-        auto nextLightData = pointLight.data();
-        lightData.insert(lightData.end(), nextLightData.begin(), nextLightData.end());
-    }
+    size_t offset = 0;
 
     glBindBuffer(GL_UNIFORM_BUFFER, lightsUBO);
-    glBufferSubData(GL_UNIFORM_BUFFER, 0, lightData.size() * sizeof(lightData[0]), lightData.data());
+
+    for (auto& dirLight : directionalLights) {
+        std::vector<glm::vec4> lightData = dirLight.data();
+        glBufferSubData(GL_UNIFORM_BUFFER, offset, lightData.size() * sizeof(lightData[0]), lightData.data());
+        offset += lightData.size() * sizeof(lightData[0]);
+    }
+
+    offset = MAX_DIR_LIGHTS * DirectionalLight::sizeofData();
+
+    for (auto& pointLight : pointLights) {
+        std::vector<glm::vec4> lightData = pointLight.data();
+        glBufferSubData(GL_UNIFORM_BUFFER, offset, lightData.size() * sizeof(lightData[0]), lightData.data());
+        offset += lightData.size() * sizeof(lightData[0]);
+    }
+
+    offset = MAX_DIR_LIGHTS * DirectionalLight::sizeofData() + MAX_POINT_LIGHTS * PointLight::sizeofData();
+
+    size_t dirLightsCount = directionalLights.size();
+    glBufferSubData(GL_UNIFORM_BUFFER, offset, dirLightsCount * sizeof(dirLightsCount), &dirLightsCount);
+    offset += dirLightsCount * sizeof(dirLightsCount);
+
+    size_t pointLightsCount = pointLights.size();
+    glBufferSubData(GL_UNIFORM_BUFFER, offset, pointLightsCount * sizeof(pointLightsCount), &pointLightsCount);
+    offset += pointLightsCount * sizeof(pointLightsCount);
+
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }

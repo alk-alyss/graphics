@@ -29,6 +29,8 @@ layout(std140) uniform Matrices {
 layout(std140) uniform Lights {
     DirectionLight dirLights[MAX_DIR_LIGHTS];
     PointLight pointLights[MAX_POINT_LIGHTS];
+    int dirLightsCount;
+    int pointLightsCount;
 };
 
 // MODEL MATRIX
@@ -65,11 +67,11 @@ void main() {
     cameraSpace.vertexPosition = V * worldSpace.vertexPosition;
     cameraSpace.vertexNormal = V * worldSpace.vertexNormal;
 
-    for (int i=0; i<MAX_DIR_LIGHTS; i++) {
+    for (int i=0; i<dirLightsCount; i++) {
         cameraSpace.lightDirections[i] = V * dirLights[i].direction;
     }
 
-    for (int i=0; i<MAX_POINT_LIGHTS; i++) {
+    for (int i=0; i<pointLightsCount; i++) {
         cameraSpace.lightPositions[i] = V * pointLights[i].position;
     }
 

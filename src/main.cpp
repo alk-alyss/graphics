@@ -89,7 +89,7 @@ int main(void) {
                 materials[1],
                 glm::vec3(0, 0, 0),
                 glm::vec3(0, 0, 0),
-                glm::vec3(10, 10, 10)
+                glm::vec3(100)
             );
 
         models.push_back(planeModel);
