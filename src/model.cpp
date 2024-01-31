@@ -12,7 +12,7 @@ Model::Model(
     this->children.push_back(materialPtr);
 }
 
-void Model::draw(glm::mat4 modelMatrix, Shader& shader) const {
+void Model::draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const {
     modelMatrix = modelMatrix * this->modelMatrix();
 
     Node::draw(modelMatrix, shader);

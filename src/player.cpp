@@ -113,6 +113,6 @@ void Player::toggleNoClip() {
     noClip = !noClip;
 }
 
-void Player::draw(glm::mat4 modelMatrix, Shader& shader) const {
+void Player::draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const {
     model->draw(modelMatrix, shader);
 }

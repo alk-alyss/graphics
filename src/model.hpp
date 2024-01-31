@@ -17,7 +17,7 @@ struct Model : public Orientable, public Node {
         glm::vec3 scale = DEFAULT_SCALE
     );
 
-    void draw(glm::mat4 modelMatrix, Shader& shader) const;
+    void draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const override;
 };
 
 #endif

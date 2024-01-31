@@ -16,7 +16,7 @@
 
 class Renderer {
 private:
-    Shader shader;
+    std::shared_ptr<Shader> shader;
     GLuint matricesUBO, lightsUBO;
     size_t lightsUBOsize;
 
@@ -28,7 +28,7 @@ private:
     );
 
 public:
-    Renderer(const Shader& shader);
+    Renderer(std::shared_ptr<Shader> shader);
 
     void render(const Scene& scene);
 };

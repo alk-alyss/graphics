@@ -6,7 +6,7 @@
 
 #include <iostream>
 
-Renderer::Renderer(const Shader& shader) : shader(shader) {
+Renderer::Renderer(std::shared_ptr<Shader> shader) : shader(shader) {
     glGenBuffers(1, &matricesUBO);
 
     glBindBuffer(GL_UNIFORM_BUFFER, matricesUBO);
@@ -35,7 +35,7 @@ Renderer::Renderer(const Shader& shader) : shader(shader) {
 void Renderer::render(
     const Scene& scene
 ) {
-    glUseProgram(shader.getProgram());
+    shader->bind();
 
     uploadMatrices(scene.player->getCamera());
     uploadLights(scene.directionalLights, scene.pointLights);

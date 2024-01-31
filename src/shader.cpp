@@ -106,13 +106,6 @@ void Shader::getUniformLocations() {
     metallicLocation = glGetUniformLocation(programId, "metallicMap");
     normalLocation = glGetUniformLocation(programId, "normalMap");
     roughnessLocation = glGetUniformLocation(programId, "roughnessMap");
-
-    glUniform1i(albedoLocation, 0);
-    glUniform1i(aoLocation, 1);
-    glUniform1i(heightLocation, 2);
-    glUniform1i(metallicLocation, 3);
-    glUniform1i(normalLocation, 4);
-    glUniform1i(roughnessLocation, 5);
 }
 
 Shader::Shader(
@@ -126,6 +119,17 @@ Shader::Shader(
 
 Shader::~Shader() {
     releaseShader();
+}
+
+void Shader::bind() {
+    glUseProgram(programId);
+
+    glUniform1i(albedoLocation, 0);
+    glUniform1i(aoLocation, 1);
+    glUniform1i(heightLocation, 2);
+    glUniform1i(metallicLocation, 3);
+    glUniform1i(normalLocation, 4);
+    glUniform1i(roughnessLocation, 5);
 }
 
 void Shader::releaseShader() {

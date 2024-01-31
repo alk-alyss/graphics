@@ -92,7 +92,7 @@ Material::Material(const std::string materialPath) {
     }
 }
 
-void Material::draw(glm::mat4 modelMatrix, Shader& shader) const {
+void Material::draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const {
     glActiveTexture(GL_TEXTURE0);
     if (albedo.get() != nullptr) {
         albedo->bind();

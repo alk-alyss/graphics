@@ -13,7 +13,7 @@ struct Node {
 
     virtual ~Node() = default;
 
-    virtual void draw(glm::mat4 modelMatrix, Shader& shader) const {
+    virtual void draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const {
         for (auto& child : children) {
             child->draw(modelMatrix, shader);
         }
@@ -23,7 +23,7 @@ struct Node {
 struct Transformation : private Orientable, public Node {
     using Orientable::Orientable;
 
-    void draw(glm::mat4 modelMatrix, Shader& shader) const override {
+    void draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const override {
         modelMatrix = modelMatrix * this->modelMatrix();
 
         Node::draw(modelMatrix, shader);

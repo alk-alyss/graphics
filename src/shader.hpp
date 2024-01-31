@@ -20,9 +20,9 @@ public:
     Shader(const std::string vertFile, const std::string fragFile, const std::string geomFile="");
     ~Shader();
 
-    //Default copy constructor/assignment.
-    Shader(const Shader&) = default;
-    Shader &operator=(const Shader&) = default;
+    //Delete copy constructor/assignment.
+    Shader(const Shader& other) = delete;
+    Shader &operator=(const Shader& other) = delete;
 
     Shader(Shader&& other) :
         programId(other.programId),
@@ -58,6 +58,8 @@ public:
 
         return *this;
     }
+
+    void bind();
 
     void releaseShader();
 

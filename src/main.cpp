@@ -126,7 +126,7 @@ int main(void) {
             pointLights
         );
 
-        const Shader forwardPBR("shaders/pbr.vert", "shaders/pbr.frag");
+        std::shared_ptr<Shader> forwardPBR = std::make_shared<Shader>("shaders/pbr.vert", "shaders/pbr.frag");
         Renderer renderer(forwardPBR);
 
         // Draw wire frame triangles or fill: GL_LINE, or GL_FILL

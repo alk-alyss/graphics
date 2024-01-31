@@ -98,7 +98,7 @@ public:
     int vertexCount() const {return vertices.size();}
     GLuint getVao() const {return VAO;}
 
-    void draw(glm::mat4 modelMatrix, Shader& shader) const;
+    void draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const;
 
     static std::shared_ptr<Mesh> plane();
 };

@@ -44,7 +44,7 @@ public:
 
     void toggleNoClip();
 
-    void draw(glm::mat4 modelMatrix, Shader& shader) const;
+    void draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const override;
 };
 
 #endif
