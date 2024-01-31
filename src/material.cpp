@@ -52,13 +52,22 @@ Material::Material(const std::string materialPath) {
 
         std::string filepath = dir_entry.path();
 
-        if (filepath.find("albedo") != std::string::npos || filepath.find("Color") != std::string::npos) {
+        if (
+            filepath.find("albedo") != std::string::npos ||
+            filepath.find("Color") != std::string::npos
+        ) {
             albedo = std::make_shared<Texture>(filepath, true);
         }
-        else if (filepath.find("ao") != std::string::npos || filepath.find("AmbientOcclusion") != std::string::npos) {
+        else if (
+            filepath.find("ao") != std::string::npos ||
+            filepath.find("AmbientOcclusion") != std::string::npos
+        ) {
             ao = std::make_shared<Texture>(filepath);
         }
-        else if (filepath.find("height") != std::string::npos || filepath.find("Displacement") != std::string::npos) {
+        else if (
+            filepath.find("height") != std::string::npos ||
+            filepath.find("Displacement") != std::string::npos
+        ) {
             height = std::make_shared<Texture>(filepath);
         }
         else if (
@@ -68,10 +77,16 @@ Material::Material(const std::string materialPath) {
         ) {
             metallic = std::make_shared<Texture>(filepath);
         }
-        else if (filepath.find("normal") != std::string::npos || filepath.find("NormalGL") != std::string::npos) {
+        else if (
+            filepath.find("normal") != std::string::npos ||
+            filepath.find("NormalGL") != std::string::npos
+        ) {
             normal = std::make_shared<Texture>(filepath);
         }
-        else if (filepath.find("roughness") != std::string::npos || filepath.find("Roughness") != std::string::npos) {
+        else if (
+            filepath.find("roughness") != std::string::npos ||
+            filepath.find("Roughness") != std::string::npos
+        ) {
             roughness = std::make_shared<Texture>(filepath);
         }
     }
