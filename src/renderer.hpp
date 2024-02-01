@@ -22,13 +22,10 @@ private:
 
 private:
     void uploadMatrices(const Camera& camera);
-    void uploadLights(
-        const std::vector<DirectionalLight> directionalLights,
-        const std::vector<PointLight> pointLights
-    );
-
 public:
     Renderer(std::shared_ptr<Shader> shader);
+
+    void uploadLights(const Scene& scene);
 
     void render(const Scene& scene);
 };

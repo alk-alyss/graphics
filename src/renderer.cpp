@@ -19,7 +19,7 @@ Renderer::Renderer(std::shared_ptr<Shader> shader) : shader(shader) {
 
     lightsUBOsize = MAX_DIR_LIGHTS * DirectionalLight::sizeofData();
     lightsUBOsize += MAX_POINT_LIGHTS * PointLight::sizeofData();
-    lightsUBOsize += 2 * sizeof(size_t);
+    lightsUBOsize += 2 * sizeof(GLuint);
 
     glBindBuffer(GL_UNIFORM_BUFFER, lightsUBO);
     glBufferData(
@@ -37,8 +37,11 @@ void Renderer::render(
 ) {
     shader->bind();
 
+    glm::vec3 cameraPosition = scene.player->getCamera().getPosition();
+    glUniform3fv(shader->getCameraPositionLocation(), 1, glm::value_ptr(cameraPosition));
+
     uploadMatrices(scene.player->getCamera());
-    uploadLights(scene.directionalLights, scene.pointLights);
+    uploadLights(scene);
 
     glm::mat4 initialTransformation{1};
 
@@ -59,9 +62,11 @@ void Renderer::uploadMatrices(const Camera& camera) {
 }
 
 void Renderer::uploadLights(
-    const std::vector<DirectionalLight> directionalLights,
-    const std::vector<PointLight> pointLights
+    const Scene& scene
 ) {
+    std::vector<DirectionalLight> directionalLights = scene.directionalLights;
+    std::vector<PointLight> pointLights = scene.pointLights;
+
     size_t offset = 0;
 
     glBindBuffer(GL_UNIFORM_BUFFER, lightsUBO);
@@ -82,13 +87,12 @@ void Renderer::uploadLights(
 
     offset = MAX_DIR_LIGHTS * DirectionalLight::sizeofData() + MAX_POINT_LIGHTS * PointLight::sizeofData();
 
-    size_t dirLightsCount = directionalLights.size();
+    GLuint dirLightsCount = directionalLights.size();
     glBufferSubData(GL_UNIFORM_BUFFER, offset, dirLightsCount * sizeof(dirLightsCount), &dirLightsCount);
-    offset += dirLightsCount * sizeof(dirLightsCount);
+    offset += sizeof(dirLightsCount);
 
-    size_t pointLightsCount = pointLights.size();
+    GLuint pointLightsCount = pointLights.size();
     glBufferSubData(GL_UNIFORM_BUFFER, offset, pointLightsCount * sizeof(pointLightsCount), &pointLightsCount);
-    offset += pointLightsCount * sizeof(pointLightsCount);
 
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
