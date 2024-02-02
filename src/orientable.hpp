@@ -36,6 +36,8 @@ public:
     virtual void setScale(glm::vec3 newScale) {this->scale = newScale;}
     void setScale(float newScale) {setScale(glm::vec3(newScale, newScale, newScale));}
 
+    glm::vec3 getPosition() const {return position;}
+
     glm::mat4 translationMatrix() const;
     glm::mat4 rotationMatrix() const;
     glm::mat4 scallingMatrix() const;

@@ -12,6 +12,7 @@ private:
     GLuint matricesUBOIndex, lightsUBOIndex;
     GLuint albedoLocation, aoLocation, heightLocation, metallicLocation, normalLocation, roughnessLocation;
     GLuint MLocation;
+    GLuint cameraPositionLocation;
 
     void createShaderProgram(const std::string vertFile, const std::string fragFile, const std::string geomFile="");
     void getUniformLocations();
@@ -34,7 +35,8 @@ public:
         metallicLocation(other.metallicLocation),
         normalLocation(other.normalLocation),
         roughnessLocation(other.roughnessLocation),
-        MLocation(other.MLocation)
+        MLocation(other.MLocation),
+        cameraPositionLocation(other.cameraPositionLocation)
     {
         other.programId = 0; //Use the "null" programId for the old object.
     }
@@ -54,6 +56,7 @@ public:
             std::swap(normalLocation, other.normalLocation);
             std::swap(roughnessLocation, other.roughnessLocation);
             std::swap(MLocation, other.MLocation);
+            std::swap(cameraPositionLocation, other.cameraPositionLocation);
         }
 
         return *this;
@@ -64,6 +67,7 @@ public:
     void releaseShader();
 
     GLuint getMLocation() {return MLocation;}
+    GLuint getCameraPositionLocation() {return cameraPositionLocation;}
 
     GLuint getProgram() {return programId;}
 };

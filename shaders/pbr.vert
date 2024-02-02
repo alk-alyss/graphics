@@ -35,6 +35,9 @@ layout(std140) uniform Lights {
     int pointLightsCount;
 };
 
+// Camera Position
+uniform vec3 cameraPosition;
+
 // MODEL MATRIX
 uniform mat4 M;
 
@@ -64,12 +67,10 @@ out CAMERA_SPACE {
 
 void main() {
     vec4 vertexPosition_worldSpace = M * vec4(vertexPosition, 1);
-    vec4 vertexNormal_worldSpace = M * vec4(vertexNormal, 0);
-
-    worldSpace.vertexPosition = vertexPosition_worldSpace.xyz;
-    worldSpace.vertexNormal = vertexNormal_worldSpace.xyz;
+    vec4 vertexNormal_worldSpace = normalize(M * vec4(vertexNormal, 0));
 
     vec4 vertexPosition_cameraSpace = V * vertexPosition_worldSpace;
+    vec4 vertexNormal_cameraSpace = normalize(V * vertexNormal_worldSpace);
 
     cameraSpace.vertexPosition = vertexPosition_cameraSpace.xyz;
     cameraSpace.vertexNormal = (V * vertexNormal_worldSpace).xyz;
@@ -81,6 +82,12 @@ void main() {
     for (int i=0; i<pointLightsCount; i++) {
         cameraSpace.lightPositions[i] = (V * pointLights[i].position).xyz;
     }
+
+    worldSpace.vertexPosition = vertexPosition_worldSpace.xyz;
+    worldSpace.vertexNormal = vertexNormal_worldSpace.xyz;
+
+    cameraSpace.vertexPosition = vertexPosition_cameraSpace.xyz;
+    cameraSpace.vertexNormal = vertexNormal_cameraSpace.xyz;
 
     uvCoords = vertexUV;
 

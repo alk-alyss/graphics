@@ -100,6 +100,8 @@ void Shader::getUniformLocations() {
 
     MLocation = glGetUniformLocation(programId, "M");
 
+    cameraPositionLocation = glGetUniformLocation(programId, "cameraPosition");
+
     albedoLocation = glGetUniformLocation(programId, "albedoMap");
     aoLocation = glGetUniformLocation(programId, "aoMap");
     heightLocation = glGetUniformLocation(programId, "heightMap");

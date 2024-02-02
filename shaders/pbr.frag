@@ -22,6 +22,9 @@ layout(std140) uniform Lights{
 	int pointLightsCount;
 };
 
+// Camera Position
+uniform vec3 cameraPosition;
+
 // TEXTURES
 uniform sampler2D albedoMap;
 uniform sampler2D aoMap;
@@ -133,9 +136,8 @@ vec3 pbrLighting(float visibility, vec3 defaultF0) {
     float roughness = texture(roughnessMap, uvCoords).r;
     float ao        = texture(aoMap, uvCoords).r;
 
-	vec3 N = normalize(cameraSpace.vertexNormal); // Fragment normal
-	// vec3 N = normal.xyz; // Fragment normal
-	vec3 E = normalize(-cameraSpace.vertexPosition); // Eye vector
+	vec3 N = normalize(worldSpace.vertexNormal); // Fragment normal
+	vec3 E = normalize(cameraPosition - worldSpace.vertexPosition); // Eye vector
 
 	vec3 F0 = mix(defaultF0, albedo, metallic);
 
@@ -143,8 +145,8 @@ vec3 pbrLighting(float visibility, vec3 defaultF0) {
 	vec3 Lo = vec3(0.0);
 
 	for (int i=0; i<dirLightsCount; i++) {
-		vec3 L = normalize(-cameraSpace.lightDirections[i]); // Light vector
-		vec3 H = normalize(L+E); // Halfway vector
+		vec3 L = normalize(-dirLights[i].direction.xyz); // Light vector
+		vec3 H = normalize(E+L); // Halfway vector
 
 		vec3 radiance = dirLights[i].colorPower.xyz * dirLights[i].colorPower.w;
 
@@ -152,18 +154,19 @@ vec3 pbrLighting(float visibility, vec3 defaultF0) {
 	}
 
 	for (int i=0; i<pointLightsCount; i++) {
-		vec3 L = normalize(cameraSpace.lightPositions[i] - cameraSpace.vertexPosition); // Light vector
-		vec3 H = normalize(L+E); // Halfway vector
+		vec3 L = pointLights[i].position.xyz - worldSpace.vertexPosition; // Light vector
+		float distance = length(L);
 
-		// Light parameters
-		// float distance = length(L);
-		// float attenuation = 1.0 / distance * distance;
-		vec3 radiance = pointLights[i].colorPower.xyz * pointLights[i].colorPower.w;
+		L = normalize(L); // Light vector
+		vec3 H = normalize(E+L); // Halfway vector
+
+		float attenuation = 1.0 / (distance * distance);
+		vec3 radiance = pointLights[i].colorPower.xyz * pointLights[i].colorPower.w * attenuation;
 
 		Lo += CookToranceBRDF(N, E, L, H, radiance, albedo, metallic, roughness, F0);
 	}
 
-	vec3 ambient = vec3(0.3) * albedo * ao;
+	vec3 ambient = vec3(0.03) * albedo * ao;
     vec3 color = ambient + Lo;
 
 	return color;
