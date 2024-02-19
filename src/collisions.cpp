@@ -4,7 +4,7 @@
 #include <glm/gtx/string_cast.hpp>
 
 void checkCollisions(const Scene& scene) {
-    AABB playerAABB = scene.player->getAABB();
+    AABB playerAABB = scene.player->getCollider();
 
     for (auto& model : scene.models) {
         AABB modelAABB = model->getAABB();

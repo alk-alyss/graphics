@@ -4,16 +4,21 @@ using namespace glm;
 
 Player::Player(
     std::shared_ptr<Model> model,
+    std::shared_ptr<Model> collider,
     glm::vec3 position,
     glm::vec3 rotation,
     glm::vec3 scale
-) : Orientable(position, rotation, scale), model(model) {
+) : Orientable(position, rotation, scale), model(model), collider(collider) {
     camera = std::make_unique<Camera>(position, rotation);
-    camera->setNC(0.5);
+    camera->setNC(1.0);
 
     model->setPosition(position);
     model->setRotation(rotation);
     model->setScale(scale);
+
+    collider->setPosition(position);
+    collider->setRotation(rotation);
+    collider->setScale(scale);
 };
 
 void Player::look(float mouseX, float mouseY, float deltaTime) {
@@ -24,6 +29,12 @@ void Player::look(float mouseX, float mouseY, float deltaTime) {
     lookAt(camera->forward() + position, camera->up());
 
     if(!noClip) model->rotate(0,yaw,0);
+}
+
+void Player::syncElements() {
+    if (!noClip) model->setPosition(position);
+    if (!noClip) collider->setPosition(position);
+    camera->setPosition(position);
 }
 
 void Player::moveForward(float deltaTime) {
@@ -44,9 +55,7 @@ void Player::moveForward(float deltaTime) {
     }
 
     translate(normalize(forwardVector) * movementSpeed * deltaTime);
-
-    if (!noClip) model->setPosition(position);
-    camera->setPosition(position);
+    syncElements();
 }
 
 void Player::moveBackward(float deltaTime) {
@@ -67,9 +76,7 @@ void Player::moveBackward(float deltaTime) {
     }
 
     translate(-normalize(forwardVector) * movementSpeed * deltaTime);
-
-    if (!noClip) model->setPosition(position);
-    camera->setPosition(position);
+    syncElements();
 }
 
 void Player::moveLeft(float deltaTime) {
@@ -77,9 +84,7 @@ void Player::moveLeft(float deltaTime) {
 
     if (!noClip) rightVector.y = 0;
     translate(-normalize(rightVector) * movementSpeed * deltaTime);
-
-    if (!noClip) model->setPosition(position);
-    camera->setPosition(position);
+    syncElements();
 }
 
 void Player::moveRight(float deltaTime) {
@@ -87,9 +92,7 @@ void Player::moveRight(float deltaTime) {
 
     if (!noClip) rightVector.y = 0;
     translate(normalize(rightVector) * movementSpeed * deltaTime);
-
-    if (!noClip) model->setPosition(position);
-    camera->setPosition(position);
+    syncElements();
 }
 
 void Player::toggleNoClip() {
@@ -108,5 +111,5 @@ void Player::toggleNoClip() {
 }
 
 void Player::draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const {
-    model->draw(modelMatrix, shader);
+    if(noClip) model->draw(modelMatrix, shader);
 }

@@ -20,7 +20,7 @@ struct Node {
     }
 };
 
-struct Transformation : private Orientable, public Node {
+struct Transformation : public Orientable, public Node {
     using Orientable::Orientable;
 
     glm::mat4 getMatrix() const {return modelMatrix();}

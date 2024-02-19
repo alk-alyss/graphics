@@ -10,6 +10,7 @@
 class Player : public Orientable, Node {
     std::unique_ptr<Camera> camera;
     std::shared_ptr<Model> model;
+    std::shared_ptr<Model> collider;
 
     bool noClip = false;
 
@@ -21,9 +22,12 @@ class Player : public Orientable, Node {
 
     glm::vec3 cameraOffset();
 
+    void syncElements();
+
 public:
     Player(
         std::shared_ptr<Model> model,
+        std::shared_ptr<Model> collider,
         glm::vec3 position = DEFAULT_POSITION,
         glm::vec3 rotation = DEFAULT_ORIENTATION,
         glm::vec3 scale = DEFAULT_SCALE
@@ -44,7 +48,7 @@ public:
 
     void toggleNoClip();
 
-    AABB getAABB() {return model->getAABB();}
+    AABB getCollider() {return collider->getAABB();}
 
     void draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const override;
 };

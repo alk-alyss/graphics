@@ -46,7 +46,7 @@ std::vector<std::shared_ptr<Model>> generateMaze(
 
     std::vector<std::shared_ptr<Model>> maze;
 
-    float scalling = 2.5;
+    float scalling = 3;
 
     for (int i=0; i<mazeMap.size(); i++) {
         auto pair = mazeMap[i];
@@ -57,7 +57,7 @@ std::vector<std::shared_ptr<Model>> generateMaze(
             );
 
         cube->setPosition(glm::vec3(scalling * pair.first, scalling/4, -scalling * pair.second));
-        cube->setScale(glm::vec3(scalling/2, scalling/4, scalling/2));
+        cube->setScale(glm::vec3(scalling/2, scalling/2, scalling/2));
 
         maze.push_back(cube);
     }
@@ -68,12 +68,20 @@ std::vector<std::shared_ptr<Model>> generateMaze(
 const std::shared_ptr<Model> loadSuzanne(Material material) {
     const std::shared_ptr<Mesh> suzanneMesh = std::make_shared<Mesh>("resources/models/suzanne.obj");
     const Transformation suzanneTransformation = Transformation(
-            glm::vec3(0, 0, 0.5),
+            glm::vec3(0, 0, -0.2),
             glm::vec3(0, glm::radians(180.0), 0),
             glm::vec3(0.9)
         );
 
     return std::make_shared<Model>(suzanneMesh, material, suzanneTransformation);
+}
+
+const std::shared_ptr<Model> playerCollider(Material material) {
+    const std::shared_ptr<Mesh> playerCollider = std::make_shared<Mesh>("resources/models/earth.obj");
+    Transformation colliderTransformation;
+    colliderTransformation.setScale(0.5);
+
+    return std::make_shared<Model>(playerCollider, material, colliderTransformation);
 }
 
 int main(void) {
@@ -116,7 +124,8 @@ int main(void) {
 
         std::shared_ptr<Player> player = std::make_shared<Player>(
                 loadSuzanne(materials[0]),
-                glm::vec3(0.0f, 1.0f, 10.0f)
+                playerCollider(materials[0]),
+                glm::vec3(0.0f, 2.0f, 10.0f)
             );
 
         const Scene scene(
