@@ -1,14 +1,16 @@
 #include "model.hpp"
 
 Model::Model(
-    std::shared_ptr<Node> mesh,
-    Material material,
-    glm::vec3 position,
-    glm::vec3 rotation,
-    glm::vec3 scale
-) : Orientable(position, rotation, scale) {
+    const std::shared_ptr<Mesh> mesh,
+    const Material material,
+    const Transformation meshTransformation
+) : mesh(mesh), meshTransformation(meshTransformation), material(material) {
+    std::shared_ptr<Node> transformedMesh = std::make_shared<Transformation>(meshTransformation);
+    transformedMesh->children.push_back(mesh);
+
     std::shared_ptr<Node> materialPtr = std::make_shared<Material>(material);
-    materialPtr->children.push_back(mesh);
+    materialPtr->children.push_back(transformedMesh);
+
     this->children.push_back(materialPtr);
 }
 

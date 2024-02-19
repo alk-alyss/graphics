@@ -41,7 +41,7 @@ std::vector<std::shared_ptr<Model>> generateMaze(
         std::vector<std::pair<int, int>> mazeMap,
         std::vector<Material> materials
     ) {
-    const std::shared_ptr<Node> cubeMesh = std::make_shared<Mesh>("resources/models/cube.obj");
+    const std::shared_ptr<Mesh> cubeMesh = std::make_shared<Mesh>("resources/models/cube.obj");
 
     std::vector<std::shared_ptr<Model>> maze;
 
@@ -52,11 +52,11 @@ std::vector<std::shared_ptr<Model>> generateMaze(
 
         const std::shared_ptr<Model> cube = std::make_shared<Model>(
                 cubeMesh,
-                materials[i % materials.size()],
-                glm::vec3(scalling * pair.first, scalling/4, -scalling * pair.second),
-                glm::vec3(0, 0, 0),
-                glm::vec3(scalling/2, scalling/4, scalling/2)
+                materials[i % materials.size()]
             );
+
+        cube->setPosition(glm::vec3(scalling * pair.first, scalling/4, -scalling * pair.second));
+        cube->setScale(glm::vec3(scalling/2, scalling/4, scalling/2));
 
         maze.push_back(cube);
     }
@@ -65,15 +65,14 @@ std::vector<std::shared_ptr<Model>> generateMaze(
 }
 
 const std::shared_ptr<Model> loadSuzanne(Material material) {
-    const std::shared_ptr<Node> suzanneMesh = std::make_shared<Mesh>("resources/models/suzanne.obj");
-    const std::shared_ptr<Node> suzanneMeshTransformation = std::make_shared<Transformation>(
+    const std::shared_ptr<Mesh> suzanneMesh = std::make_shared<Mesh>("resources/models/suzanne.obj");
+    const Transformation suzanneTransformation = Transformation(
             glm::vec3(0, 0, 0.5),
             glm::vec3(0, glm::radians(180.0), 0),
             glm::vec3(0.9)
         );
-    suzanneMeshTransformation->children.push_back(suzanneMesh);
 
-    return std::make_shared<Model>(suzanneMeshTransformation, material);
+    return std::make_shared<Model>(suzanneMesh, material, suzanneTransformation);
 }
 
 int main(void) {
@@ -84,14 +83,13 @@ int main(void) {
 
         std::vector<std::shared_ptr<Model>> models;
 
-        const std::shared_ptr<Node> plane = Mesh::plane();
+        const std::shared_ptr<Mesh> plane = Mesh::plane();
         const std::shared_ptr<Model> planeModel = std::make_shared<Model>(
                 plane,
-                materials[1],
-                glm::vec3(0, 0, 0),
-                glm::vec3(0, 0, 0),
-                glm::vec3(100)
+                materials[1]
             );
+
+        planeModel->setScale(glm::vec3(100));
 
         models.push_back(planeModel);
 

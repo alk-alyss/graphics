@@ -8,13 +8,17 @@
 #include "mesh.hpp"
 #include "material.hpp"
 
-struct Model : public Orientable, public Node {
+class Model : public Orientable, public Node {
+private:
+    const std::shared_ptr<Mesh> mesh;
+    const Transformation meshTransformation;
+    const Material material;
+
+public:
     Model(
-        std::shared_ptr<Node> mesh,
+        std::shared_ptr<Mesh> mesh,
         Material material,
-        glm::vec3 position = DEFAULT_POSITION,
-        glm::vec3 rotation = DEFAULT_ORIENTATION,
-        glm::vec3 scale = DEFAULT_SCALE
+        Transformation meshTransformation = Transformation()
     );
 
     void draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const override;
