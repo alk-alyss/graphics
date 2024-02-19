@@ -23,6 +23,8 @@ struct Node {
 struct Transformation : private Orientable, public Node {
     using Orientable::Orientable;
 
+    glm::mat4 getMatrix() const {return modelMatrix();}
+
     void draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const override {
         modelMatrix = modelMatrix * this->modelMatrix();
 

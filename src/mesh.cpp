@@ -112,11 +112,30 @@ void indexVBO(
     }
 }
 
+AABB::AABB(const std::vector<glm::vec3>& vertices) {
+    float xmin = vertices[0].x, xmax = xmin;
+    float ymin = vertices[0].y, ymax = ymin;
+    float zmin = vertices[0].z, zmax = zmin;
+    for (auto& vertex : vertices) {
+        xmin = std::min(vertex.x, xmin);
+        ymin = std::min(vertex.y, ymin);
+        zmin = std::min(vertex.z, zmin);
+
+        xmax = std::max(vertex.x, xmax);
+        ymax = std::max(vertex.y, ymax);
+        zmax = std::max(vertex.z, zmax);
+    }
+
+    min = glm::vec3(xmin, ymin, zmin);
+    max = glm::vec3(xmax, ymax, zmax);
+};
+
 Mesh::Mesh(
     const vector<vec3>& vertices,
     const vector<vec2>& uvs,
     const vector<vec3>& normals
 ) : vertices(vertices), uvs(uvs), normals(normals) {
+    aabb = AABB(vertices);
     indexVBO(vertices, uvs, normals, indices, indexedVertices, indexedUVS, indexedNormals);
     loadVram();
 }
@@ -128,6 +147,7 @@ Mesh::Mesh(std::string path) {
         throw runtime_error("File format not supported: " + path);
     }
 
+    aabb = AABB(vertices);
     indexVBO(vertices, uvs, normals, indices, indexedVertices, indexedUVS, indexedNormals);
     loadVram();
 }

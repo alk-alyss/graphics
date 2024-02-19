@@ -32,6 +32,15 @@ void indexVBO(
     std::vector<glm::vec3> & out_normals
 );
 
+struct AABB {
+    glm::vec3 min;
+    glm::vec3 max;
+
+    AABB() = default;
+    AABB(glm::vec3 min, glm::vec3 max): min(min), max(max) {};
+    AABB(const std::vector<glm::vec3>& vertices);
+};
+
 class Mesh : public Node{
 protected:
     std::vector<glm::vec3> vertices, normals, indexedVertices, indexedNormals;
@@ -39,6 +48,8 @@ protected:
     std::vector<unsigned int> indices;
 
     GLuint VAO, verticesVBO, uvsVBO, normalsVBO, EBO;
+
+    AABB aabb;
 
 public:
     Mesh(
@@ -65,7 +76,8 @@ public:
         indexedNormals(other.indexedNormals),
         uvs(other.uvs),
         indexedUVS(other.indexedUVS),
-        indices(other.indices)
+        indices(other.indices),
+        aabb(other.aabb)
     {
         other.VAO = 0; //Use the "null" VAO for the old object.
     }
@@ -87,6 +99,7 @@ public:
             std::swap(uvs, other.uvs);
             std::swap(indexedUVS, other.indexedUVS);
             std::swap(indices, other.indices);
+            std::swap(aabb, other.aabb);
         }
 
         return *this;
@@ -94,6 +107,8 @@ public:
 
     void loadVram();
     void unloadVram();
+
+    const AABB getAABB() {return aabb;}
 
     int vertexCount() const {return vertices.size();}
     GLuint getVao() const {return VAO;}
