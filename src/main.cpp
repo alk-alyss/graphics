@@ -33,6 +33,7 @@ std::vector<Material> loadMaterials() {
     std::vector<Material> materials;
     materials.push_back(Material("resources/textures/whispy-grass-meadow-bl"));
     materials.push_back(Material("resources/textures/dry-dirt2-bl"));
+    materials.push_back(Material("resources/textures/rusty-metal-bl"));
     return materials;
 }
 
@@ -51,7 +52,7 @@ std::vector<std::shared_ptr<Model>> generateMaze(
 
         const std::shared_ptr<Model> cube = std::make_shared<Model>(
                 cubeMesh,
-                materials[0 % materials.size()],
+                materials[i % materials.size()],
                 glm::vec3(scalling * pair.first, scalling/4, -scalling * pair.second),
                 glm::vec3(0, 0, 0),
                 glm::vec3(scalling/2, scalling/4, scalling/2)
@@ -110,7 +111,7 @@ int main(void) {
 
         std::vector<PointLight> pointLights{
             PointLight(
-                glm::vec3(0,0,100)
+                glm::vec3(0,3,10)
             )
         };
 
