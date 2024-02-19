@@ -140,18 +140,18 @@ int main(void) {
             // Clear the screen.
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+            // Events
+            glfwPollEvents();
+
+            handleMouse(window, player, deltaTime);
+            handleKeyboard(window, player, deltaTime);
+
             player->updateCamera(window.get());
 
             renderer.render(scene);
 
             // Swap buffers
             glfwSwapBuffers(window.get());
-
-            // Events
-            glfwPollEvents();
-
-            handleMouse(window, player, deltaTime);
-            handleKeyboard(window, player, deltaTime);
 
             lastTime = currentTime;
         } // Check if the window should be closed
