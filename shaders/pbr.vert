@@ -55,7 +55,18 @@ out vec2 uvCoords;
 out WORLD_SPACE {
     vec3 vertexPosition;
     vec3 vertexNormal;
+    vec3 vertexTangent;
+    vec3 vertexBitangent;
 } worldSpace;
+
+out TANGENT_WORLD_SPACE {
+    vec3 cameraPosition;
+    vec3 vertexPosition;
+    vec3 vertexNormal;
+    vec3 lightDirections[MAX_DIR_LIGHTS];
+    vec3 lightPositions[MAX_POINT_LIGHTS];
+    mat3 TBN;
+} worldTangentSpace;
 
 out CAMERA_SPACE {
     vec3 vertexPosition;
@@ -63,6 +74,13 @@ out CAMERA_SPACE {
     vec3 lightDirections[MAX_DIR_LIGHTS];
     vec3 lightPositions[MAX_POINT_LIGHTS];
 } cameraSpace;
+
+out TANGENT_CAMERA_SPACE {
+    vec3 vertexPosition;
+    vec3 vertexNormal;
+    vec3 lightDirections[MAX_DIR_LIGHTS];
+    vec3 lightPositions[MAX_POINT_LIGHTS];
+} cameraTangentSpace;
 
 
 void main() {
@@ -72,22 +90,44 @@ void main() {
     vec4 vertexPosition_cameraSpace = V * vertexPosition_worldSpace;
     vec4 vertexNormal_cameraSpace = normalize(V * vertexNormal_worldSpace);
 
-    cameraSpace.vertexPosition = vertexPosition_cameraSpace.xyz;
-    cameraSpace.vertexNormal = (V * vertexNormal_worldSpace).xyz;
+    vec4 vertexTangent_worldSpace = normalize(M * vec4(vertexTangent, 0));
+    vec4 vertexBitangent_worldSpace = normalize(M * vec4(vertexBitangent, 0));
+
+    vec4 vertexTangent_cameraSpace = normalize(V * M * vec4(vertexTangent, 0));
+    vec4 vertexBitangent_cameraSpace = normalize(V * M * vec4(vertexBitangent, 0));
+
+    mat3 worldTBN = mat3(vertexTangent_cameraSpace, vertexBitangent_cameraSpace, vertexNormal_cameraSpace);
+
+    mat3 cameraTBN = transpose(mat3(vertexTangent_cameraSpace, vertexBitangent_cameraSpace, vertexNormal_cameraSpace));
 
     for (int i=0; i<dirLightsCount; i++) {
+        worldTangentSpace.lightDirections[i] = worldTBN * dirLights[i].direction.xyz;
         cameraSpace.lightDirections[i] = (V * dirLights[i].direction).xyz;
+        cameraTangentSpace.lightDirections[i] = cameraTBN * cameraSpace.lightDirections[i];
     }
 
     for (int i=0; i<pointLightsCount; i++) {
+        worldTangentSpace.lightPositions[i] = worldTBN * pointLights[i].position.xyz;
         cameraSpace.lightPositions[i] = (V * pointLights[i].position).xyz;
+        cameraTangentSpace.lightPositions[i] = cameraTBN * cameraSpace.lightPositions[i];
     }
 
     worldSpace.vertexPosition = vertexPosition_worldSpace.xyz;
     worldSpace.vertexNormal = vertexNormal_worldSpace.xyz;
+    worldSpace.vertexTangent = vertexTangent_worldSpace.xyz;
+    worldSpace.vertexBitangent = vertexBitangent_worldSpace.xyz;
 
     cameraSpace.vertexPosition = vertexPosition_cameraSpace.xyz;
     cameraSpace.vertexNormal = vertexNormal_cameraSpace.xyz;
+
+    worldTangentSpace.cameraPosition = worldTBN * cameraPosition;
+    worldTangentSpace.vertexPosition = worldTBN * worldSpace.vertexPosition;
+    worldTangentSpace.vertexNormal = worldTBN * worldSpace.vertexNormal;
+
+    worldTangentSpace.TBN = transpose(worldTBN);
+
+    cameraTangentSpace.vertexPosition = cameraTBN * cameraSpace.vertexPosition;
+    cameraTangentSpace.vertexNormal = cameraTBN * cameraSpace.vertexNormal;
 
     uvCoords = vertexUV;
 

@@ -39,7 +39,18 @@ in vec2 uvCoords;
 in WORLD_SPACE {
 	vec3 vertexPosition;
 	vec3 vertexNormal;
+	vec3 vertexTangent;
+	vec3 vertexBitangent;
 } worldSpace;
+
+in TANGENT_WORLD_SPACE {
+	vec3 cameraPosition;
+	vec3 vertexPosition;
+	vec3 vertexNormal;
+	vec3 lightDirections[MAX_DIR_LIGHTS];
+	vec3 lightPositions[MAX_POINT_LIGHTS];
+	mat3 TBN;
+} worldTangentSpace;
 
 in CAMERA_SPACE {
 	vec3 vertexPosition;
@@ -47,6 +58,13 @@ in CAMERA_SPACE {
 	vec3 lightDirections[MAX_DIR_LIGHTS];
 	vec3 lightPositions[MAX_POINT_LIGHTS];
 } cameraSpace;
+
+in TANGENT_CAMERA_SPACE {
+	vec3 vertexPosition;
+	vec3 vertexNormal;
+	vec3 lightDirections[MAX_DIR_LIGHTS];
+	vec3 lightPositions[MAX_POINT_LIGHTS];
+} cameraTangentSpace;
 
 // FRAGMENT SHADER OUT
 out vec4 fragmentColor;
@@ -136,25 +154,29 @@ vec3 pbrLighting(float visibility, vec3 defaultF0) {
     float roughness = texture(roughnessMap, uvCoords).r;
     float ao        = texture(aoMap, uvCoords).r;
 
-	vec3 N = normalize(worldSpace.vertexNormal); // Fragment normal
-	vec3 E = normalize(cameraPosition - worldSpace.vertexPosition); // Eye vector
+	// vec3 N = normalize(worldSpace.vertexNormal); // Fragment normal
+	// vec3 N = worldTangentSpace.TBN * normal.xyz; // Fragment normal
+	vec3 N = normal.xyz; // Fragment normal
+	// vec3 E = normalize(cameraPosition - worldSpace.vertexPosition); // Eye vector
+	vec3 E = normalize(worldTangentSpace.cameraPosition - worldTangentSpace.vertexPosition); // Eye vector
 
 	vec3 F0 = mix(defaultF0, albedo, metallic);
 
 	// Reflectance equation output
 	vec3 Lo = vec3(0.0);
 
-	for (int i=0; i<dirLightsCount; i++) {
-		vec3 L = normalize(-dirLights[i].direction.xyz); // Light vector
-		vec3 H = normalize(E+L); // Halfway vector
+	// for (int i=0; i<dirLightsCount; i++) {
+	// 	vec3 L = normalize(-worldTangentSpace.lightDirections[i]);
+	// 	// vec3 L = normalize(-dirLights[i].direction.xyz); // Light vector
+	// 	vec3 H = normalize(E+L); // Halfway vector
 
-		vec3 radiance = dirLights[i].colorPower.xyz * dirLights[i].colorPower.w;
+	// 	vec3 radiance = dirLights[i].colorPower.xyz * dirLights[i].colorPower.w;
 
-		Lo += CookToranceBRDF(N, E, L, H, radiance, albedo, metallic, roughness, F0);
-	}
+	// 	Lo += CookToranceBRDF(N, E, L, H, radiance, albedo, metallic, roughness, F0);
+	// }
 
 	for (int i=0; i<pointLightsCount; i++) {
-		vec3 L = pointLights[i].position.xyz - worldSpace.vertexPosition; // Light vector
+		vec3 L = worldTangentSpace.lightPositions[i] - worldTangentSpace.vertexPosition; // Light vector
 		float distance = length(L);
 
 		L = normalize(L); // Light vector
