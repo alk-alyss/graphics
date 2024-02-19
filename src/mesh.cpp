@@ -130,6 +130,15 @@ AABB::AABB(const std::vector<glm::vec3>& vertices) {
     max = glm::vec3(xmax, ymax, zmax);
 };
 
+bool AABB::intersects(const AABB& other) {
+    return this->max.x > other.min.x &&
+        this->min.x < other.max.x &&
+        this->max.y > other.min.y &&
+        this->min.y < other.max.y &&
+        this->max.z > other.min.z &&
+        this->min.z < other.max.z;
+}
+
 Mesh::Mesh(
     const vector<vec3>& vertices,
     const vector<vec2>& uvs,

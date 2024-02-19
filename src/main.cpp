@@ -9,6 +9,7 @@
 #include "renderer.hpp"
 #include "player.hpp"
 #include "controls.hpp"
+#include "collisions.hpp"
 
 std::vector<std::pair<int, int>> mazeMap{
     std::pair<int, int> (0,0),
@@ -115,7 +116,7 @@ int main(void) {
 
         std::shared_ptr<Player> player = std::make_shared<Player>(
                 loadSuzanne(materials[0]),
-                glm::vec3(0.0f, 3.0f, 10.0f)
+                glm::vec3(0.0f, 1.0f, 10.0f)
             );
 
         const Scene scene(
@@ -144,6 +145,8 @@ int main(void) {
 
             handleMouse(window, player, deltaTime);
             handleKeyboard(window, player, deltaTime);
+
+            checkCollisions(scene);
 
             player->updateCamera(window.get());
 

@@ -39,6 +39,8 @@ struct AABB {
     AABB() = default;
     AABB(glm::vec3 min, glm::vec3 max): min(min), max(max) {};
     AABB(const std::vector<glm::vec3>& vertices);
+
+    bool intersects(const AABB& other);
 };
 
 class Mesh : public Node{

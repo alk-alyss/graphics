@@ -44,6 +44,8 @@ public:
 
     void toggleNoClip();
 
+    AABB getAABB() {return model->getAABB();}
+
     void draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const override;
 };
 

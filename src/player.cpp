@@ -9,7 +9,7 @@ Player::Player(
     glm::vec3 scale
 ) : Orientable(position, rotation, scale), model(model) {
     camera = std::make_unique<Camera>(position, rotation);
-    camera->setNC(1.0);
+    camera->setNC(0.5);
 
     model->setPosition(position);
     model->setRotation(rotation);

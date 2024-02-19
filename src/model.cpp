@@ -39,8 +39,6 @@ AABB Model::getAABB() const {
 
     const AABB modelAABB = AABB(vertices);
 
-    std::cout << glm::to_string(modelAABB.min) << " " << glm::to_string(modelAABB.max) << std::endl;
-
     return modelAABB;
 }
 
