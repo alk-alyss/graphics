@@ -41,11 +41,11 @@ void Player::moveForward(float deltaTime) {
         }
 
         forwardVector.y = 0;
-
-        model->setPosition(position);
     }
 
     translate(normalize(forwardVector) * movementSpeed * deltaTime);
+
+    if (!noClip) model->setPosition(position);
     camera->setPosition(position);
 }
 
@@ -64,37 +64,31 @@ void Player::moveBackward(float deltaTime) {
         }
 
         forwardVector.y = 0;
-
-        model->setPosition(position);
     }
 
     translate(-normalize(forwardVector) * movementSpeed * deltaTime);
+
+    if (!noClip) model->setPosition(position);
     camera->setPosition(position);
 }
 
 void Player::moveLeft(float deltaTime) {
     glm::vec3 rightVector = right();
 
-    if (!noClip) {
-        rightVector.y = 0;
-
-        model->setPosition(position);
-    }
-
+    if (!noClip) rightVector.y = 0;
     translate(-normalize(rightVector) * movementSpeed * deltaTime);
+
+    if (!noClip) model->setPosition(position);
     camera->setPosition(position);
 }
 
 void Player::moveRight(float deltaTime) {
     glm::vec3 rightVector = right();
 
-    if (!noClip) {
-        rightVector.y = 0;
-
-        model->setPosition(position);
-    }
-
+    if (!noClip) rightVector.y = 0;
     translate(normalize(rightVector) * movementSpeed * deltaTime);
+
+    if (!noClip) model->setPosition(position);
     camera->setPosition(position);
 }
 
