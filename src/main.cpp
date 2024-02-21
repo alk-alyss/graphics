@@ -10,6 +10,7 @@
 #include "player.hpp"
 #include "controls.hpp"
 #include "collisions.hpp"
+#include "resources.hpp"
 
 std::vector<std::pair<int, int>> mazeMap{
     std::pair<int, int> (0,0),
@@ -31,19 +32,28 @@ std::vector<std::pair<int, int>> mazeMap{
 };
 
 std::vector<Material> loadMaterials() {
+    grassMaterial = Material("resources/textures/whispy-grass-meadow-bl");
+    dirtMaterial = Material("resources/textures/dry-dirt2-bl");
+    metalMaterial = Material("resources/textures/rusty-metal-bl");
+
     std::vector<Material> materials;
-    materials.push_back(Material("resources/textures/whispy-grass-meadow-bl"));
-    materials.push_back(Material("resources/textures/dry-dirt2-bl"));
-    materials.push_back(Material("resources/textures/rusty-metal-bl"));
+    materials.push_back(grassMaterial);
+    materials.push_back(dirtMaterial);
+    materials.push_back(metalMaterial);
     return materials;
+}
+
+void loadMeshes() {
+    planeMesh = Mesh::plane();
+    sphereMesh = std::make_shared<Mesh>("resources/models/earth.obj");
+    cubeMesh = std::make_shared<Mesh>("resources/models/cube.obj");
+    suzanneMesh = std::make_shared<Mesh>("resources/models/suzanne.obj");
 }
 
 std::vector<std::shared_ptr<Model>> generateMaze(
         std::vector<std::pair<int, int>> mazeMap,
         std::vector<Material> materials
     ) {
-    const std::shared_ptr<Mesh> cubeMesh = std::make_shared<Mesh>("resources/models/cube.obj");
-
     std::vector<std::shared_ptr<Model>> maze;
 
     float scalling = 3;
@@ -66,7 +76,6 @@ std::vector<std::shared_ptr<Model>> generateMaze(
 }
 
 const std::shared_ptr<Model> loadSuzanne(Material material) {
-    const std::shared_ptr<Mesh> suzanneMesh = std::make_shared<Mesh>("resources/models/suzanne.obj");
     const Transformation suzanneTransformation = Transformation(
             glm::vec3(0, 0, -0.2),
             glm::vec3(0, glm::radians(180.0), 0),
@@ -77,11 +86,10 @@ const std::shared_ptr<Model> loadSuzanne(Material material) {
 }
 
 const std::shared_ptr<Model> playerCollider(Material material) {
-    const std::shared_ptr<Mesh> playerCollider = std::make_shared<Mesh>("resources/models/earth.obj");
     Transformation colliderTransformation;
     colliderTransformation.setScale(0.3);
 
-    return std::make_shared<Model>(playerCollider, material, colliderTransformation);
+    return std::make_shared<Model>(sphereMesh, material, colliderTransformation);
 }
 
 int main(void) {
@@ -89,12 +97,12 @@ int main(void) {
         const std::shared_ptr<GLFWwindow> window = createWindow();
 
         auto materials = loadMaterials();
+        loadMeshes();
 
         std::vector<std::shared_ptr<Model>> models;
 
-        const std::shared_ptr<Mesh> plane = Mesh::plane();
         const std::shared_ptr<Model> planeModel = std::make_shared<Model>(
-                plane,
+                planeMesh,
                 materials[1]
             );
 
@@ -128,7 +136,7 @@ int main(void) {
                 glm::vec3(0.0f, 2.0f, 10.0f)
             );
 
-        const Scene scene(
+        Scene scene(
             player,
             models,
             dirLights,

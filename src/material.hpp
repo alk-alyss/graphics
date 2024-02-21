@@ -54,6 +54,8 @@ struct Material : Node{
     std::shared_ptr<Texture> normal;
     std::shared_ptr<Texture> roughness;
 
+    Material() = default;
+
     Material(
         std::shared_ptr<Texture> albedo,
         std::shared_ptr<Texture> ao,
