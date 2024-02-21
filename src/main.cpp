@@ -70,7 +70,7 @@ const std::shared_ptr<Model> loadSuzanne(Material material) {
     const Transformation suzanneTransformation = Transformation(
             glm::vec3(0, 0, -0.2),
             glm::vec3(0, glm::radians(180.0), 0),
-            glm::vec3(0.9)
+            glm::vec3(0.5)
         );
 
     return std::make_shared<Model>(suzanneMesh, material, suzanneTransformation);
@@ -79,7 +79,7 @@ const std::shared_ptr<Model> loadSuzanne(Material material) {
 const std::shared_ptr<Model> playerCollider(Material material) {
     const std::shared_ptr<Mesh> playerCollider = std::make_shared<Mesh>("resources/models/earth.obj");
     Transformation colliderTransformation;
-    colliderTransformation.setScale(0.5);
+    colliderTransformation.setScale(0.3);
 
     return std::make_shared<Model>(playerCollider, material, colliderTransformation);
 }

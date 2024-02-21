@@ -23,30 +23,27 @@ void handleMouse(std::shared_ptr<GLFWwindow> windowPtr, std::shared_ptr<Player> 
 void handleKeyboard(std::shared_ptr<GLFWwindow> windowPtr, std::shared_ptr<Player> player, float deltaTime) {
     GLFWwindow* window = windowPtr.get();
 
-    static bool toggle = false;
-
+    // Move forware - backward
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         player->moveForward(deltaTime);
-    }
-    // Move backward
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+    } else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
         player->moveBackward(deltaTime);
     }
-    // Strafe right
+    // Strafe right - left
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
         player->moveRight(deltaTime);
-    }
-    // Strafe left
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+    } else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
         player->moveLeft(deltaTime);
     }
 
+    // Zoom in - out
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
         player->zoom(deltaTime);
-    }
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+    } else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
         player->zoom(-deltaTime);
     }
+
+    static bool toggle = false;
 
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
         if (!toggle) player->toggleNoClip();
