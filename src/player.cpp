@@ -10,7 +10,7 @@ Player::Player(
     glm::vec3 scale
 ) : Orientable(position, rotation, scale), model(model), collider(collider) {
     camera = std::make_unique<Camera>(position, rotation);
-    camera->setNC(1.0);
+    camera->setNC(0.5);
 
     model->setPosition(position);
     model->setRotation(rotation);
@@ -20,6 +20,11 @@ Player::Player(
     collider->setRotation(rotation);
     collider->setScale(scale);
 };
+
+void Player::update(float deltaTime) {
+    translate(velocity * deltaTime);
+    velocity = glm::vec3(0);
+}
 
 void Player::look(float mouseX, float mouseY, float deltaTime) {
     float pitch = -mouseY * mouseSpeed * deltaTime;
@@ -31,7 +36,8 @@ void Player::look(float mouseX, float mouseY, float deltaTime) {
     if(!noClip) model->rotate(0,yaw,0);
 }
 
-void Player::syncElements() {
+void Player::translate(glm::vec3 translation) {
+    Orientable::translate(translation);
     if (!noClip) model->setPosition(position);
     if (!noClip) collider->setPosition(position);
     camera->setPosition(position);
@@ -54,8 +60,10 @@ void Player::moveForward(float deltaTime) {
         forwardVector.y = 0;
     }
 
-    translate(normalize(forwardVector) * movementSpeed * deltaTime);
-    syncElements();
+    if (glm::length(velocity) > 0) velocity = normalize(velocity);
+
+    velocity += forwardVector;
+    velocity = normalize(velocity) * movementSpeed;
 }
 
 void Player::moveBackward(float deltaTime) {
@@ -75,24 +83,30 @@ void Player::moveBackward(float deltaTime) {
         forwardVector.y = 0;
     }
 
-    translate(-normalize(forwardVector) * movementSpeed * deltaTime);
-    syncElements();
+    if (glm::length(velocity) > 0) velocity = normalize(velocity);
+
+    velocity -= forwardVector;
+    velocity = normalize(velocity) * movementSpeed;
 }
 
 void Player::moveLeft(float deltaTime) {
     glm::vec3 rightVector = right();
 
     if (!noClip) rightVector.y = 0;
-    translate(-normalize(rightVector) * movementSpeed * deltaTime);
-    syncElements();
+    if (glm::length(velocity) > 0) velocity = normalize(velocity);
+
+    velocity -= rightVector;
+    velocity = normalize(velocity) * movementSpeed;
 }
 
 void Player::moveRight(float deltaTime) {
     glm::vec3 rightVector = right();
 
     if (!noClip) rightVector.y = 0;
-    translate(normalize(rightVector) * movementSpeed * deltaTime);
-    syncElements();
+    if (glm::length(velocity) > 0) velocity = normalize(velocity);
+
+    velocity += rightVector;
+    velocity = normalize(velocity) * movementSpeed;
 }
 
 void Player::toggleNoClip() {

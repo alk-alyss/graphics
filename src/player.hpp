@@ -20,9 +20,8 @@ class Player : public Orientable, Node {
     glm::vec3 originalPosition;
     glm::quat originalOrientation;
 
+    glm::vec3 velocity;
     glm::vec3 cameraOffset();
-
-    void syncElements();
 
 public:
     Player(
@@ -33,11 +32,17 @@ public:
         glm::vec3 scale = DEFAULT_SCALE
     );
 
+    void update(float deltaTime);
+
     void updateCamera(GLFWwindow* window) {camera->updateAspectRatio(window);}
     const Camera& getCamera() {return *camera;}
 
     void setMovementSpeed(float movementSpeed) {this->movementSpeed = movementSpeed;}
     void setMouseSpeed(float mouseSpeed) {this->mouseSpeed = mouseSpeed;}
+
+    glm::vec3 getVelocity() const {return velocity;}
+
+    void translate(glm::vec3 translation) override;
 
     void look(float mouseX, float mouseY, float deltaTime);
     void moveForward(float deltaTime);

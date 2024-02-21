@@ -56,7 +56,7 @@ std::vector<std::shared_ptr<Model>> generateMaze(
                 materials[i % materials.size()]
             );
 
-        cube->setPosition(glm::vec3(scalling * pair.first, scalling/2, -scalling * pair.second));
+        cube->setPosition(scalling * pair.first, scalling/2, -scalling * pair.second);
         cube->setScale(glm::vec3(scalling/2, scalling/2, scalling/2));
 
         maze.push_back(cube);
@@ -158,6 +158,7 @@ int main(void) {
             checkCollisions(scene, deltaTime);
 
             player->updateCamera(window.get());
+            player->update(deltaTime);
 
             renderer.render(scene);
 
