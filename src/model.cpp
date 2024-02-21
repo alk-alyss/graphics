@@ -42,7 +42,34 @@ AABB Model::getAABB() const {
     return modelAABB;
 }
 
-void Model::draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const {
+glm::vec3 Model::getClosestBlockNormal(const glm::vec3 point) const {
+    glm::vec3 modelToPoint = glm::normalize(point - getPosition());
+    glm::vec3 normalVector = modelToPoint;
+
+    float xDot = glm::dot(modelToPoint, glm::vec3(1, 0, 0));
+    float zDot = glm::dot(modelToPoint, glm::vec3(0, 0, 1));
+    /* std::cout << "xDot: " << xDot << " zDot: " << zDot << " "; */
+
+    float limit = 0.5;
+    if (std::abs(xDot) > std::abs(zDot)) {
+        if (xDot > limit) {
+            normalVector = glm::vec3(1,0,0);
+        } else if (xDot < -limit) {
+            normalVector = glm::vec3(-1,0,0);
+        }
+    } else {
+        if (zDot > limit) {
+            normalVector = glm::vec3(0,0,1);
+        } else if (zDot < -limit) {
+            normalVector = glm::vec3(0,0,-1);
+        }
+    }
+
+    return normalVector;
+}
+
+
+void Model::draw(glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const {
     modelMatrix = modelMatrix * this->modelMatrix();
 
     Node::draw(modelMatrix, shader);

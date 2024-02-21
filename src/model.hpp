@@ -23,7 +23,9 @@ public:
 
     AABB getAABB() const;
 
-    void draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const override;
+    void draw(glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const override;
+
+    glm::vec3 getClosestBlockNormal(const glm::vec3 position) const;
 };
 
 #endif
