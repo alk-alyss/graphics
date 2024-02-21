@@ -152,8 +152,8 @@ int main(void) {
             // Events
             glfwPollEvents();
 
-            handleMouse(window, player, deltaTime);
-            handleKeyboard(window, player, deltaTime);
+            handleMouse(window, scene, deltaTime);
+            handleKeyboard(window, scene, deltaTime);
 
             checkCollisions(scene, deltaTime);
 

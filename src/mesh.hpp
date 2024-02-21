@@ -41,6 +41,7 @@ struct AABB {
     AABB(const std::vector<glm::vec3>& vertices);
 
     bool intersects(const AABB& other);
+    bool intersects(const glm::vec3 point);
 };
 
 class Mesh : public Node{

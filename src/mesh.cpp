@@ -139,6 +139,15 @@ bool AABB::intersects(const AABB& other) {
         this->min.z < other.max.z;
 }
 
+bool AABB::intersects(const glm::vec3 point) {
+    return point.x > this->min.x &&
+        point.y > this->min.y &&
+        point.z > this->min.z &&
+        point.x < this->max.x &&
+        point.y < this->max.y &&
+        point.z < this->max.z;
+}
+
 Mesh::Mesh(
     const vector<vec3>& vertices,
     const vector<vec2>& uvs,

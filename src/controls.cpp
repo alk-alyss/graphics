@@ -1,9 +1,11 @@
 #include "controls.hpp"
+#include "collisions.hpp"
 
 #include <iostream>
 
-void handleMouse(std::shared_ptr<GLFWwindow> windowPtr, std::shared_ptr<Player> player, float deltaTime) {
+void handleMouse(const std::shared_ptr<GLFWwindow> windowPtr, Scene& scene, const float deltaTime) {
     GLFWwindow* window = windowPtr.get();
+    auto& player = scene.player;
 
     int width, height;
     glfwGetWindowSize(window, &width, &height);
@@ -18,10 +20,22 @@ void handleMouse(std::shared_ptr<GLFWwindow> windowPtr, std::shared_ptr<Player> 
     glfwSetCursorPos(window, width / 2.0, height / 2.0);
 
     player->look(mouseX, mouseY, deltaTime);
+
+    static bool toggle = false;
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS) {
+        if (!toggle) {
+            std::cout << "mouse pressed" << std::endl;
+            auto model = castRay(scene, player->getPosition(), player->forward());
+        }
+        toggle = true;
+    } else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == GLFW_RELEASE) {
+        toggle = false;
+    }
 }
 
-void handleKeyboard(std::shared_ptr<GLFWwindow> windowPtr, std::shared_ptr<Player> player, float deltaTime) {
+void handleKeyboard(const std::shared_ptr<GLFWwindow> windowPtr, const Scene& scene, const float deltaTime) {
     GLFWwindow* window = windowPtr.get();
+    auto& player = scene.player;
 
     // Move forware - backward
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
