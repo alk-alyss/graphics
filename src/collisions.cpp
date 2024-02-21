@@ -13,7 +13,7 @@ void handleCollision(const std::shared_ptr<Player> player, const std::shared_ptr
     if (speed < 0) speed = 0;
 
     kickbackVector = normalVector * speed;
-    std::cout << glm::to_string(normalVector) << " " << glm::to_string(kickbackVector) << std::endl;
+    /* std::cout << glm::to_string(normalVector) << " " << glm::to_string(kickbackVector) << std::endl; */
 
     player->translate(kickbackVector * deltaTime);
 }
