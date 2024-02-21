@@ -25,7 +25,6 @@ void handleMouse(const std::shared_ptr<GLFWwindow> windowPtr, Scene& scene, cons
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS) {
         if (!mouse1Toggle) {
             auto model = castRay(scene, player->getPosition(), player->forward());
-            std::cout << model << std::endl;
             if (model == nullptr) return;
             scene.createFirstPortal(model);
         }
@@ -38,7 +37,6 @@ void handleMouse(const std::shared_ptr<GLFWwindow> windowPtr, Scene& scene, cons
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_2) == GLFW_PRESS) {
         if (!mouse2Toggle) {
             auto model = castRay(scene, player->getPosition(), player->forward());
-            std::cout << model << std::endl;
             if (model == nullptr) return;
             scene.createSecondPortal(model);
         }

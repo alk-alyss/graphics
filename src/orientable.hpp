@@ -37,6 +37,7 @@ public:
     void setScale(float newScale) {setScale(glm::vec3(newScale, newScale, newScale));}
 
     glm::vec3 getPosition() const {return position;}
+    glm::vec3 getSize() const {return scale;}
 
     glm::mat4 translationMatrix() const;
     glm::mat4 rotationMatrix() const;
@@ -53,7 +54,7 @@ public:
     void rotate(float pitch, float yaw, float roll) {rotate(glm::vec3(pitch, yaw, roll));}
     virtual void rotate(float angle, glm::vec3 axis);
 
-    virtual void lookAt(glm::vec3 target, glm::vec3 up = glm::vec3(0, 1, 0), glm::vec3 alternativeUp = glm::vec3(0,0,1));
+    virtual void lookAt(const glm::vec3 target, const glm::vec3 up = glm::vec3(0, 1, 0), const glm::vec3 alternativeUp = glm::vec3(0,0,1));
 };
 
 #endif

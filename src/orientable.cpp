@@ -72,7 +72,7 @@ mat4 Orientable::modelMatrix() const {
     return translationMatrix() * rotationMatrix() * scallingMatrix();
 }
 
-void Orientable::lookAt(vec3 target, vec3 up, vec3 alternativeUp) {
+void Orientable::lookAt(const vec3 target, const vec3 up, const vec3 alternativeUp) {
     assert(target != position);
 
     vec3 direction = target - position;
