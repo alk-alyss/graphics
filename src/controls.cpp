@@ -21,15 +21,30 @@ void handleMouse(const std::shared_ptr<GLFWwindow> windowPtr, Scene& scene, cons
 
     player->look(mouseX, mouseY, deltaTime);
 
-    static bool toggle = false;
+    static bool mouse1Toggle = false;
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS) {
-        if (!toggle) {
-            std::cout << "mouse pressed" << std::endl;
+        if (!mouse1Toggle) {
             auto model = castRay(scene, player->getPosition(), player->forward());
+            std::cout << model << std::endl;
+            if (model == nullptr) return;
+            scene.createFirstPortal(model);
         }
-        toggle = true;
+        mouse1Toggle = true;
     } else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == GLFW_RELEASE) {
-        toggle = false;
+        mouse1Toggle = false;
+    }
+
+    static bool mouse2Toggle = false;
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_2) == GLFW_PRESS) {
+        if (!mouse2Toggle) {
+            auto model = castRay(scene, player->getPosition(), player->forward());
+            std::cout << model << std::endl;
+            if (model == nullptr) return;
+            scene.createSecondPortal(model);
+        }
+        mouse2Toggle = true;
+    } else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == GLFW_RELEASE) {
+        mouse2Toggle = false;
     }
 }
 

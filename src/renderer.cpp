@@ -49,6 +49,9 @@ void Renderer::render(
         model->draw(initialTransformation, shader);
     }
 
+    if (scene.portals.first != nullptr) scene.portals.first->draw(initialTransformation, shader);
+    if (scene.portals.second != nullptr) scene.portals.second->draw(initialTransformation, shader);
+
     scene.player->draw(initialTransformation, shader);
 
     glUseProgram(0);
