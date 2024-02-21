@@ -17,7 +17,7 @@ struct Scene {
     std::pair<std::shared_ptr<Portal>, std::shared_ptr<Portal>> portals;
 
 private:
-    std::shared_ptr<Portal> createPortal(const std::shared_ptr<Model> block) const;
+    std::shared_ptr<Portal> createPortal(const std::shared_ptr<Model> block, const glm::vec3 normalVector) const;
 
 public:
     Scene(
@@ -27,8 +27,8 @@ public:
         std::vector<PointLight> pointLights = std::vector<PointLight>()
     ): player(player), models(models), directionalLights(directionalLights), pointLights(pointLights) {};
 
-    void createFirstPortal(const std::shared_ptr<Model> block);
-    void createSecondPortal(const std::shared_ptr<Model> block);
+    void createFirstPortal(const std::shared_ptr<Model> block, const glm::vec3 normalVector);
+    void createSecondPortal(const std::shared_ptr<Model> block, const glm::vec3 normalVector);
 };
 
 #endif
