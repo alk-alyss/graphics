@@ -100,7 +100,6 @@ void Camera::look(float pitch, float yaw) {
         orientation = normalize(quatLookAt(newForward, up()));
     }
 
-
     updateViewMatrix();
 }
 

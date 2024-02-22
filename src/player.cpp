@@ -32,8 +32,14 @@ void Player::look(float mouseX, float mouseY, float deltaTime) {
 
     camera->look(pitch, yaw);
     lookAt(camera->forward() + position, camera->up());
+}
 
-    if(!noClip) model->rotate(0,yaw,0);
+void Player::lookAt(glm::vec3 target, glm::vec3 up, glm::vec3 alternativeUp) {
+    Orientable::lookAt(target, up, alternativeUp);
+
+    camera->lookAt(target, up, alternativeUp);
+    if(!noClip) model->lookAt(target, up, alternativeUp);
+    if(!noClip) collider->lookAt(target, up, alternativeUp);
 }
 
 void Player::translate(glm::vec3 translation) {
@@ -41,6 +47,13 @@ void Player::translate(glm::vec3 translation) {
     if (!noClip) model->setPosition(position);
     if (!noClip) collider->setPosition(position);
     camera->setPosition(position);
+}
+
+void Player::rotate(glm::vec3 rotation) {
+    Orientable::rotate(rotation);
+    camera->rotate(rotation);
+    if (!noClip) model->rotate(rotation);
+    if (!noClip) collider->rotate(rotation);
 }
 
 void Player::moveForward(float deltaTime) {
