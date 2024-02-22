@@ -18,6 +18,7 @@ struct Scene {
 
 private:
     std::shared_ptr<Portal> createPortal(const std::shared_ptr<Model> block, const glm::vec3 normalVector) const;
+    void linkPortals();
 
 public:
     Scene(

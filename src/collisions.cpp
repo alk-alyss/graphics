@@ -18,16 +18,6 @@ void handleCollision(const std::shared_ptr<Player> player, const std::shared_ptr
     player->translate(kickbackVector * deltaTime);
 }
 
-void handlePortalCollision(const std::shared_ptr<Player> player, std::shared_ptr<Portal> otherPortal) {
-    if (otherPortal == nullptr) return;
-
-    glm::vec3 portalNormal = otherPortal->forward();
-    glm::vec3 newPosition = otherPortal->getPosition() + portalNormal;
-
-    player->translate(newPosition - player->getPosition());
-    player->lookAt(newPosition + portalNormal); // not working TODO: fix exit rotation
-}
-
 void checkCollisions(const Scene& scene, const float deltaTime) {
     auto player = scene.player;
     AABB playerAABB = player->getCollider();
@@ -45,10 +35,10 @@ void checkCollisions(const Scene& scene, const float deltaTime) {
 
     if (portal1 != nullptr && playerAABB.intersects(portal1->getAABB())) {
         std::cout << "portal1 collision" << std::endl;
-        handlePortalCollision(player, portal2);
+        portal1->handleCollision(player);
     } else if (portal2 != nullptr && playerAABB.intersects(portal2->getAABB())) {
         std::cout << "portal2 collision" << std::endl;
-        handlePortalCollision(player, portal1);
+        portal2->handleCollision(player);
     }
 }
 
