@@ -28,7 +28,7 @@ public:
         std::shared_ptr<Model> model,
         std::shared_ptr<Model> collider,
         glm::vec3 position = DEFAULT_POSITION,
-        glm::vec3 rotation = DEFAULT_ORIENTATION,
+        glm::quat rotation = DEFAULT_ORIENTATION,
         glm::vec3 scale = DEFAULT_SCALE
     );
 
@@ -43,7 +43,7 @@ public:
     glm::vec3 getVelocity() const {return velocity;}
 
     void translate(glm::vec3 translation) override;
-    void rotate(glm::vec3 rotation) override;
+    void rotate(glm::quat rotation) override;
 
     void look(float mouseX, float mouseY, float deltaTime);
     void lookAt(const glm::vec3 target, const glm::vec3 up = glm::vec3(0, 1, 0), const glm::vec3 alternativeUp = glm::vec3(0,0,1)) override;

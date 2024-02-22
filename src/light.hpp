@@ -13,8 +13,8 @@ protected:
 
 public:
     Light(
-        glm::vec3 position = glm::vec3(0,0,0),
-        glm::vec3 rotation = glm::vec3(0,0,0),
+        glm::vec3 position = DEFAULT_POSITION,
+        glm::quat rotation = DEFAULT_ORIENTATION,
         float power = 10,
         glm::vec3 color = glm::vec3(1,1,1)
     ) : color(color), power(power), Orientable(position, rotation){}

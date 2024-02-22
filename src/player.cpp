@@ -6,7 +6,7 @@ Player::Player(
     std::shared_ptr<Model> model,
     std::shared_ptr<Model> collider,
     glm::vec3 position,
-    glm::vec3 rotation,
+    glm::quat rotation,
     glm::vec3 scale
 ) : Orientable(position, rotation, scale), model(model), collider(collider) {
     camera = std::make_unique<Camera>(position, rotation);
@@ -49,7 +49,7 @@ void Player::translate(glm::vec3 translation) {
     camera->setPosition(position);
 }
 
-void Player::rotate(glm::vec3 rotation) {
+void Player::rotate(glm::quat rotation) {
     Orientable::rotate(rotation);
     camera->rotate(rotation);
     if (!noClip) model->rotate(rotation);

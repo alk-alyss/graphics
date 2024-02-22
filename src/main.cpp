@@ -78,7 +78,7 @@ std::vector<std::shared_ptr<Model>> generateMaze(
 const std::shared_ptr<Model> loadSuzanne(Material material) {
     const Transformation suzanneTransformation = Transformation(
             glm::vec3(0, 0, -0.2),
-            glm::vec3(0, glm::radians(180.0), 0),
+            eulerToQuat(0, glm::radians(180.0), 0),
             glm::vec3(0.5)
         );
 
@@ -116,11 +116,11 @@ int main(void) {
         std::vector<DirectionalLight> dirLights{
             DirectionalLight(
                 glm::vec3(5,5,10),
-                glm::vec3(glm::radians(-45.0),glm::radians(45.0),0)
+                eulerToQuat(glm::radians(-45.0),glm::radians(45.0),0)
             ),
             DirectionalLight(
                 glm::vec3(5,5,10),
-                glm::vec3(glm::radians(-45.0),glm::radians(180.0+45),0)
+                eulerToQuat(glm::radians(-45.0),glm::radians(180.0+45),0)
             ),
         };
 

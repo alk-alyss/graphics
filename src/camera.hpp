@@ -25,7 +25,7 @@ protected:
 
 public:
     Camera() : Camera(glm::vec3(0.0f), glm::vec3(0.0f)) {};
-    Camera(glm::vec3 position, glm::vec3 rotation);
+    Camera(glm::vec3 position, glm::quat rotation);
     Camera(glm::vec3 position, glm::vec3 target, glm::vec3 up);
 
     glm::mat4 getView() const {return viewMatrix;}
@@ -40,14 +40,14 @@ public:
     void zoom(float amount);
 
     void setPosition(glm::vec3 position);
-    void setRotation(glm::vec3 rotation);
+    void setRotation(glm::quat rotation);
     void setScale(glm::vec3 newScale);
 
     void translate(glm::vec3 translation);
 
     void changeScale(glm::vec3 scaleFactor);
 
-    void rotate(glm::vec3 rotation);
+    void rotate(glm::quat rotation);
     void rotate(float angle, glm::vec3 axis);
 
     void look(float pitch, float yaw);

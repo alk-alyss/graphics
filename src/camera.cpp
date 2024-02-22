@@ -6,7 +6,7 @@
 
 using namespace glm;
 
-Camera::Camera(vec3 position, vec3 rotation) : Orientable(position, rotation){
+Camera::Camera(vec3 position, quat rotation) : Orientable(position, rotation){
     nearCP = 0.1f;
     farCP = 500.0f;
 
@@ -55,7 +55,7 @@ void Camera::setPosition(glm::vec3 position) {
     updateViewMatrix();
 }
 
-void Camera::setRotation(glm::vec3 rotation) {
+void Camera::setRotation(glm::quat rotation) {
     Orientable::setRotation(rotation);
     updateViewMatrix();
 }
@@ -75,7 +75,7 @@ void Camera::changeScale(glm::vec3 scaleFactor) {
     updateViewMatrix();
 }
 
-void Camera::rotate(glm::vec3 rotation) {
+void Camera::rotate(glm::quat rotation) {
     Orientable::rotate(rotation);
     updateViewMatrix();
 }

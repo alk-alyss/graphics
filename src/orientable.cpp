@@ -6,15 +6,15 @@
 
 using namespace glm;
 
-quat eulerToQuat(vec3 rotation) {
-    quat rotationX = angleAxis(rotation.x, vec3(1,0,0));
-    quat rotationY = angleAxis(rotation.y, vec3(0,1,0));
-    quat rotationZ = angleAxis(rotation.z, vec3(0,0,1));
+quat eulerToQuat(float pitch, float yaw, float roll) {
+    quat rotationX = angleAxis(pitch, vec3(1,0,0));
+    quat rotationY = angleAxis(yaw, vec3(0,1,0));
+    quat rotationZ = angleAxis(roll, vec3(0,0,1));
 
-    return rotationZ * rotationY * rotationX;
+    return normalize(rotationZ * rotationY * rotationX);
 }
 
-Orientable::Orientable(vec3 position, vec3 rotation, vec3 scale) {
+Orientable::Orientable(vec3 position, quat rotation, vec3 scale) {
     this->position = position;
     setRotation(rotation);
     this->scale = scale;
@@ -36,8 +36,8 @@ void Orientable::translate(vec3 translation) {
     position += translation;
 }
 
-void Orientable::rotate(vec3 rotation) {
-    quat rotationQuat = normalize(eulerToQuat(rotation));
+void Orientable::rotate(quat rotation) {
+    quat rotationQuat = normalize(rotation);
 
     orientation = normalize(rotationQuat * orientation);
 }
@@ -48,8 +48,8 @@ void Orientable::rotate(float angle, vec3 axis) {
     orientation = normalize(rotationQuat * orientation);
 }
 
-void Orientable::setRotation(vec3 rotation) {
-    orientation = normalize(eulerToQuat(rotation));
+void Orientable::setRotation(quat rotation) {
+    orientation = normalize(rotation);
 }
 
 void Orientable::changeScale(vec3 scaleFactor) {
