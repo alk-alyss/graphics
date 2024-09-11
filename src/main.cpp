@@ -1,7 +1,9 @@
 #include <cstdlib>
+#include <ctime>
 #include <iostream>
 #include <string>
 #include <vector>
+#include <set>
 #include <memory>
 
 #include "context.hpp"
@@ -11,25 +13,10 @@
 #include "controls.hpp"
 #include "collisions.hpp"
 #include "resources.hpp"
+#include "maze.hpp"
 
-std::vector<std::pair<int, int>> mazeMap{
-    std::pair<int, int> (0,0),
-    std::pair<int, int> (0,1),
-    std::pair<int, int> (0,2),
-    std::pair<int, int> (0,3),
-    std::pair<int, int> (0,4),
-    std::pair<int, int> (1,2),
-    std::pair<int, int> (1,4),
-    std::pair<int, int> (2,0),
-    std::pair<int, int> (2,2),
-    std::pair<int, int> (2,4),
-    std::pair<int, int> (3,0),
-    std::pair<int, int> (4,0),
-    std::pair<int, int> (4,1),
-    std::pair<int, int> (4,2),
-    std::pair<int, int> (4,3),
-    std::pair<int, int> (4,4)
-};
+// auto mazeMap = prebuiltMaze;
+auto mazeMap = generateMazeMap(19, 19);
 
 std::vector<Material> loadMaterials() {
     grassMaterial = Material("resources/textures/whispy-grass-meadow-bl");
@@ -51,22 +38,20 @@ void loadMeshes() {
 }
 
 std::vector<std::shared_ptr<Model>> generateMaze(
-        std::vector<std::pair<int, int>> mazeMap,
+        std::set<std::pair<int, int>> mazeMap,
         std::vector<Material> materials
     ) {
     std::vector<std::shared_ptr<Model>> maze;
 
     float scalling = 3;
 
-    for (int i=0; i<mazeMap.size(); i++) {
-        auto pair = mazeMap[i];
-
+    for (auto& pair: mazeMap) {
         const std::shared_ptr<Model> cube = std::make_shared<Model>(
                 cubeMesh,
-                materials[i % materials.size()]
+                materials[std::rand() % materials.size()]
             );
 
-        cube->setPosition(scalling * pair.first, scalling/2, -scalling * pair.second);
+        cube->setPosition(scalling * pair.second, scalling/2, -scalling * pair.first);
         cube->setScale(glm::vec3(scalling/2, scalling/2, scalling/2));
 
         maze.push_back(cube);
@@ -93,7 +78,10 @@ const std::shared_ptr<Model> playerCollider(Material material) {
 }
 
 int main(void) {
+    std::srand(std::time(nullptr));
+
     try {
+        std::cout << "Portal Maze" << std::endl;
         const std::shared_ptr<GLFWwindow> window = createWindow();
 
         auto materials = loadMaterials();
