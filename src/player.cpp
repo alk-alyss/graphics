@@ -38,15 +38,29 @@ void Player::lookAt(glm::vec3 target, glm::vec3 up, glm::vec3 alternativeUp) {
     Orientable::lookAt(target, up, alternativeUp);
 
     camera->lookAt(target, up, alternativeUp);
-    if(!noClip) model->lookAt(target, up, alternativeUp);
-    if(!noClip) collider->lookAt(target, up, alternativeUp);
+    if (!noClip) model->lookAt(target, up, alternativeUp);
+    if (!noClip) collider->lookAt(target, up, alternativeUp);
+}
+
+void Player::setPosition(glm::vec3 position) {
+    Orientable::setPosition(position);
+    camera->setPosition(position);
+    if (!noClip) model->setPosition(position);
+    if (!noClip) collider->setPosition(position);
+}
+
+void Player::setRotation(glm::quat rotation) {
+    Orientable::setRotation(rotation);
+    camera->setRotation(rotation);
+    if (!noClip) model->setRotation(rotation);
+    if (!noClip) collider->setRotation(rotation);
 }
 
 void Player::translate(glm::vec3 translation) {
     Orientable::translate(translation);
+    camera->setPosition(position);
     if (!noClip) model->setPosition(position);
     if (!noClip) collider->setPosition(position);
-    camera->setPosition(position);
 }
 
 void Player::rotate(glm::quat rotation) {

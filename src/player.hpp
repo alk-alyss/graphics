@@ -40,6 +40,9 @@ public:
     void setMovementSpeed(float movementSpeed) {this->movementSpeed = movementSpeed;}
     void setMouseSpeed(float mouseSpeed) {this->mouseSpeed = mouseSpeed;}
 
+    void setPosition(glm::vec3 position) override;
+    void setRotation(glm::quat rotation) override;
+
     glm::vec3 getVelocity() const {return velocity;}
 
     void translate(glm::vec3 translation) override;
