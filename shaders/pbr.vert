@@ -41,14 +41,6 @@ uniform vec3 cameraPosition;
 // MODEL MATRIX
 uniform mat4 M;
 
-// TEXTURES
-uniform sampler2D albedo;
-uniform sampler2D ao;
-uniform sampler2D height;
-uniform sampler2D metallic;
-uniform sampler2D normal;
-uniform sampler2D roughness;
-
 // VERTEX SHADER OUT
 out vec2 uvCoords;
 out mat3 TBN;

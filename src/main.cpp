@@ -84,6 +84,9 @@ int main(void) {
         std::cout << "Portal Maze" << std::endl;
         const std::shared_ptr<GLFWwindow> window = createWindow();
 
+        std::shared_ptr<Shader> forwardPBR = std::make_shared<Shader>("shaders/pbr.vert", "shaders/pbr.frag");
+        Renderer renderer(forwardPBR);
+
         auto materials = loadMaterials();
         loadMeshes();
 
@@ -131,13 +134,11 @@ int main(void) {
             pointLights
         );
 
-        std::shared_ptr<Shader> forwardPBR = std::make_shared<Shader>("shaders/pbr.vert", "shaders/pbr.frag");
-        Renderer renderer(forwardPBR);
-
         // Draw wire frame triangles or fill: GL_LINE, or GL_FILL
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         float lastTime = glfwGetTime();
 
+        // Main loop
         do {
             float currentTime = glfwGetTime();
             float deltaTime = currentTime - lastTime;
