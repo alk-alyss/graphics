@@ -60,6 +60,39 @@ void loadOBJWithTiny(
     // TODO .mtl loader
 }
 
+void calculateTangents(
+    vector<Vertex>& vertices,
+    const vector<unsigned int>& indices
+){
+    for (int i = 0; i < indices.size(); i += 3) {
+        Vertex& v0 = vertices[indices[i]];
+        Vertex& v1 = vertices[indices[i+1]];
+        Vertex& v2 = vertices[indices[i+2]];
+
+        vec3 edge1 = v1.position - v0.position;
+        vec3 edge2 = v2.position - v0.position;
+
+        vec2 deltaUV1 = v1.uv - v0.uv;
+        vec2 deltaUV2 = v2.uv - v0.uv;
+
+        float f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+
+        vec3 tangent = {
+            f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x),
+            f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y),
+            f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z)
+        };
+
+        v0.tangent += tangent;
+        v1.tangent += tangent;
+        v2.tangent += tangent;
+    }
+
+    for (auto& vertex : vertices) {
+        vertex.tangent = normalize(vertex.tangent);
+    }
+}
+
 bool getSimilarVertexIndex(
     const Vertex& packed,
     map<Vertex, unsigned int>& vertexToOutIndex,
@@ -165,6 +198,7 @@ Mesh::Mesh(
 
     aabb = AABB(this->vertices);
     indexVBO(this->vertices, indices, indexedVertices);
+    calculateTangents(this->indexedVertices, indices);
     loadVram();
 }
 
@@ -177,6 +211,7 @@ Mesh::Mesh(std::string path) {
 
     aabb = AABB(vertices);
     indexVBO(vertices, indices, indexedVertices);
+    calculateTangents(indexedVertices, indices);
     loadVram();
 }
 
@@ -196,6 +231,9 @@ void Mesh::loadVram() {
 
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
     glEnableVertexAttribArray(2);
+
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tangent));
+    glEnableVertexAttribArray(3);
 
     glGenBuffers(1, &EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);

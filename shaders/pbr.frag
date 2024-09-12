@@ -35,15 +35,17 @@ uniform sampler2D roughnessMap;
 
 // FRAGMENT SHADER IN
 in vec2 uvCoords;
+in mat3 TBN;
 
 in WORLD_SPACE {
-	vec3 vertexPosition;
-	vec3 vertexNormal;
+	vec3 position;
+	vec3 normal;
+	vec3 tangent;
 } worldSpace;
 
 in CAMERA_SPACE {
-	vec3 vertexPosition;
-	vec3 vertexNormal;
+	vec3 position;
+	vec3 normal;
 	vec3 lightDirections[MAX_DIR_LIGHTS];
 	vec3 lightPositions[MAX_POINT_LIGHTS];
 } cameraSpace;
@@ -59,8 +61,11 @@ float shadows() {
 
 // Normal mapping
 //https://learnopengl.com/Advanced-Lighting/Normal-Mapping
-vec3 normalFromMap(vec3 normal) {
-	return normalize(normal * 2.0 - 1.0);
+vec3 normalFromMap() {
+	vec3 normal = texture(normalMap, uvCoords).rgb;
+	normal = normalize(normal * 2.0 - 1.0);
+	normal = normalize(TBN * normal);
+	return normal;
 }
 
 // PBR LIGHTING
@@ -136,13 +141,13 @@ vec3 CookToranceBRDF(
 vec3 pbrLighting(float visibility, vec3 defaultF0) {
 	// Lighting parameters for fragment
 	vec3 albedo     = texture(albedoMap, uvCoords).rgb;
-    vec3 normal     = normalFromMap(texture(normalMap, uvCoords).rgb);
     float metallic  = texture(metallicMap, uvCoords).r;
     float roughness = texture(roughnessMap, uvCoords).r;
     float ao        = texture(aoMap, uvCoords).r;
 
-	vec3 N = normalize(worldSpace.vertexNormal); // Fragment normal
-	vec3 V = normalize(cameraPosition - worldSpace.vertexPosition); // View vector
+	// vec3 N = normalize(worldSpace.normal); // Fragment normal
+	vec3 N = normalFromMap();
+	vec3 V = normalize(cameraPosition - worldSpace.position); // View vector
 
 	vec3 F0 = mix(defaultF0, albedo, metallic);
 
@@ -159,7 +164,7 @@ vec3 pbrLighting(float visibility, vec3 defaultF0) {
 	}
 
 	for (int i=0; i<pointLightsCount; i++) {
-		vec3 L = pointLights[i].position.xyz - worldSpace.vertexPosition; // Light vector
+		vec3 L = pointLights[i].position.xyz - worldSpace.position; // Light vector
 		float distance = length(L);
 
 		L = normalize(L); // Normalized light vector

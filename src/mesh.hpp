@@ -19,17 +19,20 @@ struct Vertex {
     glm::vec3 position;
     glm::vec2 uv;
     glm::vec3 normal;
+    glm::vec3 tangent;
 
     Vertex() {};
 
     Vertex(
-        const glm::vec3 position,
-        const glm::vec2 uv,
-        const glm::vec3 normal
+        const glm::vec3& position,
+        const glm::vec2& uv,
+        const glm::vec3& normal,
+        const glm::vec3& tangent = glm::vec3(0)
     ) {
         this->position = position;
         this->uv = uv;
         this->normal = normal;
+        this->tangent = tangent;
     }
 
     bool operator<(const Vertex that) const {

@@ -51,29 +51,35 @@ uniform sampler2D roughness;
 
 // VERTEX SHADER OUT
 out vec2 uvCoords;
+out mat3 TBN;
 
 out WORLD_SPACE {
-    vec3 vertexPosition;
-    vec3 vertexNormal;
+    vec3 position;
+    vec3 normal;
+    vec3 tangent;
 } worldSpace;
 
 out CAMERA_SPACE {
-    vec3 vertexPosition;
-    vec3 vertexNormal;
+    vec3 position;
+    vec3 normal;
     vec3 lightDirections[MAX_DIR_LIGHTS];
     vec3 lightPositions[MAX_POINT_LIGHTS];
 } cameraSpace;
 
 
 void main() {
-    vec4 vertexPosition_worldSpace = M * vec4(vertexPosition, 1);
-    vec4 vertexNormal_worldSpace = normalize(M * vec4(vertexNormal, 0));
+    worldSpace.position = (M * vec4(vertexPosition, 1)).xyz;
+    worldSpace.normal = normalize(M * vec4(vertexNormal, 0)).xyz;
+    worldSpace.tangent = normalize(M * vec4(vertexTangent, 0)).xyz;
 
-    vec4 vertexPosition_cameraSpace = V * vertexPosition_worldSpace;
-    vec4 vertexNormal_cameraSpace = normalize(V * vertexNormal_worldSpace);
+    // Gram-Schmidt orthogonalization
+    worldSpace.tangent = normalize(worldSpace.tangent - dot(worldSpace.tangent, worldSpace.normal) * worldSpace.normal);
 
-    cameraSpace.vertexPosition = vertexPosition_cameraSpace.xyz;
-    cameraSpace.vertexNormal = (V * vertexNormal_worldSpace).xyz;
+    vec3 bitangent = cross(worldSpace.normal, worldSpace.tangent);
+    TBN = mat3(worldSpace.tangent, bitangent, worldSpace.normal);
+
+    cameraSpace.position = (V * vec4(worldSpace.position, 1)).xyz;
+    cameraSpace.normal = normalize(V * vec4(worldSpace.normal, 0)).xyz;
 
     for (int i=0; i<dirLightsCount; i++) {
         cameraSpace.lightDirections[i] = (V * dirLights[i].direction).xyz;
@@ -83,13 +89,7 @@ void main() {
         cameraSpace.lightPositions[i] = (V * pointLights[i].position).xyz;
     }
 
-    worldSpace.vertexPosition = vertexPosition_worldSpace.xyz;
-    worldSpace.vertexNormal = vertexNormal_worldSpace.xyz;
-
-    cameraSpace.vertexPosition = vertexPosition_cameraSpace.xyz;
-    cameraSpace.vertexNormal = vertexNormal_cameraSpace.xyz;
-
     uvCoords = vertexUV;
 
-    gl_Position = P * vertexPosition_cameraSpace;
+    gl_Position = P * vec4(cameraSpace.position, 1);
 }
