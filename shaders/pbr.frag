@@ -65,10 +65,9 @@ vec3 normalFromMap(vec3 normal) {
 
 // PBR LIGHTING
 // https://learnopengl.com/PBR/Lighting
-float DistributionGGX(vec3 N, vec3 H, float roughness) {
+float DistributionGGX(float NdotH, float roughness) {
     float a      = roughness*roughness;
     float a2     = a*a;
-    float NdotH  = max(dot(N, H), 0.0);
     float NdotH2 = NdotH*NdotH;
 
     float num   = a2;
@@ -87,11 +86,9 @@ float GeometrySchlickGGX(float NdotV, float roughness) {
 
     return num / denom;
 }
-float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness) {
-    float NdotV = max(dot(N, V), 0.0);
-    float NdotL = max(dot(N, L), 0.0);
-    float ggx2  = GeometrySchlickGGX(NdotV, roughness);
-    float ggx1  = GeometrySchlickGGX(NdotL, roughness);
+float GeometrySmith(float NdotV, float NdotL, float roughness) {
+    float ggx1  = GeometrySchlickGGX(NdotV, roughness);
+    float ggx2  = GeometrySchlickGGX(NdotL, roughness);
 
     return ggx1 * ggx2;
 }
@@ -102,7 +99,7 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0) {
 
 vec3 CookToranceBRDF(
 		vec3 N,
-		vec3 E,
+		vec3 V,
 		vec3 L,
 		vec3 H,
 		vec3 radiance,
@@ -111,21 +108,29 @@ vec3 CookToranceBRDF(
 		float roughness,
 		vec3 F0
 	) {
-	float NDF = DistributionGGX(N, H, roughness);
-	float G   = GeometrySmith(N, E, L, roughness);
-	vec3 F    = fresnelSchlick(max(dot(H, E), 0.0), F0);
+	float NdotV = max(dot(N, V), 0.0);
+	float NdotL = max(dot(N, L), 0.0);
+	float NdotH = max(dot(N, H), 0.0);
+	float VdotH = max(dot(V, H), 0.0);
+
+	float NDF = DistributionGGX(NdotV, roughness);
+	float G   = GeometrySmith(NdotV, NdotL, roughness);
+	vec3 F    = fresnelSchlick(VdotH, F0);
 
 	vec3 kS = F;
 	vec3 kD = vec3(1.0) - kS;
 	kD *= 1.0 - metallic;
 
 	vec3 numerator    = NDF * G * F;
-	float denominator = 4.0 * max(dot(N, E), 0.0) * max(dot(N, L), 0.0) + 0.0001;
+	float denominator = 4.0 * NdotV * NdotL + 0.0001;
 	vec3 specular     = numerator / denominator;
 
+	specular *= metallic;
+
+	vec3 diffuse = kD * albedo / PI;
+
 	// add to outgoing radiance Lo
-	float NdotL = max(dot(N, L), 0.0);
-	return (kD * albedo / PI + specular) * radiance * NdotL;
+	return (diffuse + specular) * radiance * NdotL;
 }
 
 vec3 pbrLighting(float visibility, vec3 defaultF0) {
@@ -137,7 +142,7 @@ vec3 pbrLighting(float visibility, vec3 defaultF0) {
     float ao        = texture(aoMap, uvCoords).r;
 
 	vec3 N = normalize(worldSpace.vertexNormal); // Fragment normal
-	vec3 E = normalize(cameraPosition - worldSpace.vertexPosition); // Eye vector
+	vec3 V = normalize(cameraPosition - worldSpace.vertexPosition); // View vector
 
 	vec3 F0 = mix(defaultF0, albedo, metallic);
 
@@ -146,24 +151,24 @@ vec3 pbrLighting(float visibility, vec3 defaultF0) {
 
 	for (int i=0; i<dirLightsCount; i++) {
 		vec3 L = normalize(-dirLights[i].direction.xyz); // Light vector
-		vec3 H = normalize(E+L); // Halfway vector
+		vec3 H = normalize(V+L); // Halfway vector
 
 		vec3 radiance = dirLights[i].colorPower.xyz * dirLights[i].colorPower.w;
 
-		Lo += CookToranceBRDF(N, E, L, H, radiance, albedo, metallic, roughness, F0);
+		Lo += CookToranceBRDF(N, V, L, H, radiance, albedo, metallic, roughness, F0);
 	}
 
 	for (int i=0; i<pointLightsCount; i++) {
 		vec3 L = pointLights[i].position.xyz - worldSpace.vertexPosition; // Light vector
 		float distance = length(L);
 
-		L = normalize(L); // Light vector
-		vec3 H = normalize(E+L); // Halfway vector
+		L = normalize(L); // Normalized light vector
+		vec3 H = normalize(V+L); // Halfway vector
 
-		float attenuation = 1.0 / (distance * distance);
+		float attenuation = 1.0 / (distance * distance); // inverse square law
 		vec3 radiance = pointLights[i].colorPower.xyz * pointLights[i].colorPower.w * attenuation;
 
-		Lo += CookToranceBRDF(N, E, L, H, radiance, albedo, metallic, roughness, F0);
+		Lo += CookToranceBRDF(N, V, L, H, radiance, albedo, metallic, roughness, F0);
 	}
 
 	vec3 ambient = vec3(0.03) * albedo * ao;
