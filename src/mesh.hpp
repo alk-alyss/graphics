@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <cstring>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
@@ -13,6 +14,28 @@ static std::vector<unsigned int> VEC_UINT_DEFAUTL_VALUE{};
 static std::vector<glm::vec3> VEC_VEC3_DEFAUTL_VALUE{};
 static std::vector<glm::vec2> VEC_VEC2_DEFAUTL_VALUE{};
 static std::map<std::string, GLuint> MAP_STRING_GLUINT_DEFAULT_VALUE{};
+
+struct Vertex {
+    glm::vec3 position;
+    glm::vec2 uv;
+    glm::vec3 normal;
+
+    Vertex() {};
+
+    Vertex(
+        const glm::vec3 position,
+        const glm::vec2 uv,
+        const glm::vec3 normal
+    ) {
+        this->position = position;
+        this->uv = uv;
+        this->normal = normal;
+    }
+
+    bool operator<(const Vertex that) const {
+        return memcmp((void*) this, (void*) &that, sizeof(Vertex)) > 0;
+    };
+};
 
 void loadOBJWithTiny(
     const std::string& path,
@@ -39,6 +62,7 @@ struct AABB {
     AABB() = default;
     AABB(glm::vec3 min, glm::vec3 max): min(min), max(max) {};
     AABB(const std::vector<glm::vec3>& vertices);
+    AABB(const std::vector<Vertex>& vertices);
 
     bool intersects(const AABB& other);
     bool intersects(const glm::vec3 point);
@@ -46,11 +70,10 @@ struct AABB {
 
 class Mesh : public Node{
 protected:
-    std::vector<glm::vec3> vertices, normals, indexedVertices, indexedNormals;
-    std::vector<glm::vec2> uvs, indexedUVS;
+    std::vector<Vertex> vertices, indexedVertices;
     std::vector<unsigned int> indices;
 
-    GLuint VAO, verticesVBO, uvsVBO, normalsVBO, EBO;
+    GLuint VAO, verticesVBO, EBO;
 
     AABB aabb;
 
@@ -70,15 +93,9 @@ public:
     Mesh(Mesh&& other) :
         VAO(other.VAO),
         verticesVBO(other.verticesVBO),
-        uvsVBO(other.uvsVBO),
-        normalsVBO(other.normalsVBO),
         EBO(other.EBO),
         vertices(other.vertices),
         indexedVertices(other.indexedVertices),
-        normals(other.normals),
-        indexedNormals(other.indexedNormals),
-        uvs(other.uvs),
-        indexedUVS(other.indexedUVS),
         indices(other.indices),
         aabb(other.aabb)
     {
@@ -92,15 +109,9 @@ public:
             unloadVram();
             std::swap(VAO, other.VAO);
             std::swap(verticesVBO, other.verticesVBO);
-            std::swap(uvsVBO, other.uvsVBO);
-            std::swap(normalsVBO, other.normalsVBO);
             std::swap(EBO, other.EBO);
             std::swap(vertices, other.vertices);
             std::swap(indexedVertices, other.indexedVertices);
-            std::swap(normals, other.normals);
-            std::swap(indexedNormals, other.indexedNormals);
-            std::swap(uvs, other.uvs);
-            std::swap(indexedUVS, other.indexedUVS);
             std::swap(indices, other.indices);
             std::swap(aabb, other.aabb);
         }
