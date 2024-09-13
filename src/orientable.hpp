@@ -1,7 +1,6 @@
 #ifndef ORIENTABLE_HPP
 #define ORIENTABLE_HPP
 
-#include <vector>
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 
@@ -25,7 +24,7 @@ public:
 public:
     Orientable(
         glm::vec3 position = DEFAULT_POSITION,
-        glm::quat rotation = DEFAULT_ORIENTATION,
+        glm::quat orientation = DEFAULT_ORIENTATION,
         glm::vec3 scale = DEFAULT_SCALE
     );
 
@@ -39,6 +38,7 @@ public:
     void setScale(float newScale) {setScale(glm::vec3(newScale, newScale, newScale));}
 
     glm::vec3 getPosition() const {return position;}
+    glm::quat getRotation() const {return orientation;}
     glm::vec3 getSize() const {return scale;}
 
     glm::mat4 translationMatrix() const;

@@ -70,7 +70,7 @@ void Player::rotate(glm::quat rotation) {
     if (!noClip) collider->rotate(rotation);
 }
 
-void Player::moveForward(float deltaTime) {
+glm::vec3 Player::forwardMovementVector() {
     glm::vec3 forwardVector = forward();
 
     if (!noClip) {
@@ -86,6 +86,12 @@ void Player::moveForward(float deltaTime) {
 
         forwardVector.y = 0;
     }
+
+    return forwardVector;
+}
+
+void Player::moveForward() {
+    glm::vec3 forwardVector = forwardMovementVector();
 
     if (glm::length(velocity) > 0) velocity = normalize(velocity);
 
@@ -93,22 +99,8 @@ void Player::moveForward(float deltaTime) {
     velocity = normalize(velocity) * movementSpeed;
 }
 
-void Player::moveBackward(float deltaTime) {
-    glm::vec3 forwardVector = forward();
-
-    if (!noClip) {
-        // if forward vector is vertical
-        if (dot(up(), vec3(0,1,0)) < 0.0001) {
-            // use inverse up vector if looking up
-            forwardVector = -up();
-            // use up vector if looking down
-            if (dot(forward(), vec3(0,-1,0)) > 0.99) {
-                forwardVector = up();
-            }
-        }
-
-        forwardVector.y = 0;
-    }
+void Player::moveBackward() {
+    glm::vec3 forwardVector = forwardMovementVector();
 
     if (glm::length(velocity) > 0) velocity = normalize(velocity);
 
@@ -116,20 +108,20 @@ void Player::moveBackward(float deltaTime) {
     velocity = normalize(velocity) * movementSpeed;
 }
 
-void Player::moveLeft(float deltaTime) {
+void Player::moveLeft() {
     glm::vec3 rightVector = right();
-
     if (!noClip) rightVector.y = 0;
+
     if (glm::length(velocity) > 0) velocity = normalize(velocity);
 
     velocity -= rightVector;
     velocity = normalize(velocity) * movementSpeed;
 }
 
-void Player::moveRight(float deltaTime) {
+void Player::moveRight() {
     glm::vec3 rightVector = right();
-
     if (!noClip) rightVector.y = 0;
+
     if (glm::length(velocity) > 0) velocity = normalize(velocity);
 
     velocity += rightVector;
@@ -138,14 +130,11 @@ void Player::moveRight(float deltaTime) {
 
 void Player::toggleNoClip() {
     if (noClip) {
-        position = originalPosition;
-        orientation = originalOrientation;
+        position = model->getPosition();
+        orientation = model->getRotation();
 
         camera->setPosition(position);
         camera->lookAt(forward() + position, up());
-    } else {
-        originalPosition = position;
-        originalOrientation = orientation;
     }
 
     noClip = !noClip;

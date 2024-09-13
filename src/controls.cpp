@@ -1,8 +1,6 @@
 #include "controls.hpp"
 #include "collisions.hpp"
 
-#include <iostream>
-
 void handleMouse(const std::shared_ptr<GLFWwindow> windowPtr, Scene& scene, const float deltaTime) {
     GLFWwindow* window = windowPtr.get();
     auto& player = scene.player;
@@ -52,28 +50,28 @@ void handleKeyboard(const std::shared_ptr<GLFWwindow> windowPtr, const Scene& sc
     GLFWwindow* window = windowPtr.get();
     auto& player = scene.player;
 
-    // Move forware - backward
+    // Move forward - backward (W - S)
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        player->moveForward(deltaTime);
+        player->moveForward();
     } else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        player->moveBackward(deltaTime);
+        player->moveBackward();
     }
-    // Strafe right - left
+    // Strafe right - left (D - A)
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        player->moveRight(deltaTime);
+        player->moveRight();
     } else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        player->moveLeft(deltaTime);
+        player->moveLeft();
     }
 
-    // Zoom in - out
+    // Zoom in - out (UP - DOWN)
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
         player->zoom(deltaTime);
     } else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
         player->zoom(-deltaTime);
     }
 
+    // Toggle no-clip mode (SPACE)
     static bool toggle = false;
-
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
         if (!toggle) player->toggleNoClip();
         toggle = true;

@@ -1,6 +1,5 @@
 #include "scene.hpp"
 
-#include <iostream>
 #include <glm/gtx/string_cast.hpp>
 
 std::shared_ptr<Portal> Scene::createPortal(

@@ -43,11 +43,11 @@ void checkCollisions(const Scene& scene, const float deltaTime) {
 }
 
 std::shared_ptr<Model> castRay(
-        const Scene& scene,
-        const glm::vec3 position,
-        const glm::vec3 direction,
-        glm::vec3& normalVector
-    ) {
+    const Scene& scene,
+    const glm::vec3 position,
+    const glm::vec3 direction,
+    glm::vec3& normalVector
+) {
     glm::vec3 rayPosition = position;
     float stepSize = 0.2;
     glm::vec3 rayDirection = glm::normalize(direction) * stepSize;

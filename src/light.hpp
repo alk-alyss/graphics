@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 
-#include "common.hpp"
+#include "orientable.hpp"
 
 class Light : public Orientable {
 protected:

@@ -1,9 +1,6 @@
 #ifndef MODEL_HPP
 #define MODEL_HPP
 
-#include <vector>
-#include <memory>
-
 #include "common.hpp"
 #include "mesh.hpp"
 #include "material.hpp"

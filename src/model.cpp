@@ -14,7 +14,6 @@ Model::Model(
     this->children.push_back(materialPtr);
 }
 
-#include <iostream>
 #include <glm/gtx/string_cast.hpp>
 
 AABB Model::getAABB() const {
@@ -26,18 +25,10 @@ AABB Model::getAABB() const {
     glm::vec4 transformedMin = modelMatrix() * meshTransformation.getMatrix() * AABBmin;
     glm::vec4 transformedMax = modelMatrix() * meshTransformation.getMatrix() * AABBmax;
 
-    std::vector<glm::vec3> vertices {
-        glm::vec3(transformedMin.x, transformedMin.y, transformedMin.z),
-        glm::vec3(transformedMin.x, transformedMin.y, transformedMax.z),
-        glm::vec3(transformedMin.x, transformedMax.y, transformedMin.z),
-        glm::vec3(transformedMin.x, transformedMax.y, transformedMax.z),
-        glm::vec3(transformedMax.x, transformedMin.y, transformedMin.z),
-        glm::vec3(transformedMax.x, transformedMin.y, transformedMax.z),
-        glm::vec3(transformedMax.x, transformedMax.y, transformedMin.z),
-        glm::vec3(transformedMax.x, transformedMax.y, transformedMax.z)
-    };
-
-    const AABB modelAABB = AABB(vertices);
+    const AABB modelAABB = AABB(
+        glm::vec3(transformedMin),
+        glm::vec3(transformedMax)
+    );
 
     return modelAABB;
 }
@@ -48,7 +39,6 @@ glm::vec3 Model::getClosestBlockNormal(const glm::vec3 point) const {
 
     float xDot = glm::dot(modelToPoint, glm::vec3(1, 0, 0));
     float zDot = glm::dot(modelToPoint, glm::vec3(0, 0, 1));
-    /* std::cout << "xDot: " << xDot << " zDot: " << zDot << " "; */
 
     float limit = 0.5;
     if (std::abs(xDot) > std::abs(zDot)) {

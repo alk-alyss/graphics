@@ -170,7 +170,7 @@ int main(void) {
         glfwTerminate();
     } catch (std::exception& ex) {
         std::cout << ex.what() << std::endl;
-        getchar();
+        // getchar();
         glfwTerminate();
         return EXIT_FAILURE;
     }

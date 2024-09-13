@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <sstream>
 
 #include "shader.hpp"
 
@@ -22,20 +21,19 @@ void compileShader(GLuint& shaderID, const std::string file) {
     GLint result = GL_FALSE;
     int infoLogLength;
 
-    // compile Vertex Shader
+    // Compile Shader
     std::cout << "Compiling shader: " << file << std::endl;
     char const* sourcePointer = shaderCode.c_str();
     glShaderSource(shaderID, 1, &sourcePointer, NULL);
     glCompileShader(shaderID);
 
-    // check Vertex Shader
+    // Check Shader
     glGetShaderiv(shaderID, GL_COMPILE_STATUS, &result);
     glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength);
     if (infoLogLength > 0) {
         std::vector<char> shaderErrorMessage(infoLogLength + 1);
         glGetShaderInfoLog(shaderID, infoLogLength, NULL, &shaderErrorMessage[0]);
-        //throw runtime_error(string(&shaderErrorMessage[0]));
-        std::cout << &shaderErrorMessage[0] << std::endl;
+        throw std::runtime_error(std::string(&shaderErrorMessage[0]));
     }
 }
 

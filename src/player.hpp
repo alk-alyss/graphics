@@ -17,11 +17,8 @@ class Player : public Orientable, Node {
     float movementSpeed = 10.0f;
     float mouseSpeed = 0.1f;
 
-    glm::vec3 originalPosition;
-    glm::quat originalOrientation;
-
     glm::vec3 velocity;
-    glm::vec3 cameraOffset();
+    glm::vec3 forwardMovementVector();
 
 public:
     Player(
@@ -51,10 +48,10 @@ public:
     void look(float mouseX, float mouseY, float deltaTime);
     void lookAt(const glm::vec3 target, const glm::vec3 up = glm::vec3(0, 1, 0), const glm::vec3 alternativeUp = glm::vec3(0,0,1)) override;
 
-    void moveForward(float deltaTime);
-    void moveBackward(float deltaTime);
-    void moveRight(float deltaTime);
-    void moveLeft(float deltaTime);
+    void moveForward();
+    void moveBackward();
+    void moveRight();
+    void moveLeft();
     void zoom(float amount) {camera->zoom(amount);}
 
     void toggleNoClip();
