@@ -73,6 +73,7 @@ struct Material : Node{
 
     Material(const std::string materialPath);
 
+    void bind() const;
     void draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const override;
 };
 
