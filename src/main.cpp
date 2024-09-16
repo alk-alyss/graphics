@@ -3,7 +3,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <set>
 #include <memory>
 
 #include "context.hpp"
@@ -14,9 +13,6 @@
 #include "collisions.hpp"
 #include "resources.hpp"
 #include "maze.hpp"
-
-// auto mazeMap = prebuiltMaze;
-auto mazeMap = generateMazeMap(19, 19);
 
 std::vector<Material> loadMaterials() {
     grassMaterial = Material("resources/textures/whispy-grass-meadow-bl");
@@ -38,9 +34,11 @@ void loadMeshes() {
 }
 
 std::vector<std::shared_ptr<Model>> generateMaze(
-        std::set<std::pair<int, int>> mazeMap,
-        std::vector<Material> materials
-    ) {
+    std::vector<Material> materials
+) {
+    // auto mazeMap = prebuiltMaze;
+    auto mazeMap = generateMazeMap(19, 19);
+
     std::vector<std::shared_ptr<Model>> maze;
 
     float scalling = 3;
@@ -101,7 +99,7 @@ int main(void) {
 
         models.push_back(planeModel);
 
-        auto mazeModels = generateMaze(mazeMap, materials);
+        auto mazeModels = generateMaze(materials);
         models.insert(models.end(), mazeModels.begin(), mazeModels.end());
 
         std::vector<DirectionalLight> dirLights{
@@ -170,7 +168,6 @@ int main(void) {
         glfwTerminate();
     } catch (std::exception& ex) {
         std::cout << ex.what() << std::endl;
-        // getchar();
         glfwTerminate();
         return EXIT_FAILURE;
     }

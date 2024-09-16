@@ -22,8 +22,10 @@ AABB Model::getAABB() const {
     glm::vec4 AABBmin(meshAABB.min, 1);
     glm::vec4 AABBmax(meshAABB.max, 1);
 
-    glm::vec4 transformedMin = modelMatrix() * meshTransformation.getMatrix() * AABBmin;
-    glm::vec4 transformedMax = modelMatrix() * meshTransformation.getMatrix() * AABBmax;
+    glm::mat4 transformationMatrix = modelMatrix() * meshTransformation.getMatrix();
+
+    glm::vec4 transformedMin = transformationMatrix * AABBmin;
+    glm::vec4 transformedMax = transformationMatrix * AABBmax;
 
     const AABB modelAABB = AABB(
         glm::vec3(transformedMin),

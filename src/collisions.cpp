@@ -13,7 +13,6 @@ void handleCollision(const std::shared_ptr<Player> player, const std::shared_ptr
     if (speed < 0) speed = 0;
 
     kickbackVector = normalVector * speed;
-    /* std::cout << glm::to_string(normalVector) << " " << glm::to_string(kickbackVector) << std::endl; */
 
     player->translate(kickbackVector * deltaTime);
 }
@@ -21,14 +20,6 @@ void handleCollision(const std::shared_ptr<Player> player, const std::shared_ptr
 void checkCollisions(const Scene& scene, const float deltaTime) {
     auto player = scene.player;
     AABB playerAABB = player->getCollider();
-
-    for (auto& model : scene.models) {
-        AABB modelAABB = model->getAABB();
-
-        if (playerAABB.intersects(modelAABB)) {
-            handleCollision(player, model, deltaTime);
-        }
-    }
 
     auto portal1 = scene.portals.first;
     auto portal2 = scene.portals.second;
@@ -39,6 +30,14 @@ void checkCollisions(const Scene& scene, const float deltaTime) {
     } else if (portal2 != nullptr && playerAABB.intersects(portal2->getAABB())) {
         std::cout << "portal2 collision" << std::endl;
         portal2->handleCollision(player);
+    }
+
+    for (auto& model : scene.models) {
+        AABB modelAABB = model->getAABB();
+
+        if (playerAABB.intersects(modelAABB)) {
+            handleCollision(player, model, deltaTime);
+        }
     }
 }
 
@@ -58,7 +57,6 @@ std::shared_ptr<Model> castRay(
             AABB modelAABB = model->getAABB();
 
             if (modelAABB.intersects(rayPosition)) {
-                /* std::cout << "collides" << model << std::endl; */
                 normalVector = model->getClosestBlockNormal(rayPosition);
 
                 return model;
