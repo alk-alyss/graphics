@@ -110,6 +110,7 @@ public:
     const AABB getAABB() {return aabb;}
 
     int vertexCount() const {return vertices.size();}
+    int indexCount() const {return indices.size();}
     GLuint getVao() const {return VAO;}
 
     void draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const;
