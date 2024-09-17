@@ -1,5 +1,8 @@
+#include "maze.hpp"
+#include "common.hpp"
+#include "glm/gtc/type_ptr.hpp"
 #include <cstdlib>
-#include <set>
+#include <memory>
 
 using namespace std;
 
@@ -101,4 +104,58 @@ set<pair<int, int>> generateMazeMap(int width, int height) {
     mazeMap.erase(pair<int, int> (width-1, height-2));
 
     return mazeMap;
+}
+
+Maze::Maze(int width, int height, Material material) {
+    this->width = width;
+    this->height = height;
+    this->material = material;
+
+    mazeMap = generateMazeMap(width, height);
+
+    // Calculate model matrix for each wall
+    for (auto& wall: mazeMap) {
+        Transformation wallTransformation;
+        wallTransformation.setPosition(scalling * wall.second, scalling/2, -scalling * wall.first);
+        wallTransformation.setScale(scalling/2);
+
+        modelMatrices.push_back(wallTransformation.modelMatrix());
+    }
+
+    loadVram();
+}
+
+void Maze::loadVram() {
+    // Calculate model matrix for each wall
+    glBindVertexArray(mesh->getVao());
+
+    // Generate model matrix buffer
+    glGenBuffers(1, &instanceVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
+
+    // Load model matrix for each instance
+    for (int i=0; i<4; i++) {
+        glVertexAttribPointer(INSTANCE_MATRIX_LOCATION+i, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(glm::vec4), (void*) (i * sizeof(glm::vec4)));
+        glEnableVertexAttribArray(INSTANCE_MATRIX_LOCATION+i);
+        glVertexAttribDivisor(INSTANCE_MATRIX_LOCATION+i, 1);
+    }
+
+    glBindVertexArray(0);
+
+    glBufferData(GL_ARRAY_BUFFER, modelMatrices.size() * sizeof(modelMatrices[0]), modelMatrices.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void Maze::unloadVram() {
+    glDeleteBuffers(1, &instanceVBO);
+}
+
+void Maze::draw(glm::mat4 modelMatrix, const shared_ptr<Shader> shader) const {
+    glUniformMatrix4fv(shader->getMLocation(), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+
+    material.bind();
+
+    glBindVertexArray(mesh->getVao());
+    glDrawElementsInstanced(GL_TRIANGLES, mesh->indexCount(), GL_UNSIGNED_INT, 0, mazeMap.size());
+    glBindVertexArray(0);
 }

@@ -14,14 +14,14 @@
 
 class Renderer {
 private:
-    std::shared_ptr<Shader> shader;
+    std::shared_ptr<Shader> singleShader, instancedShader;
     GLuint matricesUBO, lightsUBO;
     size_t lightsUBOsize;
 
 private:
     void uploadMatrices(const Camera& camera);
 public:
-    Renderer(std::shared_ptr<Shader> shader);
+    Renderer(std::shared_ptr<Shader> singleShader, std::shared_ptr<Shader> instancedShader);
 
     void uploadLights(const Scene& scene);
 

@@ -33,31 +33,6 @@ void loadMeshes() {
     suzanneMesh = std::make_shared<Mesh>("resources/models/suzanne.obj");
 }
 
-std::vector<std::shared_ptr<Model>> generateMaze(
-    std::vector<Material> materials
-) {
-    // auto mazeMap = prebuiltMaze;
-    auto mazeMap = generateMazeMap(19, 19);
-
-    std::vector<std::shared_ptr<Model>> maze;
-
-    float scalling = 3;
-
-    for (auto& pair: mazeMap) {
-        const std::shared_ptr<Model> cube = std::make_shared<Model>(
-                cubeMesh,
-                materials[std::rand() % materials.size()]
-            );
-
-        cube->setPosition(scalling * pair.second, scalling/2, -scalling * pair.first);
-        cube->setScale(glm::vec3(scalling/2, scalling/2, scalling/2));
-
-        maze.push_back(cube);
-    }
-
-    return maze;
-}
-
 const std::shared_ptr<Model> loadSuzanne(Material material) {
     const Transformation suzanneTransformation = Transformation(
             glm::vec3(0, 0, -0.2),
@@ -82,8 +57,9 @@ int main(void) {
         std::cout << "Portal Maze" << std::endl;
         const std::shared_ptr<GLFWwindow> window = createWindow();
 
-        std::shared_ptr<Shader> forwardPBR = std::make_shared<Shader>("shaders/pbr.vert", "shaders/pbr.frag");
-        Renderer renderer(forwardPBR);
+        std::shared_ptr<Shader> singleShader = std::make_shared<Shader>("shaders/pbr.vert", "shaders/pbr.frag");
+        std::shared_ptr<Shader> instancedShader = std::make_shared<Shader>("shaders/instanced.vert", "shaders/pbr.frag");
+        Renderer renderer(singleShader, instancedShader);
 
         auto materials = loadMaterials();
         loadMeshes();
@@ -92,15 +68,14 @@ int main(void) {
 
         const std::shared_ptr<Model> planeModel = std::make_shared<Model>(
                 planeMesh,
-                materials[1]
+                dirtMaterial
             );
 
         planeModel->setScale(glm::vec3(100));
 
         models.push_back(planeModel);
 
-        auto mazeModels = generateMaze(materials);
-        models.insert(models.end(), mazeModels.begin(), mazeModels.end());
+        std::shared_ptr<Maze> maze = std::make_shared<Maze>(19, 19, grassMaterial);
 
         std::vector<DirectionalLight> dirLights{
             DirectionalLight(
@@ -120,13 +95,14 @@ int main(void) {
         };
 
         std::shared_ptr<Player> player = std::make_shared<Player>(
-                loadSuzanne(materials[0]),
-                playerCollider(materials[0]),
-                glm::vec3(0.0f, 2.0f, 10.0f)
-            );
+            loadSuzanne(metalMaterial),
+            playerCollider(grassMaterial),
+            glm::vec3(0.0f, 2.0f, 10.0f)
+        );
 
         Scene scene(
             player,
+            maze,
             models,
             dirLights,
             pointLights

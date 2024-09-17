@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 
+#include "maze.hpp"
 #include "player.hpp"
 #include "model.hpp"
 #include "light.hpp"
@@ -11,6 +12,7 @@
 
 struct Scene {
     std::shared_ptr<Player> player;
+    std::shared_ptr<Maze> maze;
     std::vector<std::shared_ptr<Model>> models;
     std::vector<DirectionalLight> directionalLights;
     std::vector<PointLight> pointLights;
@@ -23,10 +25,11 @@ private:
 public:
     Scene(
         std::shared_ptr<Player> player,
+        std::shared_ptr<Maze> maze,
         std::vector<std::shared_ptr<Model>> models,
         std::vector<DirectionalLight> directionalLights,
         std::vector<PointLight> pointLights = std::vector<PointLight>()
-    ): player(player), models(models), directionalLights(directionalLights), pointLights(pointLights) {};
+    ): player(player), maze(maze), models(models), directionalLights(directionalLights), pointLights(pointLights) {};
 
     void createFirstPortal(const std::shared_ptr<Model> block, const glm::vec3 normalVector);
     void createSecondPortal(const std::shared_ptr<Model> block, const glm::vec3 normalVector);

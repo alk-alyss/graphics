@@ -4,7 +4,10 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp>
 
-Renderer::Renderer(std::shared_ptr<Shader> shader) : shader(shader) {
+Renderer::Renderer(
+    std::shared_ptr<Shader> singleShader,
+    std::shared_ptr<Shader> instancedShader
+) : singleShader(singleShader), instancedShader(instancedShader) {
     // Allocate memory for view and projection matrices
     glGenBuffers(1, &matricesUBO);
 
@@ -31,25 +34,36 @@ Renderer::Renderer(std::shared_ptr<Shader> shader) : shader(shader) {
 void Renderer::render(
     const Scene& scene
 ) {
-    shader->bind();
+    glm::mat4 initialTransformation{1};
 
-    // Upload camera position
-    glm::vec3 cameraPosition = scene.player->getCamera().getPosition();
-    glUniform3fv(shader->getCameraPositionLocation(), 1, glm::value_ptr(cameraPosition));
+    // Draw maze
+    instancedShader->bind();
 
     uploadMatrices(scene.player->getCamera());
     uploadLights(scene);
 
-    glm::mat4 initialTransformation{1};
+    // Upload camera position
+    glm::vec3 cameraPosition = scene.player->getCamera().getPosition();
+    glUniform3fv(instancedShader->getCameraPositionLocation(), 1, glm::value_ptr(cameraPosition));
+
+    scene.maze->draw(initialTransformation, instancedShader);
+
+    // Draw models
+    singleShader->bind();
+
+    // Upload camera position
+    glUniform3fv(singleShader->getCameraPositionLocation(), 1, glm::value_ptr(cameraPosition));
 
     for(auto& model : scene.models) {
-        model->draw(initialTransformation, shader);
+        model->draw(initialTransformation, singleShader);
     }
 
-    scene.player->draw(initialTransformation, shader);
+    // Draw player
+    scene.player->draw(initialTransformation, singleShader);
 
-    if (scene.portals.first != nullptr) scene.portals.first->draw(initialTransformation, shader);
-    if (scene.portals.second != nullptr) scene.portals.second->draw(initialTransformation, shader);
+    // Draw portals
+    if (scene.portals.first != nullptr) scene.portals.first->draw(initialTransformation, singleShader);
+    if (scene.portals.second != nullptr) scene.portals.second->draw(initialTransformation, singleShader);
 
     glUseProgram(0);
 }
