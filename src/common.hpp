@@ -8,6 +8,13 @@
 #include "orientable.hpp"
 #include "shader.hpp"
 
+#define POSITION_LOCATION 0
+#define NORMAL_LOCATION 1
+#define UV_LOCATION 2
+#define TANGENT_LOCATION 3
+#define INSTANCE_MATRIX_LOCATION 4
+
+
 struct Node {
     std::vector<std::shared_ptr<Node>> children;
 
