@@ -4,10 +4,11 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp>
 
-Renderer::Renderer(
-    std::shared_ptr<Shader> singleShader,
-    std::shared_ptr<Shader> instancedShader
-) : singleShader(singleShader), instancedShader(instancedShader) {
+Renderer::Renderer() {
+    singleShader = std::make_shared<Shader>("shaders/single.vert", "shaders/pbr.frag");
+    instancedShader = std::make_shared<Shader>("shaders/instanced.vert", "shaders/pbr.frag");
+    simpleShader = std::make_shared<Shader>("shaders/simple.vert", "shaders/simple.frag");
+
     // Allocate memory for view and projection matrices
     glGenBuffers(1, &matricesUBO);
 
@@ -60,9 +61,24 @@ void Renderer::render(
     // Draw player
     scene.player->draw(initialTransformation, singleShader);
 
-    // Draw portals
-    if (scene.portals.first != nullptr) scene.portals.first->draw(initialTransformation, singleShader);
-    if (scene.portals.second != nullptr) scene.portals.second->draw(initialTransformation, singleShader);
+    // Draw portal frame to stencil buffer
+    simpleShader->bind();
+
+    glEnable(GL_STENCIL_TEST);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+    glStencilFunc(GL_ALWAYS, 1, 0xFF);
+    glStencilMask(0xFF); // Enable writing to stencil buffer
+
+    if (scene.portals.first != nullptr) scene.portals.first->draw(initialTransformation, simpleShader);
+    if (scene.portals.second != nullptr) scene.portals.second->draw(initialTransformation, simpleShader);
+
+    glStencilMask(0x00); // Disable writing to stencil buffer
+
+    // TODO: draw view from portal 1
+
+    // TODO: draw view from portal 2
+
+    glDisable(GL_STENCIL_TEST);
 
     glUseProgram(0);
 }

@@ -57,9 +57,7 @@ int main(void) {
         std::cout << "Portal Maze" << std::endl;
         const std::shared_ptr<GLFWwindow> window = createWindow();
 
-        std::shared_ptr<Shader> singleShader = std::make_shared<Shader>("shaders/single.vert", "shaders/pbr.frag");
-        std::shared_ptr<Shader> instancedShader = std::make_shared<Shader>("shaders/instanced.vert", "shaders/pbr.frag");
-        Renderer renderer(singleShader, instancedShader);
+        Renderer renderer;
 
         auto materials = loadMaterials();
         loadMeshes();
