@@ -64,16 +64,12 @@ int main(void) {
         auto materials = loadMaterials();
         loadMeshes();
 
-        std::vector<std::shared_ptr<Model>> models;
-
-        const std::shared_ptr<Model> planeModel = std::make_shared<Model>(
+        const std::shared_ptr<Model> floor = std::make_shared<Model>(
                 planeMesh,
                 dirtMaterial
             );
 
-        planeModel->setScale(glm::vec3(100));
-
-        models.push_back(planeModel);
+        floor->setScale(glm::vec3(100));
 
         std::shared_ptr<Maze> maze = std::make_shared<Maze>(19, 19, materials);
 
@@ -103,7 +99,8 @@ int main(void) {
         Scene scene(
             player,
             maze,
-            models,
+            floor,
+            maze->getColliders(),
             dirLights,
             pointLights
         );

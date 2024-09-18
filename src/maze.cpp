@@ -120,11 +120,12 @@ Maze::Maze(int width, int height, vector<Material> materials) {
     for (auto& wall: generateMazeMap(width, height)) {
         mazeMap[wall] = rand() % materials.size();
 
-        Transformation wallTransformation;
-        wallTransformation.setPosition(scalling * wall.second, scalling/2, -scalling * wall.first);
-        wallTransformation.setScale(scalling/2);
+        shared_ptr<Model> wallModel = make_shared<Model>(mesh, materials[mazeMap[wall]]);
+        wallModel->setPosition(scalling * wall.second, scalling/2, -scalling * wall.first);
+        wallModel->setScale(scalling/2);
 
-        modelMatrices[mazeMap[wall]].push_back(wallTransformation.modelMatrix());
+        colliders.push_back(wallModel);
+        modelMatrices[mazeMap[wall]].push_back(wallModel->modelMatrix());
     }
 
     loadVram();

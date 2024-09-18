@@ -14,8 +14,6 @@ Model::Model(
     this->children.push_back(materialPtr);
 }
 
-#include <glm/gtx/string_cast.hpp>
-
 AABB Model::getAABB() const {
     const AABB meshAABB = mesh->getAABB();
 

@@ -13,7 +13,8 @@
 struct Scene {
     std::shared_ptr<Player> player;
     std::shared_ptr<Maze> maze;
-    std::vector<std::shared_ptr<Model>> models;
+    std::shared_ptr<Model> floor;
+    std::vector<std::shared_ptr<Model>> colliders;
     std::vector<DirectionalLight> directionalLights;
     std::vector<PointLight> pointLights;
     std::pair<std::shared_ptr<Portal>, std::shared_ptr<Portal>> portals;
@@ -26,10 +27,17 @@ public:
     Scene(
         std::shared_ptr<Player> player,
         std::shared_ptr<Maze> maze,
-        std::vector<std::shared_ptr<Model>> models,
+        std::shared_ptr<Model> floor,
+        std::vector<std::shared_ptr<Model>> colliders,
         std::vector<DirectionalLight> directionalLights,
         std::vector<PointLight> pointLights = std::vector<PointLight>()
-    ): player(player), maze(maze), models(models), directionalLights(directionalLights), pointLights(pointLights) {};
+    ):
+        player(player),
+        maze(maze),
+        floor(floor),
+        colliders(colliders),
+        directionalLights(directionalLights),
+        pointLights(pointLights) {};
 
     void createFirstPortal(const std::shared_ptr<Model> block, const glm::vec3 normalVector);
     void createSecondPortal(const std::shared_ptr<Model> block, const glm::vec3 normalVector);

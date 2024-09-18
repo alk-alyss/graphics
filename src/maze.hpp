@@ -3,6 +3,7 @@
 
 #include "material.hpp"
 #include "mesh.hpp"
+#include "model.hpp"
 #include "resources.hpp"
 #include <memory>
 #include <set>
@@ -23,6 +24,7 @@ private:
     GLuint instanceVBO;
 
     std::vector<std::vector<glm::mat4>> modelMatrices; // material index -> model matrices
+    std::vector<std::shared_ptr<Model>> colliders;
 
     void loadVram();
     void unloadVram();
@@ -32,6 +34,7 @@ public:
 
     ~Maze() {unloadVram();}
 
+    std::vector<std::shared_ptr<Model>> getColliders() const {return colliders;}
     void draw(glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const override;
 };
 

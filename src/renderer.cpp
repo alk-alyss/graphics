@@ -48,15 +48,14 @@ void Renderer::render(
 
     scene.maze->draw(initialTransformation, instancedShader);
 
-    // Draw models
+    // Draw rest of the scene
     singleShader->bind();
 
     // Upload camera position
     glUniform3fv(singleShader->getCameraPositionLocation(), 1, glm::value_ptr(cameraPosition));
 
-    for(auto& model : scene.models) {
-        model->draw(initialTransformation, singleShader);
-    }
+    // Draw floor
+    scene.floor->draw(initialTransformation, singleShader);
 
     // Draw player
     scene.player->draw(initialTransformation, singleShader);

@@ -32,11 +32,11 @@ void checkCollisions(const Scene& scene, const float deltaTime) {
         portal2->handleCollision(player);
     }
 
-    for (auto& model : scene.models) {
-        AABB modelAABB = model->getAABB();
+    for (auto& collider : scene.colliders) {
+        AABB colliderAABB = collider->getAABB();
 
-        if (playerAABB.intersects(modelAABB)) {
-            handleCollision(player, model, deltaTime);
+        if (playerAABB.intersects(colliderAABB)) {
+            handleCollision(player, collider, deltaTime);
         }
     }
 }
@@ -53,13 +53,13 @@ std::shared_ptr<Model> castRay(
 
     int stepLimit = 200;
     for (int i=0; i<stepLimit; i++) {
-        for (auto& model : scene.models) {
-            AABB modelAABB = model->getAABB();
+        for (auto& collider : scene.colliders) {
+            AABB colliderAABB = collider->getAABB();
 
-            if (modelAABB.intersects(rayPosition)) {
-                normalVector = model->getClosestBlockNormal(rayPosition);
+            if (colliderAABB.intersects(rayPosition)) {
+                normalVector = collider->getClosestBlockNormal(rayPosition);
 
-                return model;
+                return collider;
             }
         }
 
