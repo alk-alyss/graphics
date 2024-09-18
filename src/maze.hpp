@@ -15,24 +15,22 @@ private:
     int height;
     float scalling = 3;
 
-    std::set<std::pair<int, int>> mazeMap;
+    std::map<std::pair<int, int>, int> mazeMap; // location -> material index
 
     std::shared_ptr<Mesh> mesh = cubeMesh;
-    Material material;
+    std::vector<Material> materials;
 
     GLuint instanceVBO;
 
-    std::vector<glm::mat4> modelMatrices;
+    std::vector<std::vector<glm::mat4>> modelMatrices; // material index -> model matrices
 
     void loadVram();
     void unloadVram();
 
 public:
-    Maze(int width, int height, Material material);
+    Maze(int width, int height, std::vector<Material> materials);
 
-    ~Maze() {
-        unloadVram();
-    }
+    ~Maze() {unloadVram();}
 
     void draw(glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const override;
 };

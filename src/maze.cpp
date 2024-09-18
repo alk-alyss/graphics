@@ -1,6 +1,7 @@
 #include "maze.hpp"
 #include "common.hpp"
 #include "glm/gtc/type_ptr.hpp"
+#include "material.hpp"
 #include <cstdlib>
 #include <memory>
 
@@ -106,34 +107,37 @@ set<pair<int, int>> generateMazeMap(int width, int height) {
     return mazeMap;
 }
 
-Maze::Maze(int width, int height, Material material) {
+Maze::Maze(int width, int height, vector<Material> materials) {
     this->width = width;
     this->height = height;
-    this->material = material;
+    this->materials = materials;
 
-    mazeMap = generateMazeMap(width, height);
+    for (int i=0; i<materials.size(); i++) {
+        modelMatrices.push_back(vector<glm::mat4>());
+    }
 
     // Calculate model matrix for each wall
-    for (auto& wall: mazeMap) {
+    for (auto& wall: generateMazeMap(width, height)) {
+        mazeMap[wall] = rand() % materials.size();
+
         Transformation wallTransformation;
         wallTransformation.setPosition(scalling * wall.second, scalling/2, -scalling * wall.first);
         wallTransformation.setScale(scalling/2);
 
-        modelMatrices.push_back(wallTransformation.modelMatrix());
+        modelMatrices[mazeMap[wall]].push_back(wallTransformation.modelMatrix());
     }
 
     loadVram();
 }
 
 void Maze::loadVram() {
-    // Calculate model matrix for each wall
     glBindVertexArray(mesh->getVao());
 
     // Generate model matrix buffer
     glGenBuffers(1, &instanceVBO);
     glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
 
-    // Load model matrix for each instance
+    // Setup instance matrix attributes
     for (int i=0; i<4; i++) {
         glVertexAttribPointer(INSTANCE_MATRIX_LOCATION+i, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(glm::vec4), (void*) (i * sizeof(glm::vec4)));
         glEnableVertexAttribArray(INSTANCE_MATRIX_LOCATION+i);
@@ -141,8 +145,6 @@ void Maze::loadVram() {
     }
 
     glBindVertexArray(0);
-
-    glBufferData(GL_ARRAY_BUFFER, modelMatrices.size() * sizeof(modelMatrices[0]), modelMatrices.data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
@@ -153,9 +155,15 @@ void Maze::unloadVram() {
 void Maze::draw(glm::mat4 modelMatrix, const shared_ptr<Shader> shader) const {
     glUniformMatrix4fv(shader->getMLocation(), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 
-    material.bind();
-
     glBindVertexArray(mesh->getVao());
-    glDrawElementsInstanced(GL_TRIANGLES, mesh->indexCount(), GL_UNSIGNED_INT, 0, mazeMap.size());
+    for (int i=0; i<materials.size(); i++) {
+        materials[i].bind();
+
+        glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
+        glBufferData(GL_ARRAY_BUFFER, modelMatrices[i].size() * sizeof(glm::mat4), modelMatrices[i].data(), GL_DYNAMIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+        glDrawElementsInstanced(GL_TRIANGLES, mesh->indexCount(), GL_UNSIGNED_INT, 0, modelMatrices[i].size());
+    }
     glBindVertexArray(0);
 }

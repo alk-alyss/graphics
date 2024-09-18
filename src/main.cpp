@@ -75,7 +75,7 @@ int main(void) {
 
         models.push_back(planeModel);
 
-        std::shared_ptr<Maze> maze = std::make_shared<Maze>(19, 19, grassMaterial);
+        std::shared_ptr<Maze> maze = std::make_shared<Maze>(19, 19, materials);
 
         std::vector<DirectionalLight> dirLights{
             DirectionalLight(
