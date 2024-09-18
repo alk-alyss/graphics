@@ -73,6 +73,9 @@ std::shared_ptr<GLFWwindow> createWindow() {
     // Accept fragment if it closer to the camera than the former one
     glDepthFunc(GL_LESS);
 
+    // Enable stencil test
+    glEnable(GL_STENCIL_TEST);
+
     // Trilinear texture filtering
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
