@@ -73,6 +73,9 @@ std::shared_ptr<GLFWwindow> createWindow() {
     // Accept fragment if it closer to the camera than the former one
     glDepthFunc(GL_LESS);
 
+    // Enable back face culling
+    glEnable(GL_CULL_FACE);
+
     // Enable stencil test
     glEnable(GL_STENCIL_TEST);
 
