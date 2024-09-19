@@ -6,9 +6,9 @@ std::shared_ptr<Portal> Scene::createPortal(
         const std::shared_ptr<Model> block,
         const glm::vec3 normalVector
     ) const {
-    glm::vec3 portalPosition = block->getPosition() + normalVector * (block->getSize() + 0.005f);
+    glm::vec3 portalPosition = block->getPosition() + normalVector * (block->getScale() + 0.005f);
 
-    return std::make_shared<Portal>(portalPosition, normalVector, 0.8f * block->getSize());
+    return std::make_shared<Portal>(portalPosition, normalVector, 0.8f * block->getScale());
 }
 
 void Scene::linkPortals() {

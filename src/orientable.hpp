@@ -31,15 +31,15 @@ public:
     virtual void setPosition(glm::vec3 position) {this->position = position;}
     void setPosition(float x, float y, float z) {setPosition(glm::vec3(x, y, z));}
 
-    virtual void setRotation(glm::quat rotation);
-    void setRotation(float pitch, float yaw, float roll) {setRotation(eulerToQuat(pitch, yaw, roll));}
+    virtual void setOrientation(glm::quat orientation);
+    void setOrientation(float pitch, float yaw, float roll) {setOrientation(eulerToQuat(pitch, yaw, roll));}
 
     virtual void setScale(glm::vec3 newScale) {this->scale = newScale;}
     void setScale(float newScale) {setScale(glm::vec3(newScale, newScale, newScale));}
 
     glm::vec3 getPosition() const {return position;}
-    glm::quat getRotation() const {return orientation;}
-    glm::vec3 getSize() const {return scale;}
+    glm::quat getOrientation() const {return orientation;}
+    glm::vec3 getScale() const {return scale;}
 
     glm::mat4 translationMatrix() const;
     glm::mat4 rotationMatrix() const;

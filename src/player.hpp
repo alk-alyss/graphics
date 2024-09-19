@@ -25,7 +25,7 @@ public:
         std::shared_ptr<Model> model,
         std::shared_ptr<Model> collider,
         glm::vec3 position = DEFAULT_POSITION,
-        glm::quat rotation = DEFAULT_ORIENTATION,
+        glm::quat orientation = DEFAULT_ORIENTATION,
         glm::vec3 scale = DEFAULT_SCALE
     );
 
@@ -38,7 +38,7 @@ public:
     void setMouseSpeed(float mouseSpeed) {this->mouseSpeed = mouseSpeed;}
 
     void setPosition(glm::vec3 position) override;
-    void setRotation(glm::quat rotation) override;
+    void setOrientation(glm::quat orientation) override;
 
     glm::vec3 getVelocity() const {return velocity;}
 

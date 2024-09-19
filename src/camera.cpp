@@ -54,8 +54,8 @@ void Camera::setPosition(glm::vec3 position) {
     updateViewMatrix();
 }
 
-void Camera::setRotation(glm::quat rotation) {
-    Orientable::setRotation(rotation);
+void Camera::setOrientation(glm::quat orientation) {
+    Orientable::setOrientation(orientation);
     updateViewMatrix();
 }
 

@@ -40,7 +40,7 @@ public:
     void zoom(float amount);
 
     void setPosition(glm::vec3 position);
-    void setRotation(glm::quat rotation);
+    void setOrientation(glm::quat orientation);
     void setScale(glm::vec3 newScale);
 
     void translate(glm::vec3 translation);

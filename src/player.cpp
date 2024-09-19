@@ -6,18 +6,18 @@ Player::Player(
     std::shared_ptr<Model> model,
     std::shared_ptr<Model> collider,
     glm::vec3 position,
-    glm::quat rotation,
+    glm::quat orientation,
     glm::vec3 scale
-) : Orientable(position, rotation, scale), model(model), collider(collider) {
-    camera = std::make_unique<Camera>(position, rotation);
+) : Orientable(position, orientation, scale), model(model), collider(collider) {
+    camera = std::make_unique<Camera>(position, orientation);
     camera->setNC(0.1);
 
     model->setPosition(position);
-    model->setRotation(rotation);
+    model->setOrientation(orientation);
     model->setScale(scale);
 
     collider->setPosition(position);
-    collider->setRotation(rotation);
+    collider->setOrientation(orientation);
     collider->setScale(scale);
 };
 
@@ -49,11 +49,11 @@ void Player::setPosition(glm::vec3 position) {
     if (!noClip) collider->setPosition(position);
 }
 
-void Player::setRotation(glm::quat rotation) {
-    Orientable::setRotation(rotation);
-    camera->setRotation(rotation);
-    if (!noClip) model->setRotation(rotation);
-    if (!noClip) collider->setRotation(rotation);
+void Player::setOrientation(glm::quat rotation) {
+    Orientable::setOrientation(rotation);
+    camera->setOrientation(rotation);
+    if (!noClip) model->setOrientation(rotation);
+    if (!noClip) collider->setOrientation(rotation);
 }
 
 void Player::translate(glm::vec3 translation) {
@@ -131,7 +131,7 @@ void Player::moveRight() {
 void Player::toggleNoClip() {
     if (noClip) {
         position = model->getPosition();
-        orientation = model->getRotation();
+        orientation = model->getOrientation();
 
         camera->setPosition(position);
         camera->lookAt(forward() + position, up());

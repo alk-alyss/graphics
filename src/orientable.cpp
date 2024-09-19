@@ -14,9 +14,9 @@ quat eulerToQuat(float pitch, float yaw, float roll) {
     return normalize(rotationZ * rotationY * rotationX);
 }
 
-Orientable::Orientable(vec3 position, quat rotation, vec3 scale) {
+Orientable::Orientable(vec3 position, quat orientation, vec3 scale) {
     this->position = position;
-    setRotation(rotation);
+    setOrientation(orientation);
     this->scale = scale;
 }
 
@@ -48,7 +48,7 @@ void Orientable::rotate(float angle, vec3 axis) {
     orientation = normalize(rotationQuat * orientation);
 }
 
-void Orientable::setRotation(quat rotation) {
+void Orientable::setOrientation(quat rotation) {
     orientation = normalize(rotation);
 }
 
