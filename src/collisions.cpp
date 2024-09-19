@@ -21,8 +21,8 @@ void checkCollisions(const Scene& scene, const float deltaTime) {
     auto player = scene.player;
     AABB playerAABB = player->getCollider();
 
-    auto portal1 = scene.portals.first;
-    auto portal2 = scene.portals.second;
+    auto portal1 = scene.portals[0];
+    auto portal2 = scene.portals[1];
 
     if (portal1 != nullptr && playerAABB.intersects(portal1->getAABB())) {
         std::cout << "portal1 collision" << std::endl;

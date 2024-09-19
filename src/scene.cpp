@@ -12,16 +12,16 @@ std::shared_ptr<Portal> Scene::createPortal(
 }
 
 void Scene::linkPortals() {
-    if (portals.first != nullptr) portals.first->linkPortal(portals.second);
-    if (portals.second != nullptr) portals.second->linkPortal(portals.first);
+    if (portals[0] != nullptr) portals[0]->linkPortal(portals[1]);
+    if (portals[1] != nullptr) portals[1]->linkPortal(portals[0]);
 }
 
 void Scene::createFirstPortal(const std::shared_ptr<Model> block, glm::vec3 normalVector) {
-    portals.first = createPortal(block, normalVector);
+    portals[0] = createPortal(block, normalVector);
     linkPortals();
 }
 
 void Scene::createSecondPortal(const std::shared_ptr<Model> block, glm::vec3 normalVector) {
-    portals.second = createPortal(block, normalVector);
+    portals[1] = createPortal(block, normalVector);
     linkPortals();
 }

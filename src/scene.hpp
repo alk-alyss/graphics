@@ -17,7 +17,7 @@ struct Scene {
     std::vector<std::shared_ptr<Model>> colliders;
     std::vector<DirectionalLight> directionalLights;
     std::vector<PointLight> pointLights;
-    std::pair<std::shared_ptr<Portal>, std::shared_ptr<Portal>> portals;
+    std::shared_ptr<Portal> portals[2];
 
 private:
     std::shared_ptr<Portal> createPortal(const std::shared_ptr<Model> block, const glm::vec3 normalVector) const;
