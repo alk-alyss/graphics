@@ -17,6 +17,8 @@ public:
     void linkPortal(std::shared_ptr<Portal> portal);
     void handleCollision(std::shared_ptr<Player> player);
 
+    glm::vec4 getClipPlane() const;
+
     void getViewFromLinkedPortal(
         const glm::vec3 position,
         const glm::quat orientation,

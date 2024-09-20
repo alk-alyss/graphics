@@ -14,6 +14,8 @@
 
 class Renderer {
 private:
+    glm::mat4 initialTransformation{1};
+
     std::shared_ptr<Shader> singleShader, instancedShader, simpleShader;
     GLuint matricesUBO, lightsUBO;
     size_t lightsUBOsize;
@@ -26,6 +28,8 @@ public:
     void uploadLights(const Scene& scene);
 
     void render(const Scene& scene);
+    void renderScene(const Scene& scene, const Camera& camera);
+    void renderPortals(const Scene& scene);
 };
 
 #endif

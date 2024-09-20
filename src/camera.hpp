@@ -39,6 +39,8 @@ public:
 
     void zoom(float amount);
 
+    void setProjection(glm::mat4 newProjectionMatrix) {projectionMatrix = newProjectionMatrix;}
+
     void setPosition(glm::vec3 position);
     void setOrientation(glm::quat orientation);
     void setScale(glm::vec3 newScale);

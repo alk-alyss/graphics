@@ -6,7 +6,6 @@
 #include <memory>
 
 #include "context.hpp"
-#include "shader.hpp"
 #include "renderer.hpp"
 #include "player.hpp"
 #include "controls.hpp"

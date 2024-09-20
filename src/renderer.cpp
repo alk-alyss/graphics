@@ -1,4 +1,5 @@
 #include "renderer.hpp"
+#include "shader.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -32,16 +33,21 @@ Renderer::Renderer() {
     glBindBufferBase(GL_UNIFORM_BUFFER, 1, lightsUBO);
 }
 
-void Renderer::render(
-    const Scene& scene
-) {
-    glm::mat4 initialTransformation{1};
+void Renderer::render(const Scene& scene) {
+    uploadLights(scene);
+
+    renderScene(scene, scene.player->getCamera());
+    renderPortals(scene);
+    // renderScene(scene, scene.player->getCamera());
+
+    glUseProgram(0);
+}
+
+void Renderer::renderScene(const Scene& scene, const Camera& camera) {
+    uploadMatrices(camera);
 
     // Draw maze
     instancedShader->bind();
-
-    uploadMatrices(scene.player->getCamera());
-    uploadLights(scene);
 
     // Upload camera position
     glm::vec3 cameraPosition = scene.player->getCamera().getPosition();
@@ -55,32 +61,90 @@ void Renderer::render(
     // Upload camera position
     glUniform3fv(singleShader->getCameraPositionLocation(), 1, glm::value_ptr(cameraPosition));
 
-    // Draw floor
     scene.floor->draw(initialTransformation, singleShader);
-
-    // Draw player
     scene.player->draw(initialTransformation, singleShader);
+}
 
-    // Draw portal frame to stencil buffer
+void Renderer::renderPortals(const Scene& scene) {
+    uploadMatrices(scene.player->getCamera());
     simpleShader->bind();
 
+    for (auto& portal : scene.portals) {
+        if (portal != nullptr) portal->updateCamera(scene.player->getCamera());
+    }
+
+    // Enable stencil test
     glEnable(GL_STENCIL_TEST);
-    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-    glStencilFunc(GL_ALWAYS, 1, 0xFF);
-    glStencilMask(0xFF); // Enable writing to stencil buffer
 
-    if (scene.portals.first != nullptr) scene.portals.first->draw(initialTransformation, simpleShader);
-    if (scene.portals.second != nullptr) scene.portals.second->draw(initialTransformation, simpleShader);
+    auto& portal = scene.portals[0];
+    // for (auto& portal : scene.portals) {
+        if (portal == nullptr) return;
 
-    glStencilMask(0x00); // Disable writing to stencil buffer
+        // portal->updateCamera(scene.player->getCamera());
 
-    // TODO: draw view from portal 1
+        // Enable writing to stencil buffer
+        glStencilMask(0xFF);
 
-    // TODO: draw view from portal 2
+        // Clear stencil buffer
+        glClear(GL_STENCIL_BUFFER_BIT);
 
+        // Disable writing to color and depth buffer
+        glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+        glDepthMask(GL_FALSE);
+
+        // Set stencil buffer to 1 where portal is drawn
+        glStencilFunc(GL_NEVER, 1, 0xFF);
+        glStencilOp(GL_INCR, GL_KEEP, GL_KEEP);
+
+        // Draw portal frame to stencil buffer
+        portal->draw(initialTransformation, simpleShader);
+
+        // Disable writing to stencil buffer
+        glStencilMask(0x00);
+
+        // Enable writing to color and depth buffer
+        glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+        glDepthMask(GL_TRUE);
+
+        // Render only if stencil value is equal to 1
+        glStencilFunc(GL_EQUAL, 1, 0xFF);
+
+        // Draw portal frame if portal is not linked
+        if (portal->getLinkedPortal() == nullptr) {
+            portal->draw(initialTransformation, simpleShader);
+        }
+        // Draw view through portal otherwise
+        else {
+            Camera portalCamera = portal->getLinkedPortal()->getCamera();
+            renderScene(scene, portalCamera);
+        }
+    // }
+
+    // Disable stencil test
     glDisable(GL_STENCIL_TEST);
 
-    glUseProgram(0);
+    // Enable depth test
+    glEnable(GL_DEPTH_TEST);
+
+    // Always pass depth test
+    glDepthFunc(GL_ALWAYS);
+
+    // Clear depth buffer
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    // Disable writing to color buffer
+    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+
+    // Draw portals to depth buffer
+    for (auto& portal : scene.portals) {
+        if (portal != nullptr) portal->draw(initialTransformation, simpleShader);
+    }
+
+    // Enable writing to color buffer
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
+    // Restore depth test function
+    glDepthFunc(GL_LESS);
 }
 
 void Renderer::uploadMatrices(const Camera& camera) {
