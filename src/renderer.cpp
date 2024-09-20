@@ -36,9 +36,9 @@ Renderer::Renderer() {
 void Renderer::render(const Scene& scene) {
     uploadLights(scene);
 
-    renderScene(scene, scene.player->getCamera());
-    renderPortals(scene);
     // renderScene(scene, scene.player->getCamera());
+    renderPortals(scene);
+    renderScene(scene, scene.player->getCamera());
 
     glUseProgram(0);
 }
@@ -50,7 +50,7 @@ void Renderer::renderScene(const Scene& scene, const Camera& camera) {
     instancedShader->bind();
 
     // Upload camera position
-    glm::vec3 cameraPosition = scene.player->getCamera().getPosition();
+    glm::vec3 cameraPosition = camera.getPosition();
     glUniform3fv(instancedShader->getCameraPositionLocation(), 1, glm::value_ptr(cameraPosition));
 
     scene.maze->draw(initialTransformation, instancedShader);
@@ -66,9 +66,6 @@ void Renderer::renderScene(const Scene& scene, const Camera& camera) {
 }
 
 void Renderer::renderPortals(const Scene& scene) {
-    uploadMatrices(scene.player->getCamera());
-    simpleShader->bind();
-
     for (auto& portal : scene.portals) {
         if (portal != nullptr) portal->updateCamera(scene.player->getCamera());
     }
@@ -76,11 +73,17 @@ void Renderer::renderPortals(const Scene& scene) {
     // Enable stencil test
     glEnable(GL_STENCIL_TEST);
 
-    auto& portal = scene.portals[0];
-    // for (auto& portal : scene.portals) {
-        if (portal == nullptr) return;
+    // auto& portal = scene.portals[0];
+    for (auto& portal : scene.portals) {
+        if (portal == nullptr) continue;
 
-        // portal->updateCamera(scene.player->getCamera());
+        // Draw portal frame if portal is not linked
+        uploadMatrices(scene.player->getCamera());
+        simpleShader->bind();
+        if (portal->getLinkedPortal() == nullptr) {
+            portal->draw(initialTransformation, simpleShader);
+            continue;
+        }
 
         // Enable writing to stencil buffer
         glStencilMask(0xFF);
@@ -107,18 +110,11 @@ void Renderer::renderPortals(const Scene& scene) {
         glDepthMask(GL_TRUE);
 
         // Render only if stencil value is equal to 1
-        glStencilFunc(GL_EQUAL, 1, 0xFF);
+        glStencilFunc(GL_LEQUAL, 1, 0xFF);
 
-        // Draw portal frame if portal is not linked
-        if (portal->getLinkedPortal() == nullptr) {
-            portal->draw(initialTransformation, simpleShader);
-        }
-        // Draw view through portal otherwise
-        else {
-            Camera portalCamera = portal->getLinkedPortal()->getCamera();
-            renderScene(scene, portalCamera);
-        }
-    // }
+        // Draw view through portal
+        renderScene(scene, portal->getLinkedPortal()->getCamera());
+    }
 
     // Disable stencil test
     glDisable(GL_STENCIL_TEST);
@@ -136,6 +132,8 @@ void Renderer::renderPortals(const Scene& scene) {
     glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 
     // Draw portals to depth buffer
+    uploadMatrices(scene.player->getCamera());
+    simpleShader->bind();
     for (auto& portal : scene.portals) {
         if (portal != nullptr) portal->draw(initialTransformation, simpleShader);
     }
