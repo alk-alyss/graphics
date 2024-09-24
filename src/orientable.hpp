@@ -12,9 +12,9 @@ glm::quat eulerToQuat(float pitch, float yaw, float roll);
 
 class Orientable {
 protected:
-    glm::vec3 position;
-    glm::quat orientation;
-    glm::vec3 scale;
+    glm::vec3 position = DEFAULT_POSITION;
+    glm::quat orientation = DEFAULT_ORIENTATION;
+    glm::vec3 scale = DEFAULT_SCALE;
 
 public:
     glm::vec3 up() const;
@@ -28,24 +28,26 @@ public:
         glm::vec3 scale = DEFAULT_SCALE
     );
 
-    virtual void setPosition(glm::vec3 position) {this->position = position;}
+    // Setters
+    virtual void setPosition(glm::vec3 position);
     void setPosition(float x, float y, float z) {setPosition(glm::vec3(x, y, z));}
-
     virtual void setOrientation(glm::quat orientation);
     void setOrientation(float pitch, float yaw, float roll) {setOrientation(eulerToQuat(pitch, yaw, roll));}
-
-    virtual void setScale(glm::vec3 newScale) {this->scale = newScale;}
+    virtual void setScale(glm::vec3 newScale);
     void setScale(float newScale) {setScale(glm::vec3(newScale, newScale, newScale));}
 
+    // Getters
     glm::vec3 getPosition() const {return position;}
     glm::quat getOrientation() const {return orientation;}
     glm::vec3 getScale() const {return scale;}
 
+    // Matrices
     glm::mat4 translationMatrix() const;
     glm::mat4 rotationMatrix() const;
     glm::mat4 scallingMatrix() const;
     glm::mat4 modelMatrix() const;
 
+    // Transformations
     virtual void translate(glm::vec3 translation);
     void translate(float x, float y, float z) {translate(glm::vec3(x, y, z));}
 
