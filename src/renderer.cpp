@@ -66,6 +66,7 @@ void Renderer::renderScene(const Scene& scene, const Camera& camera) {
 }
 
 void Renderer::renderPortals(const Scene& scene) {
+    // Update portal cameras
     for (auto& portal : scene.portals) {
         if (portal != nullptr) portal->updateCamera(scene.player->getCamera());
     }
@@ -73,11 +74,10 @@ void Renderer::renderPortals(const Scene& scene) {
     // Enable stencil test
     glEnable(GL_STENCIL_TEST);
 
-    // auto& portal = scene.portals[0];
     for (auto& portal : scene.portals) {
         if (portal == nullptr) continue;
 
-        // Draw portal frame if portal is not linked
+        // Draw portal frame if other portal does not exist
         uploadMatrices(scene.player->getCamera());
         simpleShader->bind();
         if (portal->getLinkedPortal() == nullptr) {
@@ -110,7 +110,7 @@ void Renderer::renderPortals(const Scene& scene) {
         glDepthMask(GL_TRUE);
 
         // Render only if stencil value is equal to 1
-        glStencilFunc(GL_LEQUAL, 1, 0xFF);
+        glStencilFunc(GL_EQUAL, 1, 0xFF);
 
         // Draw view through portal
         renderScene(scene, portal->getLinkedPortal()->getCamera());
@@ -119,19 +119,13 @@ void Renderer::renderPortals(const Scene& scene) {
     // Disable stencil test
     glDisable(GL_STENCIL_TEST);
 
-    // Enable depth test
-    glEnable(GL_DEPTH_TEST);
-
-    // Always pass depth test
-    glDepthFunc(GL_ALWAYS);
-
     // Clear depth buffer
     glClear(GL_DEPTH_BUFFER_BIT);
 
     // Disable writing to color buffer
     glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 
-    // Draw portals to depth buffer
+    // Draw portals to depth buffer to prevent rendering objects behind them
     uploadMatrices(scene.player->getCamera());
     simpleShader->bind();
     for (auto& portal : scene.portals) {
@@ -140,9 +134,6 @@ void Renderer::renderPortals(const Scene& scene) {
 
     // Enable writing to color buffer
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-
-    // Restore depth test function
-    glDepthFunc(GL_LESS);
 }
 
 void Renderer::uploadMatrices(const Camera& camera) {
