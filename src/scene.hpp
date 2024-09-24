@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <memory>
+#include <array>
 
 #include "maze.hpp"
 #include "player.hpp"
@@ -17,7 +18,7 @@ struct Scene {
     std::vector<std::shared_ptr<Model>> colliders;
     std::vector<DirectionalLight> directionalLights;
     std::vector<PointLight> pointLights;
-    std::shared_ptr<Portal> portals[2];
+    std::array<std::shared_ptr<Portal>,2> portals;
 
 public:
     Scene(

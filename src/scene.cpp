@@ -15,8 +15,10 @@ void Scene::createPortal(const int portalIndex) {
 
     portals[portalIndex] = std::make_shared<Portal>(portalPosition, normalVector, 0.8f * block->getScale());
 
-    if (portals[0] != nullptr) portals[0]->linkPortal(portals[1]);
-    if (portals[1] != nullptr) portals[1]->linkPortal(portals[0]);
+    for (int i=0; i<portals.size(); i++) {
+        if (portals[i] == nullptr) continue;
+        portals[i]->linkPortal(portals[(i + 1) % portals.size()]);
+    }
 }
 
 std::shared_ptr<Model> Scene::castRay(
