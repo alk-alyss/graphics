@@ -25,10 +25,17 @@ AABB Model::getAABB() const {
     glm::vec4 transformedMin = transformationMatrix * AABBmin;
     glm::vec4 transformedMax = transformationMatrix * AABBmax;
 
-    const AABB modelAABB = AABB(
-        glm::vec3(transformedMin),
-        glm::vec3(transformedMax)
-    );
+    std::vector<glm::vec3> vertices {
+        glm::vec3(transformedMin.x, transformedMin.y, transformedMin.z),
+        glm::vec3(transformedMin.x, transformedMin.y, transformedMax.z),
+        glm::vec3(transformedMin.x, transformedMax.y, transformedMin.z),
+        glm::vec3(transformedMin.x, transformedMax.y, transformedMax.z),
+        glm::vec3(transformedMax.x, transformedMin.y, transformedMin.z),
+        glm::vec3(transformedMax.x, transformedMin.y, transformedMax.z),
+        glm::vec3(transformedMax.x, transformedMax.y, transformedMin.z),
+        glm::vec3(transformedMax.x, transformedMax.y, transformedMax.z)
+    };
+    const AABB modelAABB = AABB(vertices);
 
     return modelAABB;
 }
