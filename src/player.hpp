@@ -43,6 +43,7 @@ public:
     void setPosition(glm::vec3 position) override;
     void setOrientation(glm::quat orientation) override;
 
+    void setVelocity(float velocity) {this->velocity = forwardMovementVector() * velocity;}
     void setVelocity(glm::vec3 velocity) {this->velocity = velocity;}
     glm::vec3 getVelocity() const {return velocity;}
 

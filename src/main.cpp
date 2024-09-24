@@ -120,10 +120,10 @@ int main(void) {
             handleMouse(window, scene, deltaTime);
             handleKeyboard(window, scene, deltaTime);
 
+            if (!player->isNoClip()) checkCollisions(scene, deltaTime);
+
             player->updateCamera(window.get());
             player->update(deltaTime);
-
-            if (!player->isNoClip()) checkCollisions(scene, deltaTime);
 
             renderer.render(scene);
 

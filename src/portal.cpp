@@ -64,6 +64,7 @@ void Portal::handleCollision(std::shared_ptr<Player> player) {
 
     player->setPosition(newPosition);
     player->setOrientation(newOrientation);
+    player->setVelocity(0);
 }
 
 void Portal::getViewFromLinkedPortal(
