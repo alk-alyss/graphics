@@ -24,8 +24,8 @@ protected:
     void updateProjectionMatrix();
 
 public:
-    Camera() : Camera(glm::vec3(0.0f), glm::vec3(0.0f)) {};
-    Camera(glm::vec3 position, glm::quat rotation);
+    Camera() : Camera(glm::vec3(0), glm::vec3(0, 0, -1), glm::vec3(0, 1, 0)) {};
+    Camera(glm::vec3 position, glm::quat orientation);
     Camera(glm::vec3 position, glm::vec3 target, glm::vec3 up);
 
     glm::mat4 getView() const {return viewMatrix;}

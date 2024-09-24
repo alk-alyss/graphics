@@ -5,11 +5,11 @@
 
 using namespace glm;
 
-Camera::Camera(vec3 position, quat rotation) : Orientable(position, rotation){
+Camera::Camera(vec3 position, quat orientation) : Orientable(position, orientation){
     nearCP = 0.1f;
     farCP = 500.0f;
 
-    fov = 45.0f;
+    fov = 65.0f;
     aspectRatio = 16.0f/9.0f;
 
     updateViewMatrix();

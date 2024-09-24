@@ -24,6 +24,7 @@ glm::vec4 Portal::getClipPlane() const {
     glm::vec3 normal = forward();
     glm::vec3 position = getPosition();
 
+    // Plane equation: ax + by + cz + d = 0, where (a, b, c) is the normal vector, and d = -dot(normal, position)
     glm::vec4 plane = glm::vec4(normal, -glm::dot(normal, position));
     plane = glm::inverse(glm::transpose(camera.getView())) * plane;
 

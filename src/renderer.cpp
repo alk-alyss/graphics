@@ -36,7 +36,6 @@ Renderer::Renderer() {
 void Renderer::render(const Scene& scene) {
     uploadLights(scene);
 
-    // renderScene(scene, scene.player->getCamera());
     renderPortals(scene);
     renderScene(scene, scene.player->getCamera(), false);
 

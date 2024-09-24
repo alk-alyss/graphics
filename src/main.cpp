@@ -82,7 +82,7 @@ int main(void) {
 
         std::shared_ptr<Player> player = std::make_shared<Player>(
             loadSuzanne(metalMaterial),
-            glm::vec3(0.0f, 2.0f, 10.0f)
+            glm::vec3(0.0f, 1.5f, 10.0f)
         );
 
         Scene scene(
