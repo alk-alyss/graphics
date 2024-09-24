@@ -26,6 +26,20 @@ void Player::update(float deltaTime) {
     velocity = glm::vec3(0);
 }
 
+void Player::updateComponents() {
+    camera->setPosition(position);
+    camera->setOrientation(orientation);
+
+    if (noClip) return;
+    model->setPosition(position);
+    model->setOrientation(orientation);
+    model->setScale(scale);
+
+    collider->setPosition(position);
+    collider->setOrientation(orientation);
+    collider->setScale(scale);
+}
+
 void Player::look(float mouseX, float mouseY, float deltaTime) {
     float pitch = -mouseY * mouseSpeed * deltaTime;
     float yaw = -mouseX * mouseSpeed * deltaTime;
@@ -36,38 +50,27 @@ void Player::look(float mouseX, float mouseY, float deltaTime) {
 
 void Player::lookAt(glm::vec3 target, glm::vec3 up, glm::vec3 alternativeUp) {
     Orientable::lookAt(target, up, alternativeUp);
-
-    camera->lookAt(target, up, alternativeUp);
-    if (!noClip) model->lookAt(target, up, alternativeUp);
-    if (!noClip) collider->lookAt(target, up, alternativeUp);
+    updateComponents();
 }
 
 void Player::setPosition(glm::vec3 position) {
     Orientable::setPosition(position);
-    camera->setPosition(position);
-    if (!noClip) model->setPosition(position);
-    if (!noClip) collider->setPosition(position);
+    updateComponents();
 }
 
 void Player::setOrientation(glm::quat rotation) {
     Orientable::setOrientation(rotation);
-    camera->setOrientation(rotation);
-    if (!noClip) model->setOrientation(rotation);
-    if (!noClip) collider->setOrientation(rotation);
+    updateComponents();
 }
 
 void Player::translate(glm::vec3 translation) {
     Orientable::translate(translation);
-    camera->setPosition(position);
-    if (!noClip) model->setPosition(position);
-    if (!noClip) collider->setPosition(position);
+    updateComponents();
 }
 
 void Player::rotate(glm::quat rotation) {
     Orientable::rotate(rotation);
-    camera->rotate(rotation);
-    if (!noClip) model->rotate(rotation);
-    if (!noClip) collider->rotate(rotation);
+    updateComponents();
 }
 
 glm::vec3 Player::forwardMovementVector() {
