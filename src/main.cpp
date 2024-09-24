@@ -44,7 +44,7 @@ const std::shared_ptr<Model> loadSuzanne(Material material) {
 
 const std::shared_ptr<Model> playerCollider(Material material) {
     Transformation colliderTransformation;
-    colliderTransformation.setScale(0.5);
+    colliderTransformation.setScale(0.6);
 
     return std::make_shared<Model>(sphereMesh, material, colliderTransformation);
 }
@@ -120,7 +120,7 @@ int main(void) {
             handleMouse(window, scene, deltaTime);
             handleKeyboard(window, scene, deltaTime);
 
-            checkCollisions(scene, deltaTime);
+            if (!player->isNoClip()) checkCollisions(scene, deltaTime);
 
             player->updateCamera(window.get());
             player->update(deltaTime);

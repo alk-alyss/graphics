@@ -54,6 +54,7 @@ public:
     void moveLeft();
     void zoom(float amount) {camera->zoom(amount);}
 
+    bool isNoClip() {return noClip;}
     void toggleNoClip();
 
     AABB getCollider() {return collider->getAABB();}
