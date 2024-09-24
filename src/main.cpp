@@ -42,13 +42,6 @@ const std::shared_ptr<Model> loadSuzanne(Material material) {
     return std::make_shared<Model>(suzanneMesh, material, suzanneTransformation);
 }
 
-const std::shared_ptr<Model> playerCollider(Material material) {
-    Transformation colliderTransformation;
-    colliderTransformation.setScale(0.3);
-
-    return std::make_shared<Model>(sphereMesh, material, colliderTransformation);
-}
-
 int main(void) {
     std::srand(std::time(nullptr));
 
@@ -89,7 +82,6 @@ int main(void) {
 
         std::shared_ptr<Player> player = std::make_shared<Player>(
             loadSuzanne(metalMaterial),
-            playerCollider(grassMaterial),
             glm::vec3(0.0f, 2.0f, 10.0f)
         );
 

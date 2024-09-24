@@ -4,21 +4,16 @@ using namespace glm;
 
 Player::Player(
     std::shared_ptr<Model> model,
-    std::shared_ptr<Model> collider,
     glm::vec3 position,
     glm::quat orientation,
     glm::vec3 scale
-) : Orientable(position, orientation, scale), model(model), collider(collider) {
+) : Orientable(position, orientation, scale), model(model) {
     camera = std::make_unique<Camera>(position, orientation);
     camera->setNC(0.1);
 
     model->setPosition(position);
     model->setOrientation(orientation);
     model->setScale(scale);
-
-    collider->setPosition(position);
-    collider->setOrientation(orientation);
-    collider->setScale(scale);
 };
 
 void Player::update(float deltaTime) {
@@ -34,10 +29,6 @@ void Player::updateComponents() {
     model->setPosition(position);
     model->setOrientation(orientation);
     model->setScale(scale);
-
-    collider->setPosition(position);
-    collider->setOrientation(orientation);
-    collider->setScale(scale);
 }
 
 void Player::look(float mouseX, float mouseY, float deltaTime) {
