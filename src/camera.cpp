@@ -6,20 +6,15 @@
 using namespace glm;
 
 Camera::Camera(vec3 position, quat orientation) : Orientable(position, orientation){
-    nearCP = 0.1f;
-    farCP = 500.0f;
-
-    fov = 65.0f;
-    aspectRatio = 16.0f/9.0f;
-
     updateViewMatrix();
-
     updateProjectionMatrix();
 }
 
 Camera::Camera(vec3 position, vec3 target, vec3 up) {
     setPosition(position);
     lookAt(target, up);
+    updateViewMatrix();
+    updateProjectionMatrix();
 };
 
 void Camera::updateViewMatrix() {

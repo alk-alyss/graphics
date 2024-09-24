@@ -18,6 +18,7 @@ private:
     void getUniformLocations();
 
 public:
+    Shader() = delete;
     Shader(const std::string vertFile, const std::string fragFile, const std::string geomFile="");
     ~Shader();
 

@@ -12,8 +12,8 @@ std::set<std::pair<int, int>> generateMazeMap(int width, int height);
 
 class Maze : Node{
 private:
-    int width;
-    int height;
+    int width = 19;
+    int height = 19;
     float scalling = 3;
 
     std::map<std::pair<int, int>, int> mazeMap; // location -> material index

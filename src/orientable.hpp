@@ -22,11 +22,10 @@ public:
     glm::vec3 right() const;
 
 public:
-    Orientable(
-        glm::vec3 position = DEFAULT_POSITION,
-        glm::quat orientation = DEFAULT_ORIENTATION,
-        glm::vec3 scale = DEFAULT_SCALE
-    );
+    Orientable() : Orientable(DEFAULT_POSITION) {};
+    Orientable(glm::vec3 position) : Orientable(position, DEFAULT_ORIENTATION) {};
+    Orientable(glm::vec3 position, glm::quat orientation) : Orientable(position, orientation, DEFAULT_SCALE) {};
+    Orientable(glm::vec3 position, glm::quat orientation, glm::vec3 scale);
 
     // Setters
     virtual void setPosition(glm::vec3 position);

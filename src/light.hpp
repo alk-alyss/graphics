@@ -8,15 +8,19 @@
 
 class Light : public Orientable {
 protected:
-    glm::vec3 color;
-    float power;
+    glm::vec3 color = glm::vec3(1,1,1);
+    float power = 1;
 
 public:
+    Light() : Light(DEFAULT_POSITION, DEFAULT_ORIENTATION, 10, glm::vec3(1,1,1)) {}
+    Light(glm::vec3 position) : Light(position, DEFAULT_ORIENTATION, 10, glm::vec3(1,1,1)) {}
+    Light(glm::vec3 position, glm::quat rotation) : Light(position, rotation, 10, glm::vec3(1,1,1)) {}
+    Light(glm::vec3 position, glm::quat rotation, float power) : Light(position, rotation, power, glm::vec3(1,1,1)) {}
     Light(
-        glm::vec3 position = DEFAULT_POSITION,
-        glm::quat rotation = DEFAULT_ORIENTATION,
-        float power = 10,
-        glm::vec3 color = glm::vec3(1,1,1)
+        glm::vec3 position,
+        glm::quat rotation,
+        float power,
+        glm::vec3 color
     ) : color(color), power(power), Orientable(position, rotation){}
 
     virtual std::vector<glm::vec4> data() const = 0;

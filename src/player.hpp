@@ -23,12 +23,11 @@ class Player : public Orientable, Node {
     glm::vec3 previousPosition;
 
 public:
-    Player(
-        std::shared_ptr<Model> model,
-        glm::vec3 position = DEFAULT_POSITION,
-        glm::quat orientation = DEFAULT_ORIENTATION,
-        glm::vec3 scale = DEFAULT_SCALE
-    );
+    Player() = delete;
+    Player(std::shared_ptr<Model> model) : Player(model, DEFAULT_POSITION, DEFAULT_ORIENTATION, DEFAULT_SCALE) {}
+    Player(std::shared_ptr<Model> model, glm::vec3 position) : Player(model, position, DEFAULT_ORIENTATION, DEFAULT_SCALE) {}
+    Player(std::shared_ptr<Model> model, glm::vec3 position, glm::quat orientation) : Player(model, position, orientation, DEFAULT_SCALE) {}
+    Player(std::shared_ptr<Model> model, glm::vec3 position, glm::quat orientation, glm::vec3 scale);
 
     void update(float deltaTime);
 

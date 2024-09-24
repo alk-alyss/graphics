@@ -8,16 +8,16 @@
 
 class Camera : public Orientable {
 protected:
-    float nearCP;
-    float farCP;
+    float nearCP = 0.1f;
+    float farCP = 500.0f;
 
-    float fov;
-    float aspectRatio;
+    float fov = 65.0f;
+    float aspectRatio = 16.0f/9.0f;
 
-    glm::mat4 viewMatrix;
-    glm::mat4 projectionMatrix;
+    glm::mat4 viewMatrix = glm::mat4(1.0f);
+    glm::mat4 projectionMatrix = glm::mat4(1.0f);
 
-    glm::mat4 VP;
+    glm::mat4 VP = glm::mat4(1.0f);
 
 protected:
     void updateViewMatrix();

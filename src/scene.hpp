@@ -21,6 +21,7 @@ struct Scene {
     std::array<std::shared_ptr<Portal>,2> portals;
 
 public:
+    Scene() = delete;
     Scene(
         std::shared_ptr<Player> player,
         std::shared_ptr<Maze> maze,

@@ -94,42 +94,42 @@ Material::Material(const std::string materialPath) {
 
 void Material::bind() const {
     glActiveTexture(GL_TEXTURE0);
-    if (albedo.get() != nullptr) {
+    if (albedo != nullptr) {
         albedo->bind();
     } else {
         Texture::bindDefault();
     }
 
     glActiveTexture(GL_TEXTURE1);
-    if (ao.get() != nullptr) {
+    if (ao != nullptr) {
         ao->bind();
     } else {
         Texture::bindDefault();
     }
 
     glActiveTexture(GL_TEXTURE2);
-    if (height.get() != nullptr) {
+    if (height != nullptr) {
         height->bind();
     } else {
         Texture::bindDefault();
     }
 
     glActiveTexture(GL_TEXTURE3);
-    if (metallic.get() != nullptr) {
+    if (metallic != nullptr) {
         metallic->bind();
     } else {
         Texture::bindDefault();
     }
 
     glActiveTexture(GL_TEXTURE4);
-    if (normal.get() != nullptr) {
+    if (normal != nullptr) {
         normal->bind();
     } else {
         Texture::bindDefault();
     }
 
     glActiveTexture(GL_TEXTURE5);
-    if (roughness.get() != nullptr) {
+    if (roughness != nullptr) {
         roughness->bind();
     } else {
         Texture::bindDefault();

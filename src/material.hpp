@@ -11,8 +11,9 @@
 
 struct Texture {
     GLuint textureId = 0;
-    std::string path;
+    std::string path = "";
 
+    Texture() = delete;
     Texture(const std::string imagePath, bool sRGB);
     ~Texture();
 
@@ -47,12 +48,12 @@ struct Texture {
 };
 
 struct Material : Node{
-    std::shared_ptr<Texture> albedo;
-    std::shared_ptr<Texture> ao;
-    std::shared_ptr<Texture> height;
-    std::shared_ptr<Texture> metallic;
-    std::shared_ptr<Texture> normal;
-    std::shared_ptr<Texture> roughness;
+    std::shared_ptr<Texture> albedo = nullptr;
+    std::shared_ptr<Texture> ao = nullptr;
+    std::shared_ptr<Texture> height = nullptr;
+    std::shared_ptr<Texture> metallic = nullptr;
+    std::shared_ptr<Texture> normal = nullptr;
+    std::shared_ptr<Texture> roughness = nullptr;
 
     Material() = default;
 
