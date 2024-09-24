@@ -9,14 +9,17 @@ void Scene::createPortal(const int portalIndex) {
 
     glm::vec3 portalPosition = block->getPosition() + normalVector * (block->getScale() + 0.005f);
 
+    // If block is a window, don't create portal
     if (portalPosition.y == 0) return;
 
+    // If portal already exists at this position, don't create portal
     for (auto& portal : portals) {
         if (portal != nullptr && portal->getPosition() == portalPosition) return;
     }
 
     portals[portalIndex] = std::make_shared<Portal>(portalPosition, normalVector, 0.8f * block->getScale());
 
+    // Link portals
     for (int i=0; i<portals.size(); i++) {
         if (portals[i] == nullptr) continue;
         portals[i]->linkPortal(portals[(i + 1) % portals.size()]);
