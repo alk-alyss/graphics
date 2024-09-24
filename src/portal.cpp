@@ -3,9 +3,6 @@
 #include "resources.hpp"
 #include "glm/gtc/matrix_access.hpp"
 
-#include <iostream>
-#include <glm/gtx/string_cast.hpp>
-
 Portal::Portal(
     const glm::vec3 position,
     const glm::vec3 direction,
@@ -33,19 +30,40 @@ glm::vec4 Portal::getClipPlane() const {
     return plane;
 }
 
+bool Portal::linePlaneIntersection(
+    glm::vec3 a,
+    glm::vec3 b
+) {
+    glm::vec3 normal = forward();
+    glm::vec3 position = getPosition();
+
+    // Translate points to portal space
+    a -= position;
+    b -= position;
+
+    // Find which side of the plane the points are on
+    float AdotN = glm::dot(a, normal);
+    float BdotN = glm::dot(b, normal);
+
+    // If both points are on the same side of the plane (sign(AdotN) = sign(BdotN)), no intersection
+    return !(glm::sign(AdotN) == glm::sign(BdotN));
+}
+
 void Portal::handleCollision(std::shared_ptr<Player> player) {
     if (linkedPortal == nullptr) return;
 
-    glm::vec3 portalNormal = linkedPortal->forward();
-    glm::vec3 newPosition = linkedPortal->getPosition() + portalNormal;
+    glm::vec3 prevPosition = player->getPreviousPosition();
+    glm::vec3 position = player->getPosition();
+    if (position == prevPosition) return;
 
-    glm::vec3 playerForward = player->forward();
-    glm::vec3 lookAt = newPosition + portalNormal;;
+    if (!linePlaneIntersection(prevPosition, position)) return;
 
-    std::cout << glm::to_string(portalNormal) << " " << glm::to_string(newPosition) << " " << glm::to_string(lookAt) << std::endl;
+    glm::vec3 newPosition;
+    glm::quat newOrientation;
+    getViewFromLinkedPortal(position, player->getOrientation(), newPosition, newOrientation);
 
-    player->translate(newPosition - player->getPosition());
-    player->lookAt(lookAt);
+    player->setPosition(newPosition);
+    player->setOrientation(newOrientation);
 }
 
 void Portal::getViewFromLinkedPortal(

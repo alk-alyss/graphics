@@ -21,6 +21,8 @@ class Player : public Orientable, Node {
     glm::vec3 forwardMovementVector();
     void updateComponents();
 
+    glm::vec3 previousPosition;
+
 public:
     Player(
         std::shared_ptr<Model> model,
@@ -41,6 +43,7 @@ public:
     void setPosition(glm::vec3 position) override;
     void setOrientation(glm::quat orientation) override;
 
+    void setVelocity(glm::vec3 velocity) {this->velocity = velocity;}
     glm::vec3 getVelocity() const {return velocity;}
 
     void translate(glm::vec3 translation) override;
@@ -59,6 +62,8 @@ public:
     void toggleNoClip();
 
     AABB getCollider() {return collider->getAABB();}
+
+    glm::vec3 getPreviousPosition() {return previousPosition;}
 
     void draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const override;
 };

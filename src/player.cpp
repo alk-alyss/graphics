@@ -54,6 +54,7 @@ void Player::lookAt(glm::vec3 target, glm::vec3 up, glm::vec3 alternativeUp) {
 }
 
 void Player::setPosition(glm::vec3 position) {
+    previousPosition = position;
     Orientable::setPosition(position);
     updateComponents();
 }
@@ -64,6 +65,7 @@ void Player::setOrientation(glm::quat rotation) {
 }
 
 void Player::translate(glm::vec3 translation) {
+    previousPosition = position;
     Orientable::translate(translation);
     updateComponents();
 }

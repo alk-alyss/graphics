@@ -1,8 +1,5 @@
 #include "collisions.hpp"
 
-#include <iostream>
-#include <glm/gtx/string_cast.hpp>
-
 void handleCollision(const std::shared_ptr<Player> player, const std::shared_ptr<Model> model, const float deltaTime) {
     glm::vec3 normalVector = model->getClosestBlockNormal(player->getPosition());
 
@@ -21,15 +18,15 @@ void checkCollisions(const Scene& scene, const float deltaTime) {
     auto player = scene.player;
     AABB playerAABB = player->getCollider();
 
-    auto portal1 = scene.portals[0];
-    auto portal2 = scene.portals[1];
+    int portalIndex = 0;
+    for (auto& portal : scene.portals) {
+        if (portal == nullptr || portal->getLinkedPortal() == nullptr) continue;
 
-    if (portal1 != nullptr && playerAABB.intersects(portal1->getAABB())) {
-        std::cout << "portal1 collision" << std::endl;
-        portal1->handleCollision(player);
-    } else if (portal2 != nullptr && playerAABB.intersects(portal2->getAABB())) {
-        std::cout << "portal2 collision" << std::endl;
-        portal2->handleCollision(player);
+        if (playerAABB.intersects(portal->getAABB())) {
+            portal->handleCollision(player);
+            return;
+        }
+        portalIndex++;
     }
 
     for (auto& collider : scene.colliders) {

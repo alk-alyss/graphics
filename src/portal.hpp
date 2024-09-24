@@ -19,6 +19,8 @@ public:
 
     glm::vec4 getClipPlane() const;
 
+    bool linePlaneIntersection(const glm::vec3 a, const glm::vec3 b);
+
     void getViewFromLinkedPortal(
         const glm::vec3 position,
         const glm::quat orientation,
