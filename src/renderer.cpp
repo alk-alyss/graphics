@@ -62,7 +62,7 @@ void Renderer::renderScene(const Scene& scene, const Camera& camera, bool drawPl
     glUniform3fv(singleShader->getCameraPositionLocation(), 1, glm::value_ptr(cameraPosition));
 
     scene.floor->draw(initialTransformation, singleShader);
-    if (drawPlayer) scene.player->draw(initialTransformation, singleShader);
+    if (drawPlayer || scene.player->isNoClip()) scene.player->draw(initialTransformation, singleShader);
 }
 
 void Renderer::renderPortals(const Scene& scene) {
