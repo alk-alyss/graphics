@@ -9,6 +9,8 @@ void Scene::createPortal(const int portalIndex) {
 
     glm::vec3 portalPosition = block->getPosition() + normalVector * (block->getScale() + 0.005f);
 
+    if (portalPosition.y == 0) return;
+
     for (auto& portal : portals) {
         if (portal != nullptr && portal->getPosition() == portalPosition) return;
     }
