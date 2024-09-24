@@ -28,7 +28,7 @@ public:
     void uploadLights(const Scene& scene);
 
     void render(const Scene& scene);
-    void renderScene(const Scene& scene, const Camera& camera);
+    void renderScene(const Scene& scene, const Camera& camera, bool drawPlayer=true);
     void renderPortals(const Scene& scene);
 };
 

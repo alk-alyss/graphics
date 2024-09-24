@@ -38,12 +38,12 @@ void Renderer::render(const Scene& scene) {
 
     // renderScene(scene, scene.player->getCamera());
     renderPortals(scene);
-    renderScene(scene, scene.player->getCamera());
+    renderScene(scene, scene.player->getCamera(), false);
 
     glUseProgram(0);
 }
 
-void Renderer::renderScene(const Scene& scene, const Camera& camera) {
+void Renderer::renderScene(const Scene& scene, const Camera& camera, bool drawPlayer) {
     uploadMatrices(camera);
 
     // Draw maze
@@ -62,7 +62,7 @@ void Renderer::renderScene(const Scene& scene, const Camera& camera) {
     glUniform3fv(singleShader->getCameraPositionLocation(), 1, glm::value_ptr(cameraPosition));
 
     scene.floor->draw(initialTransformation, singleShader);
-    scene.player->draw(initialTransformation, singleShader);
+    if (drawPlayer) scene.player->draw(initialTransformation, singleShader);
 }
 
 void Renderer::renderPortals(const Scene& scene) {
