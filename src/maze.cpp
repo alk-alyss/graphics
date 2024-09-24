@@ -15,6 +15,10 @@ bool isWall(int x, int y, set<pair<int, int>> mazeMap) {
     return mazeMap.find(pair<int, int> (x, y)) != mazeMap.end();
 }
 
+bool isBorder(int x, int y, int width, int height) {
+    return x == 0 || x == width-1 || y == 0 || y == height-1;
+}
+
 set<pair<int, int>> neighbours(int x, int y, int width, int height) {
     set<pair<int, int>> neighbours;
 
@@ -116,12 +120,20 @@ Maze::Maze(int width, int height, vector<Material> materials) {
         modelMatrices.push_back(vector<glm::mat4>());
     }
 
+    int windowProbability = 5;
+
     // Calculate model matrix for each wall
     for (auto& wall: generateMazeMap(width, height)) {
         mazeMap[wall] = rand() % materials.size();
 
+        // Randomly add windows to walls
+        float windowOffset = 0;
+        if (rand() % windowProbability == 0 && !isBorder(wall.first, wall.second, width, height)) {
+            windowOffset = -scalling/2;
+        }
+
         shared_ptr<Model> wallModel = make_shared<Model>(mesh, materials[mazeMap[wall]]);
-        wallModel->setPosition(scalling * wall.second, scalling/2, -scalling * wall.first);
+        wallModel->setPosition(scalling * wall.second, scalling/2 + windowOffset, -scalling * wall.first);
         wallModel->setScale(scalling/2);
 
         colliders.push_back(wallModel);
