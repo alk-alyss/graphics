@@ -35,6 +35,11 @@ AABB Model::getAABB() const {
 
 glm::vec3 Model::getClosestBlockNormal(const glm::vec3 point) const {
     glm::vec3 modelToPoint = glm::normalize(point - getPosition());
+
+    // Ignore vertical component
+    modelToPoint.y = 0;
+    modelToPoint = glm::normalize(modelToPoint);
+
     glm::vec3 normalVector = modelToPoint;
 
     float xDot = glm::dot(modelToPoint, glm::vec3(1, 0, 0));
