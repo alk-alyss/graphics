@@ -19,10 +19,6 @@ struct Scene {
     std::vector<PointLight> pointLights;
     std::shared_ptr<Portal> portals[2];
 
-private:
-    std::shared_ptr<Portal> createPortal(const std::shared_ptr<Model> block, const glm::vec3 normalVector) const;
-    void linkPortals();
-
 public:
     Scene(
         std::shared_ptr<Player> player,
@@ -39,8 +35,8 @@ public:
         directionalLights(directionalLights),
         pointLights(pointLights) {};
 
-    void createFirstPortal(const std::shared_ptr<Model> block, const glm::vec3 normalVector);
-    void createSecondPortal(const std::shared_ptr<Model> block, const glm::vec3 normalVector);
+    void createPortal(int portalIndex);
+    std::shared_ptr<Model> castRay(const glm::vec3 position, const glm::vec3 direction, glm::vec3& normalVector);
 };
 
 #endif

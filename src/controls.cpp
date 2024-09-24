@@ -1,5 +1,4 @@
 #include "controls.hpp"
-#include "collisions.hpp"
 
 void handleMouse(const std::shared_ptr<GLFWwindow> windowPtr, Scene& scene, const float deltaTime) {
     GLFWwindow* window = windowPtr.get();
@@ -22,10 +21,7 @@ void handleMouse(const std::shared_ptr<GLFWwindow> windowPtr, Scene& scene, cons
     static bool mouse1Toggle = false;
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS) {
         if (!mouse1Toggle) {
-            glm::vec3 normalVector;
-            auto model = castRay(scene, player->getPosition(), player->forward(), normalVector);
-            if (model == nullptr) return;
-            scene.createFirstPortal(model, normalVector);
+            scene.createPortal(0);
         }
         mouse1Toggle = true;
     } else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == GLFW_RELEASE) {
@@ -35,10 +31,7 @@ void handleMouse(const std::shared_ptr<GLFWwindow> windowPtr, Scene& scene, cons
     static bool mouse2Toggle = false;
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_2) == GLFW_PRESS) {
         if (!mouse2Toggle) {
-            glm::vec3 normalVector;
-            auto model = castRay(scene, player->getPosition(), player->forward(), normalVector);
-            if (model == nullptr) return;
-            scene.createSecondPortal(model, normalVector);
+            scene.createPortal(1);
         }
         mouse2Toggle = true;
     } else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == GLFW_RELEASE) {
