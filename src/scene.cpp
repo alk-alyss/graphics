@@ -6,9 +6,12 @@ void Scene::createPortal(const int portalIndex) {
     glm::vec3 normalVector;
     auto block = castRay(player->getPosition(), player->forward(), normalVector);
     if (block == nullptr) return;
-    if (block == portals[1]) return;
 
     glm::vec3 portalPosition = block->getPosition() + normalVector * (block->getScale() + 0.005f);
+
+    for (auto& portal : portals) {
+        if (portal != nullptr && portal->getPosition() == portalPosition) return;
+    }
 
     portals[portalIndex] = std::make_shared<Portal>(portalPosition, normalVector, 0.8f * block->getScale());
 
