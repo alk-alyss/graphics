@@ -44,7 +44,7 @@ const std::shared_ptr<Model> loadSuzanne(Material material) {
 
 const std::shared_ptr<Model> playerCollider(Material material) {
     Transformation colliderTransformation;
-    colliderTransformation.setScale(0.3);
+    colliderTransformation.setScale(0.5);
 
     return std::make_shared<Model>(sphereMesh, material, colliderTransformation);
 }

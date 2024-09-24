@@ -10,7 +10,7 @@ Player::Player(
     glm::vec3 scale
 ) : Orientable(position, orientation, scale), model(model), collider(collider) {
     camera = std::make_unique<Camera>(position, orientation);
-    camera->setNC(0.1);
+    camera->setNC(0.65);
 
     model->setPosition(position);
     model->setOrientation(orientation);
@@ -141,5 +141,5 @@ void Player::toggleNoClip() {
 }
 
 void Player::draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const {
-    if(noClip) model->draw(modelMatrix, shader);
+    model->draw(modelMatrix, shader);
 }
