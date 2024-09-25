@@ -10,7 +10,7 @@ private:
     Camera camera;
 
 public:
-    Portal(const glm::vec3 position, const glm::vec3 direction, const glm::vec3 size);
+    Portal(const glm::vec3 position, const glm::vec3 direction, const glm::vec3 size, Material material);
 
     std::shared_ptr<Portal> getLinkedPortal() const {return linkedPortal;}
 

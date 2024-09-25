@@ -17,7 +17,13 @@ std::vector<Material> loadMaterials() {
     grassMaterial = Material("resources/textures/whispy-grass-meadow-bl");
     dirtMaterial = Material("resources/textures/dry-dirt2-bl");
     metalMaterial = Material("resources/textures/rusty-metal-bl");
-    scuffedPlasticMaterial = Material("resources/textures/scuffed-plastic-1-bl");
+
+    scuffedPlasticMaterial = Material("resources/textures/scuffed-plastic-yellow-bl");
+    bluePortalMaterial = scuffedPlasticMaterial;
+    orangePortalMaterial = scuffedPlasticMaterial;
+
+    bluePortalMaterial.albedo = std::make_shared<Texture>(std::string("resources/textures/scuffed-plastic-blue-bl/scuffed-plastic8-alb.png"), true);
+    orangePortalMaterial.albedo = std::make_shared<Texture>(std::string("resources/textures/scuffed-plastic-orange-bl/scuffed-plastic4-alb.png"), true);
 
     std::vector<Material> materials;
     materials.push_back(grassMaterial);

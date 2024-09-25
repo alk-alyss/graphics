@@ -13,5 +13,7 @@ inline Material grassMaterial;
 inline Material dirtMaterial;
 inline Material metalMaterial;
 inline Material scuffedPlasticMaterial;
+inline Material bluePortalMaterial;
+inline Material orangePortalMaterial;
 
 #endif

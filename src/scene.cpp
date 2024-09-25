@@ -1,4 +1,5 @@
 #include "scene.hpp"
+#include "resources.hpp"
 
 #include <glm/gtx/string_cast.hpp>
 
@@ -22,7 +23,13 @@ void Scene::createPortal(const int portalIndex) {
         if (portal != nullptr && portal->getPosition() == portalPosition) return;
     }
 
-    portals[portalIndex] = std::make_shared<Portal>(portalPosition, normalVector, 0.8f * block->getScale());
+    Material portalMaterial;
+    if (portalIndex == 0) {
+        portalMaterial = bluePortalMaterial;
+    } else if (portalIndex == 1) {
+        portalMaterial = orangePortalMaterial;
+    }
+    portals[portalIndex] = std::make_shared<Portal>(portalPosition, normalVector, 0.8f * block->getScale(), portalMaterial);
 
     // Link portals
     for (int i=0; i<portals.size(); i++) {

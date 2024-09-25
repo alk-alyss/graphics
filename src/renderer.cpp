@@ -37,12 +37,12 @@ void Renderer::render(const Scene& scene) {
     uploadLights(scene);
 
     renderPortals(scene);
-    renderScene(scene, scene.player->getCamera(), false);
+    renderScene(scene, scene.player->getCamera());
 
     glUseProgram(0);
 }
 
-void Renderer::renderScene(const Scene& scene, const Camera& camera, bool drawPlayer) {
+void Renderer::renderScene(const Scene& scene, const Camera& camera, bool drawPlayer, bool drawPortals) {
     uploadMatrices(camera);
 
     // Draw maze
@@ -62,6 +62,16 @@ void Renderer::renderScene(const Scene& scene, const Camera& camera, bool drawPl
 
     scene.floor->draw(initialTransformation, singleShader);
     if (drawPlayer || scene.player->isNoClip()) scene.player->draw(initialTransformation, singleShader);
+
+    if (!drawPortals) return;
+    for (auto& portal : scene.portals) {
+        if (portal == nullptr) continue;
+
+        glm::vec3 portalInitialScale = portal->getScale();
+        portal->setScale(portalInitialScale * 1.05f);
+        portal->draw(initialTransformation, singleShader);
+        portal->setScale(portalInitialScale);
+    }
 }
 
 void Renderer::renderPortals(const Scene& scene) {
@@ -78,9 +88,12 @@ void Renderer::renderPortals(const Scene& scene) {
 
         // Draw portal frame if other portal does not exist
         uploadMatrices(scene.player->getCamera());
-        simpleShader->bind();
+        singleShader->bind();
         if (portal->getLinkedPortal() == nullptr) {
-            portal->draw(initialTransformation, simpleShader);
+            glm::vec3 portalInitialScale = portal->getScale();
+            portal->setScale(portalInitialScale * 1.05f);
+            portal->draw(initialTransformation, singleShader);
+            portal->setScale(portalInitialScale);
             continue;
         }
 
@@ -99,6 +112,7 @@ void Renderer::renderPortals(const Scene& scene) {
         glStencilOp(GL_INCR, GL_KEEP, GL_KEEP);
 
         // Draw portal frame to stencil buffer
+        simpleShader->bind();
         portal->draw(initialTransformation, simpleShader);
 
         // Disable writing to stencil buffer
@@ -112,7 +126,18 @@ void Renderer::renderPortals(const Scene& scene) {
         glStencilFunc(GL_EQUAL, 1, 0xFF);
 
         // Draw view through portal
-        renderScene(scene, portal->getLinkedPortal()->getCamera());
+        renderScene(scene, portal->getLinkedPortal()->getCamera(), true, true);
+
+        // Render only if stencil value is equal to 0
+        glStencilFunc(GL_EQUAL, 0, 0xFF);
+
+        // Draw portal frame
+        uploadMatrices(scene.player->getCamera());
+        singleShader->bind();
+        glm::vec3 portalInitialScale = portal->getScale();
+        portal->setScale(portalInitialScale * 1.05f);
+        portal->draw(initialTransformation, singleShader);
+        portal->setScale(portalInitialScale);
     }
 
     // Disable stencil test
@@ -128,7 +153,12 @@ void Renderer::renderPortals(const Scene& scene) {
     uploadMatrices(scene.player->getCamera());
     simpleShader->bind();
     for (auto& portal : scene.portals) {
-        if (portal != nullptr) portal->draw(initialTransformation, simpleShader);
+        if (portal == nullptr) continue;
+
+        glm::vec3 portalInitialScale = portal->getScale();
+        portal->setScale(portalInitialScale * 1.05f);
+        portal->draw(initialTransformation, simpleShader);
+        portal->setScale(portalInitialScale);
     }
 
     // Enable writing to color buffer
