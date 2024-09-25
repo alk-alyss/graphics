@@ -21,7 +21,7 @@ public:
         glm::quat rotation,
         float power,
         glm::vec3 color
-    ) : color(color), power(power), Orientable(position, rotation){}
+    ) : Orientable(position, rotation), color(color), power(power){}
 
     virtual std::vector<glm::vec4> data() const = 0;
 };

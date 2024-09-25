@@ -65,7 +65,7 @@ void calculateTangents(
     vector<Vertex>& vertices,
     const vector<unsigned int>& indices
 ){
-    for (int i = 0; i < indices.size(); i += 3) {
+    for (size_t i = 0; i < indices.size(); i += 3) {
         Vertex& v0 = vertices[indices[i]];
         Vertex& v1 = vertices[indices[i+1]];
         Vertex& v2 = vertices[indices[i+2]];
@@ -192,7 +192,7 @@ Mesh::Mesh(
     const vector<vec2>& uvs,
     const vector<vec3>& normals
 ) {
-    for (int i=0; i<vertices.size(); i++) {
+    for (size_t i=0; i<vertices.size(); i++) {
         Vertex vertex = {vertices[i], uvs[i], normals[i]};
         this->vertices.push_back(vertex);
     }

@@ -11,7 +11,7 @@ bool isWithinMaze(int x, int y, int width, int height) {
     return x > 0 && x < width-1 && y > 0 && y < height-1;
 }
 
-bool isWall(int x, int y, set<pair<int, int>> mazeMap) {
+bool isWall(int x, int y, const set<pair<int, int>>& mazeMap) {
     return mazeMap.find(pair<int, int> (x, y)) != mazeMap.end();
 }
 
@@ -39,7 +39,7 @@ set<pair<int, int>> neighbours(int x, int y, int width, int height) {
     return neighbours;
 }
 
-set<pair<int, int>> wallNeighbours(int x, int y, int width, int height, set<pair<int, int>> mazeMap) {
+set<pair<int, int>> wallNeighbours(int x, int y, int width, int height, const set<pair<int, int>>& mazeMap) {
     set<pair<int, int>> frontier = neighbours(x, y, width, height);
 
     for (auto& neighbour : frontier) {
@@ -51,7 +51,7 @@ set<pair<int, int>> wallNeighbours(int x, int y, int width, int height, set<pair
     return frontier;
 }
 
-set<pair<int, int>> passageNeighbours(int x, int y, int width, int height, set<pair<int, int>> mazeMap) {
+set<pair<int, int>> passageNeighbours(int x, int y, int width, int height, const set<pair<int, int>>& mazeMap) {
     set<pair<int, int>> frontier = neighbours(x, y, width, height);
 
     for (auto& neighbour : frontier) {
@@ -116,7 +116,7 @@ Maze::Maze(int width, int height, vector<Material> materials) {
     this->height = height;
     this->materials = materials;
 
-    for (int i=0; i<materials.size(); i++) {
+    for (size_t i=0; i<materials.size(); i++) {
         modelMatrices.push_back(vector<glm::mat4>());
     }
 
@@ -169,7 +169,7 @@ void Maze::draw(glm::mat4 modelMatrix, const shared_ptr<Shader> shader) const {
     glUniformMatrix4fv(shader->getMLocation(), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 
     glBindVertexArray(mesh->getVao());
-    for (int i=0; i<materials.size(); i++) {
+    for (size_t i=0; i<materials.size(); i++) {
         materials[i].bind();
 
         glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);

@@ -76,12 +76,12 @@ public:
     Mesh &operator=(const Mesh&) = delete;
 
     Mesh(Mesh&& other) :
-        VAO(other.VAO),
-        verticesVBO(other.verticesVBO),
-        EBO(other.EBO),
         vertices(other.vertices),
         indexedVertices(other.indexedVertices),
         indices(other.indices),
+        VAO(other.VAO),
+        verticesVBO(other.verticesVBO),
+        EBO(other.EBO),
         aabb(other.aabb)
     {
         other.VAO = 0; //Use the "null" VAO for the old object.

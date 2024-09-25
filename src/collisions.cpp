@@ -18,7 +18,6 @@ void checkCollisions(const Scene& scene, const float deltaTime) {
     auto player = scene.player;
     AABB playerAABB = player->getCollider();
 
-    int portalIndex = 0;
     for (auto& portal : scene.portals) {
         if (portal == nullptr || portal->getLinkedPortal() == nullptr) continue;
 
@@ -26,7 +25,6 @@ void checkCollisions(const Scene& scene, const float deltaTime) {
             portal->handleCollision(player);
             return;
         }
-        portalIndex++;
     }
 
     for (auto& collider : scene.colliders) {

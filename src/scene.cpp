@@ -32,7 +32,7 @@ void Scene::createPortal(const int portalIndex) {
     portals[portalIndex] = std::make_shared<Portal>(portalPosition, normalVector, 0.8f * block->getScale(), portalMaterial);
 
     // Link portals
-    for (int i=0; i<portals.size(); i++) {
+    for (size_t i=0; i<portals.size(); i++) {
         if (portals[i] == nullptr) continue;
         portals[i]->linkPortal(portals[(i + 1) % portals.size()]);
     }

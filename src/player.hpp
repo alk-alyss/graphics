@@ -56,12 +56,12 @@ public:
     void moveLeft();
     void zoom(float amount) {camera->zoom(amount);}
 
-    bool isNoClip() {return noClip;}
+    bool isNoClip() const {return noClip;}
     void toggleNoClip();
 
-    AABB getCollider() {return model->getAABB();}
+    AABB getCollider() const {return model->getAABB();}
 
-    glm::vec3 getPreviousPosition() {return previousPosition;}
+    glm::vec3 getPreviousPosition() const {return previousPosition;}
 
     void draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const override;
 };
