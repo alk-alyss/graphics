@@ -54,6 +54,7 @@ Material::Material(const std::string materialPath) {
 
         if (
             filepath.find("albedo") != std::string::npos ||
+            filepath.find("alb") != std::string::npos ||
             filepath.find("Color") != std::string::npos
         ) {
             albedo = std::make_shared<Texture>(filepath, true);
@@ -85,6 +86,7 @@ Material::Material(const std::string materialPath) {
         }
         else if (
             filepath.find("roughness") != std::string::npos ||
+            filepath.find("rough") != std::string::npos ||
             filepath.find("Roughness") != std::string::npos
         ) {
             roughness = std::make_shared<Texture>(filepath);

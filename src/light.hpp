@@ -9,7 +9,7 @@
 class Light : public Orientable {
 protected:
     glm::vec3 color = glm::vec3(1,1,1);
-    float power = 1;
+    float power = 10;
 
 public:
     Light() : Light(DEFAULT_POSITION, DEFAULT_ORIENTATION, 10, glm::vec3(1,1,1)) {}

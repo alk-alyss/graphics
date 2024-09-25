@@ -17,17 +17,18 @@ std::vector<Material> loadMaterials() {
     grassMaterial = Material("resources/textures/whispy-grass-meadow-bl");
     dirtMaterial = Material("resources/textures/dry-dirt2-bl");
     metalMaterial = Material("resources/textures/rusty-metal-bl");
+    scuffedPlasticMaterial = Material("resources/textures/scuffed-plastic-1-bl");
 
     std::vector<Material> materials;
     materials.push_back(grassMaterial);
     materials.push_back(dirtMaterial);
     materials.push_back(metalMaterial);
+
     return materials;
 }
 
 void loadMeshes() {
     planeMesh = Mesh::plane();
-    sphereMesh = std::make_shared<Mesh>("resources/models/earth.obj");
     cubeMesh = std::make_shared<Mesh>("resources/models/cube.obj");
     suzanneMesh = std::make_shared<Mesh>("resources/models/suzanne.obj");
 }
@@ -81,7 +82,7 @@ int main(void) {
         };
 
         std::shared_ptr<Player> player = std::make_shared<Player>(
-            loadSuzanne(metalMaterial),
+            loadSuzanne(scuffedPlasticMaterial),
             glm::vec3(0.0f, 1.5f, 10.0f)
         );
 
