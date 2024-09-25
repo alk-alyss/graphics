@@ -14,6 +14,8 @@
 #include "maze.hpp"
 
 std::vector<Material> loadMaterials() {
+    std::cout << "Loading materials..." << std::endl;
+
     grassMaterial = Material("resources/textures/whispy-grass-meadow-bl");
     dirtMaterial = Material("resources/textures/dry-dirt2-bl");
     metalMaterial = Material("resources/textures/rusty-metal-bl");
@@ -30,13 +32,17 @@ std::vector<Material> loadMaterials() {
     materials.push_back(dirtMaterial);
     materials.push_back(metalMaterial);
 
+    std::cout << " done" << std::endl;
+
     return materials;
 }
 
 void loadMeshes() {
+    std::cout << "Loading meshes...";
     planeMesh = Mesh::plane();
     cubeMesh = std::make_shared<Mesh>("resources/models/cube.obj");
     suzanneMesh = std::make_shared<Mesh>("resources/models/suzanne.obj");
+    std::cout << " done" << std::endl;
 }
 
 const std::shared_ptr<Model> loadSuzanne(Material material) {
@@ -55,21 +61,21 @@ int main(void) {
     try {
         std::cout << "Portal Maze" << std::endl;
         const std::shared_ptr<GLFWwindow> window = createWindow();
-
         Renderer renderer;
 
         auto materials = loadMaterials();
         loadMeshes();
 
+        std::cout << "Creating floor...";
         const std::shared_ptr<Model> floor = std::make_shared<Model>(
                 planeMesh,
                 dirtMaterial
             );
 
         floor->setScale(glm::vec3(100));
+        std::cout << " done" << std::endl;
 
-        std::shared_ptr<Maze> maze = std::make_shared<Maze>(19, 19, materials);
-
+        std::cout << "Creating directional lights...";
         std::vector<DirectionalLight> dirLights{
             DirectionalLight(
                 glm::vec3(5,5,10),
@@ -80,18 +86,28 @@ int main(void) {
                 eulerToQuat(glm::radians(-45.0),glm::radians(180.0+45),0)
             ),
         };
+        std::cout << " done" << std::endl;
 
+        std::cout << "Creating point lights...";
         std::vector<PointLight> pointLights{
             PointLight(
                 glm::vec3(0,3,10)
             )
         };
+        std::cout << " done" << std::endl;
 
+        std::cout << "Creating player...";
         std::shared_ptr<Player> player = std::make_shared<Player>(
             loadSuzanne(scuffedPlasticMaterial),
             glm::vec3(0.0f, 1.5f, 10.0f)
         );
+        std::cout << " done" << std::endl;
 
+        std::cout << "Creating maze...";
+        std::shared_ptr<Maze> maze = std::make_shared<Maze>(19, 19, materials);
+        std::cout << " done" << std::endl;
+
+        std::cout << "Creating scene...";
         Scene scene(
             player,
             maze,
@@ -100,12 +116,14 @@ int main(void) {
             dirLights,
             pointLights
         );
+        std::cout << " done" << std::endl;
 
         // Draw wire frame triangles or fill: GL_LINE, or GL_FILL
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         float lastTime = glfwGetTime();
 
         // Main loop
+        std::cout << "Starting main loop" << std::endl;
         do {
             float currentTime = glfwGetTime();
             float deltaTime = currentTime - lastTime;
