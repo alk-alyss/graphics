@@ -12,6 +12,11 @@ void Scene::createPortal(const int portalIndex) {
     // If block is a window, don't create portal
     if (portalPosition.y == 0) return;
 
+    // If portal would be created inside a block, don't create portal
+    for (auto& collider : colliders) {
+        if (collider->getAABB().intersects(portalPosition + normalVector * (block->getScale() + 0.005f))) return;
+    }
+
     // If portal already exists at this position, don't create portal
     for (auto& portal : portals) {
         if (portal != nullptr && portal->getPosition() == portalPosition) return;
