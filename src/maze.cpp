@@ -40,11 +40,11 @@ set<pair<int, int>> neighbours(int x, int y, int width, int height) {
 }
 
 set<pair<int, int>> wallNeighbours(int x, int y, int width, int height, const set<pair<int, int>>& mazeMap) {
-    set<pair<int, int>> frontier = neighbours(x, y, width, height);
+    set<pair<int, int>> frontier;
 
-    for (auto& neighbour : frontier) {
-        if (!isWall(neighbour.first, neighbour.second, mazeMap)) {
-            frontier.erase(neighbour);
+    for (auto& neighbour : neighbours(x, y, width, height)) {
+        if (isWall(neighbour.first, neighbour.second, mazeMap)) {
+            frontier.insert(neighbour);
         }
     }
 
@@ -52,11 +52,11 @@ set<pair<int, int>> wallNeighbours(int x, int y, int width, int height, const se
 }
 
 set<pair<int, int>> passageNeighbours(int x, int y, int width, int height, const set<pair<int, int>>& mazeMap) {
-    set<pair<int, int>> frontier = neighbours(x, y, width, height);
+    set<pair<int, int>> frontier;
 
-    for (auto& neighbour : frontier) {
-        if (isWall(neighbour.first, neighbour.second, mazeMap)) {
-            frontier.erase(neighbour);
+    for (auto& neighbour : neighbours(x, y, width, height)) {
+        if (!isWall(neighbour.first, neighbour.second, mazeMap)) {
+            frontier.insert(neighbour);
         }
     }
 
