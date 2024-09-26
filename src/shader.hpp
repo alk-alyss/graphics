@@ -63,14 +63,14 @@ public:
         return *this;
     }
 
-    void bind();
+    void bind() const;
 
     void releaseShader();
 
-    GLuint getMLocation() {return MLocation;}
-    GLuint getCameraPositionLocation() {return cameraPositionLocation;}
+    GLuint getMLocation() const {return MLocation;}
+    GLuint getCameraPositionLocation() const {return cameraPositionLocation;}
 
-    GLuint getProgram() {return programId;}
+    GLuint getProgram() const {return programId;}
 };
 
 #endif

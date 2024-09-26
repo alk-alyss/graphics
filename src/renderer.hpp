@@ -28,7 +28,12 @@ public:
     void uploadLights(const Scene& scene);
 
     void render(const Scene& scene);
-    void renderScene(const Scene& scene, const Camera& camera, bool drawPlayer=false, bool drawPortals=false);
+    void renderScene(
+        const Scene& scene,
+        const Camera& camera,
+        const bool drawPlayer=false,
+        const bool drawPortals=false
+    );
     void renderPortals(const Scene& scene);
 };
 

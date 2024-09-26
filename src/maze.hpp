@@ -30,12 +30,12 @@ private:
     void unloadVram();
 
 public:
-    Maze(int width, int height, std::vector<Material> materials);
+    Maze(const int width, const int height, std::vector<Material> materials);
 
     ~Maze() {unloadVram();}
 
     std::vector<std::shared_ptr<Model>> getColliders() const {return colliders;}
-    void draw(glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const override;
+    void draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const override;
 };
 
 #endif

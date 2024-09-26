@@ -13,14 +13,14 @@ private:
 
 public:
     Model(
-        std::shared_ptr<Mesh> mesh,
-        Material material,
-        Transformation meshTransformation = Transformation()
+        const std::shared_ptr<Mesh> mesh,
+        const Material material,
+        const Transformation meshTransformation = Transformation()
     );
 
     AABB getAABB() const;
 
-    void draw(glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const override;
+    void draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const override;
 
     glm::vec3 getClosestBlockNormal(const glm::vec3 position) const;
 };

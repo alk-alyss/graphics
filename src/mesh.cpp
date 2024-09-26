@@ -203,7 +203,7 @@ Mesh::Mesh(
     loadVram();
 }
 
-Mesh::Mesh(std::string path) {
+Mesh::Mesh(const std::string path) {
     if (path.substr(path.size() - 3, 3) == "obj") {
         loadOBJWithTiny(path.c_str(), vertices, VEC_UINT_DEFAUTL_VALUE);
     } else {
@@ -251,7 +251,7 @@ void Mesh::unloadVram() {
     glDeleteVertexArrays(1, &VAO);
 }
 
-void Mesh::draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const {
+void Mesh::draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const {
     glUniformMatrix4fv(shader->getMLocation(), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 
     glBindVertexArray(VAO);

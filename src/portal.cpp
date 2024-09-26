@@ -7,7 +7,7 @@ Portal::Portal(
     const glm::vec3 position,
     const glm::vec3 direction,
     const glm::vec3 size,
-    Material material
+    const Material material
 ) : Model(planeMesh, material, Transformation(glm::vec3(0), glm::vec3(glm::radians(-90.0f), 0, 0))) {
     setPosition(position);
     setScale(size);
@@ -17,7 +17,7 @@ Portal::Portal(
     camera.lookAt(position+direction);
 }
 
-void Portal::linkPortal(std::shared_ptr<Portal> portal) {
+void Portal::linkPortal(const std::shared_ptr<Portal> portal) {
     linkedPortal = portal;
 }
 
@@ -33,25 +33,25 @@ glm::vec4 Portal::getClipPlane() const {
 }
 
 bool Portal::linePlaneIntersection(
-    glm::vec3 a,
-    glm::vec3 b
+    const glm::vec3 a,
+    const glm::vec3 b
 ) {
     glm::vec3 normal = forward();
     glm::vec3 position = getPosition();
 
     // Translate points to portal space
-    a -= position;
-    b -= position;
+    glm::vec3 portalA = a - position;
+    glm::vec3 portalB = b - position;
 
     // Find which side of the plane the points are on
-    float AdotN = glm::dot(a, normal);
-    float BdotN = glm::dot(b, normal);
+    float AdotN = glm::dot(portalA, normal);
+    float BdotN = glm::dot(portalB, normal);
 
     // If both points are on the same side of the plane (sign(AdotN) = sign(BdotN)), no intersection
     return !(glm::sign(AdotN) == glm::sign(BdotN));
 }
 
-void Portal::handleCollision(std::shared_ptr<Player> player) {
+void Portal::handleCollision(const std::shared_ptr<Player> player) {
     if (linkedPortal == nullptr) return;
 
     glm::vec3 prevPosition = player->getPreviousPosition();

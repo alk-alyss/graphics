@@ -13,7 +13,7 @@ void logGLParameters();
 * Slice a vector<T>.
 */
 template<typename T>
-std::vector<T> slice(const std::vector<T>& v, int start = 0, int end = -1) {
+std::vector<T> slice(const std::vector<T>& v, const int start = 0, const int end = -1) {
     int oldlen = v.size();
     int newlen;
 

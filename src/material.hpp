@@ -14,7 +14,7 @@ struct Texture {
     std::string path = "";
 
     Texture() = delete;
-    Texture(const std::string imagePath, bool sRGB);
+    Texture(const std::string imagePath, const bool sRGB);
     ~Texture();
 
     //Delete the copy constructor/assignment.
@@ -58,12 +58,12 @@ struct Material : Node{
     Material() = default;
 
     Material(
-        std::shared_ptr<Texture> albedo,
-        std::shared_ptr<Texture> ao,
-        std::shared_ptr<Texture> height,
-        std::shared_ptr<Texture> metallic,
-        std::shared_ptr<Texture> normal,
-        std::shared_ptr<Texture> roughness
+        const std::shared_ptr<Texture> albedo,
+        const std::shared_ptr<Texture> ao,
+        const std::shared_ptr<Texture> height,
+        const std::shared_ptr<Texture> metallic,
+        const std::shared_ptr<Texture> normal,
+        const std::shared_ptr<Texture> roughness
     ) : albedo(albedo),
         ao(ao),
         height(height),
@@ -75,7 +75,7 @@ struct Material : Node{
     Material(const std::string materialPath);
 
     void bind() const;
-    void draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const override;
+    void draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const override;
 };
 
 #endif

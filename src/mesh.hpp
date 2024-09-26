@@ -45,7 +45,7 @@ struct AABB {
     glm::vec3 max;
 
     AABB() = default;
-    AABB(glm::vec3 min, glm::vec3 max): min(min), max(max) {};
+    AABB(const glm::vec3 min, const glm::vec3 max): min(min), max(max) {};
     AABB(const std::vector<glm::vec3>& vertices);
     AABB(const std::vector<Vertex>& vertices);
 
@@ -68,7 +68,7 @@ public:
         const std::vector<glm::vec2>& uvs,
         const std::vector<glm::vec3>& normals
     );
-    Mesh(std::string filename);
+    Mesh(const std::string filename);
     ~Mesh() {unloadVram();}
 
     //Delete the copy constructor/assignment.
@@ -113,7 +113,7 @@ public:
     int indexCount() const {return indices.size();}
     GLuint getVao() const {return VAO;}
 
-    void draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const;
+    void draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const;
 
     static std::shared_ptr<Mesh> plane();
 };

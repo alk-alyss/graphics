@@ -7,19 +7,19 @@
 
 using namespace std;
 
-bool isWithinMaze(int x, int y, int width, int height) {
+bool isWithinMaze(const int x, const int y, const int width, const int height) {
     return x > 0 && x < width-1 && y > 0 && y < height-1;
 }
 
-bool isWall(int x, int y, const set<pair<int, int>>& mazeMap) {
+bool isWall(const int x, const int y, const set<pair<int, int>>& mazeMap) {
     return mazeMap.find(pair<int, int> (x, y)) != mazeMap.end();
 }
 
-bool isBorder(int x, int y, int width, int height) {
+bool isBorder(const int x, const int y, const int width, const int height) {
     return x == 0 || x == width-1 || y == 0 || y == height-1;
 }
 
-set<pair<int, int>> neighbours(int x, int y, int width, int height) {
+set<pair<int, int>> neighbours(const int x, const int y, const int width, const int height) {
     set<pair<int, int>> neighbours;
 
     // Moore neighbourhood
@@ -39,7 +39,13 @@ set<pair<int, int>> neighbours(int x, int y, int width, int height) {
     return neighbours;
 }
 
-set<pair<int, int>> wallNeighbours(int x, int y, int width, int height, const set<pair<int, int>>& mazeMap) {
+set<pair<int, int>> wallNeighbours(
+    const int x,
+    const int y,
+    const int width,
+    const int height,
+    const set<pair<int, int>>& mazeMap
+) {
     set<pair<int, int>> frontier;
 
     for (auto& neighbour : neighbours(x, y, width, height)) {
@@ -51,7 +57,13 @@ set<pair<int, int>> wallNeighbours(int x, int y, int width, int height, const se
     return frontier;
 }
 
-set<pair<int, int>> passageNeighbours(int x, int y, int width, int height, const set<pair<int, int>>& mazeMap) {
+set<pair<int, int>> passageNeighbours(
+    const int x,
+    const int y,
+    const int width,
+    const int height,
+    const set<pair<int, int>>& mazeMap
+) {
     set<pair<int, int>> frontier;
 
     for (auto& neighbour : neighbours(x, y, width, height)) {
@@ -64,7 +76,7 @@ set<pair<int, int>> passageNeighbours(int x, int y, int width, int height, const
 }
 
 // Prim Maze Generation Algorithm
-set<pair<int, int>> generateMazeMap(int width, int height) {
+set<pair<int, int>> generateMazeMap(const int width, const int height) {
     set<pair<int, int>> mazeMap;
 
     for (int i=0; i<width; i++) {
@@ -111,7 +123,7 @@ set<pair<int, int>> generateMazeMap(int width, int height) {
     return mazeMap;
 }
 
-Maze::Maze(int width, int height, vector<Material> materials) {
+Maze::Maze(const int width, const int height, const vector<Material> materials) {
     this->width = width;
     this->height = height;
     this->materials = materials;
@@ -165,7 +177,7 @@ void Maze::unloadVram() {
     glDeleteBuffers(1, &instanceVBO);
 }
 
-void Maze::draw(glm::mat4 modelMatrix, const shared_ptr<Shader> shader) const {
+void Maze::draw(const glm::mat4 modelMatrix, const shared_ptr<Shader> shader) const {
     glUniformMatrix4fv(shader->getMLocation(), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 
     glBindVertexArray(mesh->getVao());

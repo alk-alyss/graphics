@@ -121,7 +121,7 @@ Shader::~Shader() {
     releaseShader();
 }
 
-void Shader::bind() {
+void Shader::bind() const {
     glUseProgram(programId);
 
     glUniform1i(albedoLocation, 0);

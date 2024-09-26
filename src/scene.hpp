@@ -23,12 +23,12 @@ struct Scene {
 public:
     Scene() = delete;
     Scene(
-        std::shared_ptr<Player> player,
-        std::shared_ptr<Maze> maze,
-        std::shared_ptr<Model> floor,
-        std::vector<std::shared_ptr<Model>> colliders,
-        std::vector<DirectionalLight> directionalLights,
-        std::vector<PointLight> pointLights = std::vector<PointLight>()
+        const std::shared_ptr<Player> player,
+        const std::shared_ptr<Maze> maze,
+        const std::shared_ptr<Model> floor,
+        const std::vector<std::shared_ptr<Model>> colliders,
+        const std::vector<DirectionalLight> directionalLights,
+        const std::vector<PointLight> pointLights = std::vector<PointLight>()
     ):
         player(player),
         maze(maze),
@@ -37,7 +37,7 @@ public:
         directionalLights(directionalLights),
         pointLights(pointLights) {};
 
-    void createPortal(int portalIndex);
+    void createPortal(const int portalIndex);
     std::shared_ptr<Model> castRay(const glm::vec3 position, const glm::vec3 direction, glm::vec3& normalVector);
 };
 

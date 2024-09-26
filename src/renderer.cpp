@@ -42,7 +42,12 @@ void Renderer::render(const Scene& scene) {
     glUseProgram(0);
 }
 
-void Renderer::renderScene(const Scene& scene, const Camera& camera, bool drawPlayer, bool drawPortals) {
+void Renderer::renderScene(
+    const Scene& scene,
+    const Camera& camera,
+    const bool drawPlayer,
+    const bool drawPortals
+) {
     uploadMatrices(camera);
 
     // Draw maze

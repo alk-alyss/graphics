@@ -10,12 +10,12 @@ private:
     Camera camera;
 
 public:
-    Portal(const glm::vec3 position, const glm::vec3 direction, const glm::vec3 size, Material material);
+    Portal(const glm::vec3 position, const glm::vec3 direction, const glm::vec3 size, const Material material);
 
     std::shared_ptr<Portal> getLinkedPortal() const {return linkedPortal;}
 
-    void linkPortal(std::shared_ptr<Portal> portal);
-    void handleCollision(std::shared_ptr<Player> player);
+    void linkPortal(const std::shared_ptr<Portal> portal);
+    void handleCollision(const std::shared_ptr<Player> player);
 
     glm::vec4 getClipPlane() const;
 

@@ -10,6 +10,4 @@ void handleMouse(const std::shared_ptr<GLFWwindow> windowPtr, Scene& scene, cons
 
 void handleKeyboard(const std::shared_ptr<GLFWwindow> windowPtr, const Scene& scene, const float deltaTime);
 
-void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-
 #endif

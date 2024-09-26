@@ -13,14 +13,14 @@ protected:
 
 public:
     Light() : Light(DEFAULT_POSITION, DEFAULT_ORIENTATION, 10, glm::vec3(1,1,1)) {}
-    Light(glm::vec3 position) : Light(position, DEFAULT_ORIENTATION, 10, glm::vec3(1,1,1)) {}
-    Light(glm::vec3 position, glm::quat rotation) : Light(position, rotation, 10, glm::vec3(1,1,1)) {}
-    Light(glm::vec3 position, glm::quat rotation, float power) : Light(position, rotation, power, glm::vec3(1,1,1)) {}
+    Light(const glm::vec3 position) : Light(position, DEFAULT_ORIENTATION, 10, glm::vec3(1,1,1)) {}
+    Light(const glm::vec3 position, const glm::quat rotation) : Light(position, rotation, 10, glm::vec3(1,1,1)) {}
+    Light(const glm::vec3 position, const glm::quat rotation, const float power) : Light(position, rotation, power, glm::vec3(1,1,1)) {}
     Light(
-        glm::vec3 position,
-        glm::quat rotation,
-        float power,
-        glm::vec3 color
+        const glm::vec3 position,
+        const glm::quat rotation,
+        const float power,
+        const glm::vec3 color
     ) : Orientable(position, rotation), color(color), power(power){}
 
     virtual std::vector<glm::vec4> data() const = 0;

@@ -24,37 +24,37 @@ class Player : public Orientable, Node {
 
 public:
     Player() = delete;
-    Player(std::shared_ptr<Model> model) : Player(model, DEFAULT_POSITION, DEFAULT_ORIENTATION, DEFAULT_SCALE) {}
-    Player(std::shared_ptr<Model> model, glm::vec3 position) : Player(model, position, DEFAULT_ORIENTATION, DEFAULT_SCALE) {}
-    Player(std::shared_ptr<Model> model, glm::vec3 position, glm::quat orientation) : Player(model, position, orientation, DEFAULT_SCALE) {}
-    Player(std::shared_ptr<Model> model, glm::vec3 position, glm::quat orientation, glm::vec3 scale);
+    Player(const std::shared_ptr<Model> model) : Player(model, DEFAULT_POSITION, DEFAULT_ORIENTATION, DEFAULT_SCALE) {}
+    Player(const std::shared_ptr<Model> model, const glm::vec3 position) : Player(model, position, DEFAULT_ORIENTATION, DEFAULT_SCALE) {}
+    Player(const std::shared_ptr<Model> model, const glm::vec3 position, const glm::quat orientation) : Player(model, position, orientation, DEFAULT_SCALE) {}
+    Player(const std::shared_ptr<Model> model, const glm::vec3 position, const glm::quat orientation, const glm::vec3 scale);
 
-    void update(float deltaTime);
+    void update(const float deltaTime);
 
     void updateCamera(GLFWwindow* window) {camera->updateAspectRatio(window);}
     const Camera& getCamera() {return *camera;}
 
-    void setMovementSpeed(float movementSpeed) {this->movementSpeed = movementSpeed;}
-    void setMouseSpeed(float mouseSpeed) {this->mouseSpeed = mouseSpeed;}
+    void setMovementSpeed(const float movementSpeed) {this->movementSpeed = movementSpeed;}
+    void setMouseSpeed(const float mouseSpeed) {this->mouseSpeed = mouseSpeed;}
 
-    void setPosition(glm::vec3 position) override;
-    void setOrientation(glm::quat orientation) override;
+    void setPosition(const glm::vec3 position) override;
+    void setOrientation(const glm::quat orientation) override;
 
-    void setVelocity(float velocity) {this->velocity = forwardMovementVector() * velocity;}
-    void setVelocity(glm::vec3 velocity) {this->velocity = velocity;}
+    void setVelocity(const float velocity) {this->velocity = forwardMovementVector() * velocity;}
+    void setVelocity(const glm::vec3 velocity) {this->velocity = velocity;}
     glm::vec3 getVelocity() const {return velocity;}
 
-    void translate(glm::vec3 translation) override;
-    void rotate(glm::quat rotation) override;
+    void translate(const glm::vec3 translation) override;
+    void rotate(const glm::quat rotation) override;
 
-    void look(float mouseX, float mouseY, float deltaTime);
+    void look(const float mouseX, const float mouseY, const float deltaTime);
     void lookAt(const glm::vec3 target, const glm::vec3 up = glm::vec3(0, 1, 0), const glm::vec3 alternativeUp = glm::vec3(0,0,1)) override;
 
     void moveForward();
     void moveBackward();
     void moveRight();
     void moveLeft();
-    void zoom(float amount) {camera->zoom(amount);}
+    void zoom(const float amount) {camera->zoom(amount);}
 
     bool isNoClip() const {return noClip;}
     void toggleNoClip();
@@ -63,7 +63,7 @@ public:
 
     glm::vec3 getPreviousPosition() const {return previousPosition;}
 
-    void draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const override;
+    void draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const override;
 };
 
 #endif

@@ -5,12 +5,12 @@
 
 using namespace glm;
 
-Camera::Camera(vec3 position, quat orientation) : Orientable(position, orientation){
+Camera::Camera(const vec3 position, const quat orientation) : Orientable(position, orientation){
     updateViewMatrix();
     updateProjectionMatrix();
 }
 
-Camera::Camera(vec3 position, vec3 target, vec3 up) {
+Camera::Camera(const vec3 position, const vec3 target, const vec3 up) {
     setPosition(position);
     lookAt(target, up);
     updateViewMatrix();
@@ -37,49 +37,49 @@ void Camera::updateAspectRatio(GLFWwindow* window) {
     updateProjectionMatrix();
 }
 
-void Camera::zoom(float amount) {
+void Camera::zoom(const float amount) {
     fov += amount;
 
     updateProjectionMatrix();
 }
 
 
-void Camera::setPosition(glm::vec3 position) {
+void Camera::setPosition(const glm::vec3 position) {
     Orientable::setPosition(position);
     updateViewMatrix();
 }
 
-void Camera::setOrientation(glm::quat orientation) {
+void Camera::setOrientation(const glm::quat orientation) {
     Orientable::setOrientation(orientation);
     updateViewMatrix();
 }
 
-void Camera::setScale(glm::vec3 newScale) {
+void Camera::setScale(const glm::vec3 newScale) {
     Orientable::setScale(newScale);
     updateViewMatrix();
 }
 
-void Camera::translate(glm::vec3 translation) {
+void Camera::translate(const glm::vec3 translation) {
     Orientable::translate(translation);
     updateViewMatrix();
 }
 
-void Camera::changeScale(glm::vec3 scaleFactor) {
+void Camera::changeScale(const glm::vec3 scaleFactor) {
     Orientable::changeScale(scaleFactor);
     updateViewMatrix();
 }
 
-void Camera::rotate(glm::quat rotation) {
+void Camera::rotate(const glm::quat rotation) {
     Orientable::rotate(rotation);
     updateViewMatrix();
 }
 
-void Camera::rotate(float angle, glm::vec3 axis) {
+void Camera::rotate(const float angle, const glm::vec3 axis) {
     Orientable::rotate(angle, axis);
     updateViewMatrix();
 }
 
-void Camera::look(float pitch, float yaw) {
+void Camera::look(const float pitch, const float yaw) {
     quat pitchRotation = angleAxis(pitch, vec3(1,0,0));
     quat yawRotation = angleAxis(yaw, vec3(0,1,0));
 
@@ -97,7 +97,7 @@ void Camera::look(float pitch, float yaw) {
     updateViewMatrix();
 }
 
-void Camera::lookAt(glm::vec3 target, glm::vec3 up, glm::vec3 alternativeUp) {
+void Camera::lookAt(const glm::vec3 target, const glm::vec3 up, const glm::vec3 alternativeUp) {
     Orientable::lookAt(target, up, alternativeUp);
     updateViewMatrix();
 }

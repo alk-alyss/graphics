@@ -20,7 +20,7 @@ struct Node {
 
     virtual ~Node() = default;
 
-    virtual void draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const {
+    virtual void draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const {
         for (auto& child : children) {
             child->draw(modelMatrix, shader);
         }
@@ -32,10 +32,8 @@ struct Transformation : public Orientable, public Node {
 
     glm::mat4 getMatrix() const {return modelMatrix();}
 
-    void draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const override {
-        modelMatrix = modelMatrix * this->modelMatrix();
-
-        Node::draw(modelMatrix, shader);
+    void draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const override {
+        Node::draw(modelMatrix * this->modelMatrix(), shader);
     }
 };
 

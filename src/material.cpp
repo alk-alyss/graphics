@@ -3,7 +3,7 @@
 #include <iostream>
 #include <filesystem>
 
-Texture::Texture(const std::string imagePath, bool sRGB = false) {
+Texture::Texture(const std::string imagePath, const bool sRGB = false) {
     std::cout << "Reading image: " << imagePath << std::endl;
 
     path = imagePath;
@@ -138,7 +138,7 @@ void Material::bind() const {
     }
 }
 
-void Material::draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const {
+void Material::draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const {
     bind();
     Node::draw(modelMatrix, shader);
 }

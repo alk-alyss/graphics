@@ -71,8 +71,6 @@ glm::vec3 Model::getClosestBlockNormal(const glm::vec3 point) const {
 }
 
 
-void Model::draw(glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const {
-    modelMatrix = modelMatrix * this->modelMatrix();
-
-    Node::draw(modelMatrix, shader);
+void Model::draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const {
+    Node::draw(modelMatrix * this->modelMatrix(), shader);
 }

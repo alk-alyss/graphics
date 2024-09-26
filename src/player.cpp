@@ -3,10 +3,10 @@
 using namespace glm;
 
 Player::Player(
-    std::shared_ptr<Model> model,
-    glm::vec3 position,
-    glm::quat orientation,
-    glm::vec3 scale
+    const std::shared_ptr<Model> model,
+    const glm::vec3 position,
+    const glm::quat orientation,
+    const glm::vec3 scale
 ) : Orientable(position, orientation, scale), model(model) {
     camera = std::make_unique<Camera>(position, orientation);
     camera->setNC(0.1);
@@ -16,7 +16,7 @@ Player::Player(
     model->setScale(scale);
 };
 
-void Player::update(float deltaTime) {
+void Player::update(const float deltaTime) {
     translate(velocity * deltaTime);
     velocity = glm::vec3(0);
 }
@@ -31,7 +31,7 @@ void Player::updateComponents() {
     model->setScale(scale);
 }
 
-void Player::look(float mouseX, float mouseY, float deltaTime) {
+void Player::look(const float mouseX, const float mouseY, const float deltaTime) {
     float pitch = -mouseY * mouseSpeed * deltaTime;
     float yaw = -mouseX * mouseSpeed * deltaTime;
 
@@ -39,29 +39,29 @@ void Player::look(float mouseX, float mouseY, float deltaTime) {
     lookAt(camera->forward() + position, camera->up());
 }
 
-void Player::lookAt(glm::vec3 target, glm::vec3 up, glm::vec3 alternativeUp) {
+void Player::lookAt(const glm::vec3 target, const glm::vec3 up, const glm::vec3 alternativeUp) {
     Orientable::lookAt(target, up, alternativeUp);
     updateComponents();
 }
 
-void Player::setPosition(glm::vec3 position) {
+void Player::setPosition(const glm::vec3 position) {
     previousPosition = position;
     Orientable::setPosition(position);
     updateComponents();
 }
 
-void Player::setOrientation(glm::quat rotation) {
+void Player::setOrientation(const glm::quat rotation) {
     Orientable::setOrientation(rotation);
     updateComponents();
 }
 
-void Player::translate(glm::vec3 translation) {
+void Player::translate(const glm::vec3 translation) {
     previousPosition = position;
     Orientable::translate(translation);
     updateComponents();
 }
 
-void Player::rotate(glm::quat rotation) {
+void Player::rotate(const glm::quat rotation) {
     Orientable::rotate(rotation);
     updateComponents();
 }
@@ -136,6 +136,6 @@ void Player::toggleNoClip() {
     noClip = !noClip;
 }
 
-void Player::draw(glm::mat4 modelMatrix, std::shared_ptr<Shader> shader) const {
+void Player::draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const {
     model->draw(modelMatrix, shader);
 }
