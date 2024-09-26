@@ -131,7 +131,7 @@ void Renderer::renderPortals(const Scene& scene) {
         glStencilFunc(GL_EQUAL, 1, 0xFF);
 
         // Draw view through portal
-        renderScene(scene, portal->getLinkedPortal()->getCamera(), true, true);
+        renderScene(scene, portal->getCamera(), true, true);
 
         // Render only if stencil value is equal to 0
         glStencilFunc(GL_EQUAL, 0, 0xFF);
