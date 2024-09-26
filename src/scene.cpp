@@ -23,6 +23,13 @@ void Scene::createPortal(const int portalIndex) {
         if (portal != nullptr && portal->getPosition() == portalPosition) return;
     }
 
+    // If portal already exists, update its position
+    if (portals[portalIndex] != nullptr) {
+        portals[portalIndex]->setPosition(portalPosition);
+        portals[portalIndex]->lookAt(portalPosition + normalVector);
+        return;
+    }
+
     Material portalMaterial;
     if (portalIndex == 0) {
         portalMaterial = bluePortalMaterial;
