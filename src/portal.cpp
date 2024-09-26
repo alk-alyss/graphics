@@ -13,8 +13,9 @@ Portal::Portal(
     setScale(size);
     lookAt(position+direction);
 
-    camera.setPosition(position);
-    camera.lookAt(position+direction);
+    camera = std::make_unique<Camera>();
+    camera->setPosition(position);
+    camera->lookAt(position+direction);
 }
 
 void Portal::linkPortal(const std::shared_ptr<Portal> portal) {
@@ -27,7 +28,7 @@ glm::vec4 Portal::getClipPlane() const {
 
     // Plane equation: ax + by + cz + d = 0, where (a, b, c) is the normal vector, and d = -dot(normal, position)
     glm::vec4 plane = glm::vec4(normal, -glm::dot(normal, position));
-    plane = glm::inverse(glm::transpose(camera.getView())) * plane;
+    plane = glm::inverse(glm::transpose(camera->getView())) * plane;
 
     return plane;
 }
@@ -119,13 +120,13 @@ void Portal::updateCamera(const Camera& playerCamera) {
 
     getViewFromLinkedPortal(playerCamera.getPosition(), playerCamera.getOrientation(), cameraPosition, cameraOrientation);
 
-    camera.setPosition(cameraPosition);
-    camera.setOrientation(cameraOrientation);
+    camera->setPosition(cameraPosition);
+    camera->setOrientation(cameraOrientation);
 
     glm::mat4 projectionMatrix = playerCamera.getProjection();
     glm::vec4 clipPlane = getClipPlane();
 
     projectionMatrix = obliqueFrustum(projectionMatrix, clipPlane);
 
-    camera.setProjection(projectionMatrix);
+    camera->setProjection(projectionMatrix);
 }

@@ -7,7 +7,7 @@
 class Portal: public Model {
 private:
     std::shared_ptr<Portal> linkedPortal;
-    Camera camera;
+    std::unique_ptr<Camera> camera;
 
 public:
     Portal(const glm::vec3 position, const glm::vec3 direction, const glm::vec3 size, const Material material);
@@ -29,7 +29,7 @@ public:
     );
 
     void updateCamera(const Camera& playerCamera);
-    Camera getCamera() const { return camera;};
+    const Camera& getCamera() {return *camera;}
 };
 
 #endif
