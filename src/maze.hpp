@@ -30,7 +30,7 @@ private:
     void unloadVram();
 
 public:
-    Maze(const int width, const int height, std::vector<Material> materials);
+    Maze(const int width, const int height, const std::vector<Material> materials);
 
     ~Maze() {unloadVram();}
 

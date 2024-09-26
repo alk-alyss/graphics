@@ -49,8 +49,8 @@ struct AABB {
     AABB(const std::vector<glm::vec3>& vertices);
     AABB(const std::vector<Vertex>& vertices);
 
-    bool intersects(const AABB& other);
-    bool intersects(const glm::vec3 point);
+    bool intersects(const AABB& other) const ;
+    bool intersects(const glm::vec3 point) const ;
 };
 
 class Mesh : public Node{
@@ -107,7 +107,7 @@ public:
     void loadVram();
     void unloadVram();
 
-    const AABB getAABB() {return aabb;}
+    const AABB getAABB() const {return aabb;}
 
     int vertexCount() const {return vertices.size();}
     int indexCount() const {return indices.size();}

@@ -22,21 +22,10 @@ void Portal::linkPortal(const std::shared_ptr<Portal> portal) {
     linkedPortal = portal;
 }
 
-glm::vec4 Portal::getClipPlane() const {
-    glm::vec3 normal = forward();
-    glm::vec3 position = getPosition();
-
-    // Plane equation: ax + by + cz + d = 0, where (a, b, c) is the normal vector, and d = -dot(normal, position)
-    glm::vec4 plane = glm::vec4(normal, -glm::dot(normal, position));
-    plane = glm::inverse(glm::transpose(camera->getView())) * plane;
-
-    return plane;
-}
-
 bool Portal::linePlaneIntersection(
     const glm::vec3 a,
     const glm::vec3 b
-) {
+) const {
     glm::vec3 normal = forward();
     glm::vec3 position = getPosition();
 
@@ -75,7 +64,7 @@ void Portal::getViewFromLinkedPortal(
     const glm::quat orientation,
     glm::vec3& newPosition,
     glm::quat& newOrientation
-) {
+) const {
     if (linkedPortal == nullptr) return;
 
     glm::mat4 world2dest = glm::inverse(linkedPortal->modelMatrix());
@@ -110,6 +99,17 @@ glm::mat4 obliqueFrustum(const glm::mat4& projectionMatrix, const glm::vec4& cli
     newProj = glm::row(newProj, 2, newRow);
 
     return newProj;
+}
+
+glm::vec4 Portal::getClipPlane() const {
+    glm::vec3 normal = forward();
+    glm::vec3 position = getPosition();
+
+    // Plane equation: ax + by + cz + d = 0, where (a, b, c) is the normal vector, and d = -dot(normal, position)
+    glm::vec4 plane = glm::vec4(normal, -glm::dot(normal, position));
+    plane = glm::inverse(glm::transpose(camera->getView())) * plane;
+
+    return plane;
 }
 
 void Portal::updateCamera(const Camera& playerCamera) {

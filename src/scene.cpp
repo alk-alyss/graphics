@@ -49,7 +49,7 @@ std::shared_ptr<Model> Scene::castRay(
     const glm::vec3 position,
     const glm::vec3 direction,
     glm::vec3& normalVector
-) {
+) const {
     glm::vec3 rayPosition = position;
     float stepSize = 0.2;
     glm::vec3 rayDirection = glm::normalize(direction) * stepSize;

@@ -38,7 +38,7 @@ public:
         pointLights(pointLights) {};
 
     void createPortal(const int portalIndex);
-    std::shared_ptr<Model> castRay(const glm::vec3 position, const glm::vec3 direction, glm::vec3& normalVector);
+    std::shared_ptr<Model> castRay(const glm::vec3 position, const glm::vec3 direction, glm::vec3& normalVector) const;
 };
 
 #endif

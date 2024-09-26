@@ -18,7 +18,7 @@ public:
         const Transformation meshTransformation = Transformation()
     );
 
-    AABB getAABB() const;
+    const AABB getAABB() const;
 
     void draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const override;
 

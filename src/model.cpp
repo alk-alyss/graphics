@@ -14,7 +14,7 @@ Model::Model(
     this->children.push_back(materialPtr);
 }
 
-AABB Model::getAABB() const {
+const AABB Model::getAABB() const {
     const AABB meshAABB = mesh->getAABB();
 
     glm::vec4 AABBmin(meshAABB.min, 1);
@@ -25,6 +25,7 @@ AABB Model::getAABB() const {
     glm::vec4 transformedMin = transformationMatrix * AABBmin;
     glm::vec4 transformedMax = transformationMatrix * AABBmax;
 
+    // Add all 8 vertices of the AABB since a rotation can make the AABB not axis aligned
     std::vector<glm::vec3> vertices {
         glm::vec3(transformedMin.x, transformedMin.y, transformedMin.z),
         glm::vec3(transformedMin.x, transformedMin.y, transformedMax.z),
@@ -35,9 +36,7 @@ AABB Model::getAABB() const {
         glm::vec3(transformedMax.x, transformedMax.y, transformedMin.z),
         glm::vec3(transformedMax.x, transformedMax.y, transformedMax.z)
     };
-    const AABB modelAABB = AABB(vertices);
-
-    return modelAABB;
+    return AABB(vertices);
 }
 
 glm::vec3 Model::getClosestBlockNormal(const glm::vec3 point) const {

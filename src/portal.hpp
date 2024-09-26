@@ -9,6 +9,9 @@ private:
     std::shared_ptr<Portal> linkedPortal;
     std::unique_ptr<Camera> camera;
 
+    glm::vec4 getClipPlane() const;
+    bool linePlaneIntersection(const glm::vec3 a, const glm::vec3 b) const;
+
 public:
     Portal(const glm::vec3 position, const glm::vec3 direction, const glm::vec3 size, const Material material);
 
@@ -17,19 +20,15 @@ public:
     void linkPortal(const std::shared_ptr<Portal> portal);
     void handleCollision(const std::shared_ptr<Player> player);
 
-    glm::vec4 getClipPlane() const;
-
-    bool linePlaneIntersection(const glm::vec3 a, const glm::vec3 b);
-
     void getViewFromLinkedPortal(
         const glm::vec3 position,
         const glm::quat orientation,
         glm::vec3& newPosition,
         glm::quat& newOrientation
-    );
+    ) const;
 
     void updateCamera(const Camera& playerCamera);
-    const Camera& getCamera() {return *camera;}
+    const Camera& getCamera() const {return *camera;}
 };
 
 #endif

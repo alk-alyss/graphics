@@ -169,7 +169,7 @@ AABB::AABB(const std::vector<Vertex>& vertices) {
     max = glm::vec3(xmax, ymax, zmax);
 };
 
-bool AABB::intersects(const AABB& other) {
+bool AABB::intersects(const AABB& other) const {
     return this->min.x <= other.max.x &&
         this->max.x >= other.min.x &&
         this->min.y <= other.max.y &&
@@ -178,7 +178,7 @@ bool AABB::intersects(const AABB& other) {
         this->max.z >= other.min.z;
 }
 
-bool AABB::intersects(const glm::vec3 point) {
+bool AABB::intersects(const glm::vec3 point) const {
     return point.x >= this->min.x &&
         point.x <= this->max.x &&
         point.y >= this->min.y &&
