@@ -16,11 +16,11 @@ class Player : public Orientable, Node {
     float movementSpeed = 10.0f;
     float mouseSpeed = 0.1f;
 
-    glm::vec3 velocity;
+    glm::vec3 velocity = glm::vec3(0);
     glm::vec3 forwardMovementVector();
     void updateComponents();
 
-    glm::vec3 previousPosition;
+    glm::vec3 previousPosition = glm::vec3(0);
 
 public:
     Player() = delete;
