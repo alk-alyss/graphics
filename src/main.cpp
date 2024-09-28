@@ -59,9 +59,10 @@ int main(void) {
 
         std::cout << "Creating floor...";
         const std::shared_ptr<Model> floor = std::make_shared<Model>(
-                planeMesh,
-                dirtMaterial
-            );
+            planeMesh,
+            dirtMaterial
+        );
+        floor->rotate(glm::vec3(glm::radians(90.0f), 0, 0));
 
         floor->setScale(glm::vec3(100));
         std::cout << " done" << std::endl;

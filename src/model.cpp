@@ -6,7 +6,7 @@ const AABB Model::getAABB() const {
     glm::vec4 AABBmin(meshAABB.min, 1);
     glm::vec4 AABBmax(meshAABB.max, 1);
 
-    glm::mat4 transformationMatrix = modelMatrix() * meshTransformation.getMatrix();
+    glm::mat4 transformationMatrix = modelMatrix();
 
     glm::vec4 transformedMin = transformationMatrix * AABBmin;
     glm::vec4 transformedMax = transformationMatrix * AABBmax;
@@ -58,5 +58,5 @@ glm::vec3 Model::getClosestBlockNormal(const glm::vec3 point) const {
 
 void Model::draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const {
     material.bind();
-    mesh->draw(modelMatrix * this->modelMatrix() * meshTransformation.getMatrix(), shader);
+    mesh->draw(modelMatrix * this->modelMatrix(), shader);
 }

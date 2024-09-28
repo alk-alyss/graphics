@@ -60,10 +60,4 @@ public:
     virtual void lookAt(const glm::vec3 target, const glm::vec3 up = glm::vec3(0, 1, 0), const glm::vec3 alternativeUp = glm::vec3(0,0,1));
 };
 
-struct Transformation : public Orientable {
-    using Orientable::Orientable;
-
-    glm::mat4 getMatrix() const {return modelMatrix();}
-};
-
 #endif

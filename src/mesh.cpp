@@ -261,22 +261,22 @@ void Mesh::draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shade
 
 std::shared_ptr<Mesh> Mesh::plane() {
     vector<vec3> vertices = {
-        vec3(-1.0f, 0, -1.0f),
-        vec3(-1.0f, 0,  1.0f),
-        vec3( 1.0f, 0,  1.0f),
-        vec3( 1.0f, 0,  1.0f),
-        vec3( 1.0f, 0, -1.0f),
-        vec3(-1.0f, 0, -1.0f),
+        vec3(-1.0f, -1.0f, 0),
+        vec3(-1.0f,  1.0f, 0),
+        vec3( 1.0f,  1.0f, 0),
+        vec3( 1.0f,  1.0f, 0),
+        vec3( 1.0f, -1.0f, 0),
+        vec3(-1.0f, -1.0f, 0),
 
     };
 
     vector<vec3> normals = {
-        vec3(0.0f, 1.0f, 0.0f),
-        vec3(0.0f, 1.0f, 0.0f),
-        vec3(0.0f, 1.0f, 0.0f),
-        vec3(0.0f, 1.0f, 0.0f),
-        vec3(0.0f, 1.0f, 0.0f),
-        vec3(0.0f, 1.0f, 0.0f)
+        vec3(0.0f, 0.0f, -1.0f),
+        vec3(0.0f, 0.0f, -1.0f),
+        vec3(0.0f, 0.0f, -1.0f),
+        vec3(0.0f, 0.0f, -1.0f),
+        vec3(0.0f, 0.0f, -1.0f),
+        vec3(0.0f, 0.0f, -1.0f)
     };
 
     vector<vec2> uvs = {

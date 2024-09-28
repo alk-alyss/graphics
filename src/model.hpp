@@ -8,15 +8,13 @@
 class Model : public Orientable {
 private:
     const std::shared_ptr<Mesh> mesh;
-    const Transformation meshTransformation;
     const Material material;
 
 public:
     Model(
         const std::shared_ptr<Mesh> mesh,
-        const Material material,
-        const Transformation meshTransformation = Transformation()
-    ) : mesh(mesh), meshTransformation(meshTransformation), material(material) {}
+        const Material material
+    ) : mesh(mesh), material(material) {}
 
     const AABB getAABB() const;
 

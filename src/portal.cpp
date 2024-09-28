@@ -8,7 +8,7 @@ Portal::Portal(
     const glm::vec3 direction,
     const glm::vec3 size,
     const Material material
-) : Model(planeMesh, material, Transformation(glm::vec3(0), glm::vec3(glm::radians(-90.0f), 0, 0))) {
+) : Model(planeMesh, material) {
     setPosition(position);
     setScale(size);
     lookAt(position+direction);
