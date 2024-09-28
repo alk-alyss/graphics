@@ -1,6 +1,7 @@
 #ifndef MESH_HPP
 #define MESH_HPP
 
+#include <memory>
 #include <vector>
 #include <string>
 #include <map>
@@ -9,6 +10,7 @@
 #include <glm/glm.hpp>
 
 #include "common.hpp"
+#include "shader.hpp"
 
 static std::vector<unsigned int> VEC_UINT_DEFAUTL_VALUE{};
 static std::vector<glm::vec3> VEC_VEC3_DEFAUTL_VALUE{};
@@ -53,7 +55,7 @@ struct AABB {
     bool intersects(const glm::vec3 point) const ;
 };
 
-class Mesh : public Node{
+class Mesh {
 protected:
     std::vector<Vertex> vertices, indexedVertices;
     std::vector<unsigned int> indices;

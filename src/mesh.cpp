@@ -263,9 +263,9 @@ std::shared_ptr<Mesh> Mesh::plane() {
     vector<vec3> vertices = {
         vec3(-1.0f, 0, -1.0f),
         vec3(-1.0f, 0,  1.0f),
-        vec3(1.0f,  0,  1.0f),
-        vec3(1.0f,  0,  1.0f),
-        vec3(1.0f,  0, -1.0f),
+        vec3( 1.0f, 0,  1.0f),
+        vec3( 1.0f, 0,  1.0f),
+        vec3( 1.0f, 0, -1.0f),
         vec3(-1.0f, 0, -1.0f),
 
     };

@@ -47,7 +47,7 @@ struct Texture {
     static void bindDefault();
 };
 
-struct Material : Node{
+struct Material {
     std::shared_ptr<Texture> albedo = nullptr;
     std::shared_ptr<Texture> ao = nullptr;
     std::shared_ptr<Texture> height = nullptr;
@@ -75,7 +75,6 @@ struct Material : Node{
     Material(const std::string materialPath);
 
     void bind() const;
-    void draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const override;
 };
 
 #endif

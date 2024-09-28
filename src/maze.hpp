@@ -5,12 +5,13 @@
 #include "mesh.hpp"
 #include "model.hpp"
 #include "resources.hpp"
+#include "shader.hpp"
 #include <memory>
 #include <set>
 
 std::set<std::pair<int, int>> generateMazeMap(int width, int height);
 
-class Maze : Node{
+class Maze {
 private:
     int width = 19;
     int height = 19;
@@ -35,7 +36,7 @@ public:
     ~Maze() {unloadVram();}
 
     std::vector<std::shared_ptr<Model>> getColliders() const {return colliders;}
-    void draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const override;
+    void draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const;
 };
 
 #endif

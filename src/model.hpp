@@ -1,11 +1,11 @@
 #ifndef MODEL_HPP
 #define MODEL_HPP
 
-#include "common.hpp"
 #include "mesh.hpp"
 #include "material.hpp"
+#include "orientable.hpp"
 
-class Model : public Orientable, public Node {
+class Model : public Orientable {
 private:
     const std::shared_ptr<Mesh> mesh;
     const Transformation meshTransformation;
@@ -16,11 +16,11 @@ public:
         const std::shared_ptr<Mesh> mesh,
         const Material material,
         const Transformation meshTransformation = Transformation()
-    );
+    ) : mesh(mesh), meshTransformation(meshTransformation), material(material) {}
 
     const AABB getAABB() const;
 
-    void draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const override;
+    virtual void draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const;
 
     glm::vec3 getClosestBlockNormal(const glm::vec3 position) const;
 };

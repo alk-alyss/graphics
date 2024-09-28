@@ -137,8 +137,3 @@ void Material::bind() const {
         Texture::bindDefault();
     }
 }
-
-void Material::draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const {
-    bind();
-    Node::draw(modelMatrix, shader);
-}

@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "context.hpp"
+#include "orientable.hpp"
 #include "renderer.hpp"
 #include "player.hpp"
 #include "controls.hpp"
@@ -43,16 +44,6 @@ void loadMeshes() {
     cubeMesh = std::make_shared<Mesh>("resources/models/cube.obj");
     suzanneMesh = std::make_shared<Mesh>("resources/models/suzanne.obj");
     std::cout << " done" << std::endl;
-}
-
-const std::shared_ptr<Model> loadSuzanne(Material material) {
-    const Transformation suzanneTransformation = Transformation(
-            glm::vec3(0, 0, -0.2),
-            eulerToQuat(0, glm::radians(180.0), 0),
-            glm::vec3(0.5)
-        );
-
-    return std::make_shared<Model>(suzanneMesh, material, suzanneTransformation);
 }
 
 int main(void) {
@@ -98,8 +89,10 @@ int main(void) {
 
         std::cout << "Creating player...";
         std::shared_ptr<Player> player = std::make_shared<Player>(
-            loadSuzanne(scuffedPlasticMaterial),
-            glm::vec3(0.0f, 1.5f, 10.0f)
+            std::make_shared<Model>(suzanneMesh, scuffedPlasticMaterial),
+            glm::vec3(0.0f, 1.5f, 10.0f),
+            DEFAULT_ORIENTATION,
+            glm::vec3(0.5f)
         );
         std::cout << " done" << std::endl;
 

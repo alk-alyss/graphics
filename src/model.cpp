@@ -1,19 +1,5 @@
 #include "model.hpp"
 
-Model::Model(
-    const std::shared_ptr<Mesh> mesh,
-    const Material material,
-    const Transformation meshTransformation
-) : mesh(mesh), meshTransformation(meshTransformation), material(material) {
-    std::shared_ptr<Node> transformedMesh = std::make_shared<Transformation>(meshTransformation);
-    transformedMesh->children.push_back(mesh);
-
-    std::shared_ptr<Node> materialPtr = std::make_shared<Material>(material);
-    materialPtr->children.push_back(transformedMesh);
-
-    this->children.push_back(materialPtr);
-}
-
 const AABB Model::getAABB() const {
     const AABB meshAABB = mesh->getAABB();
 
@@ -71,5 +57,6 @@ glm::vec3 Model::getClosestBlockNormal(const glm::vec3 point) const {
 
 
 void Model::draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const {
-    Node::draw(modelMatrix * this->modelMatrix(), shader);
+    material.bind();
+    mesh->draw(modelMatrix * this->modelMatrix() * meshTransformation.getMatrix(), shader);
 }

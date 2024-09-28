@@ -30,6 +30,8 @@ public:
 
     void updateCamera(const Camera& playerCamera);
     const Camera& getCamera() const {return *camera;}
+
+    void draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const override;
 };
 
 #endif

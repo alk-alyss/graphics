@@ -131,3 +131,7 @@ void Portal::updateCamera(const Camera& playerCamera) {
 
     camera->setProjection(projectionMatrix);
 }
+
+void Portal::draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const {
+    Model::draw(modelMatrix, shader);
+}

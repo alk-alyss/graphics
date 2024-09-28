@@ -7,7 +7,7 @@
 #include "orientable.hpp"
 #include "camera.hpp"
 
-class Player : public Orientable, Node {
+class Player : public Orientable {
     std::unique_ptr<Camera> camera;
     std::shared_ptr<Model> model;
 
@@ -63,7 +63,7 @@ public:
 
     glm::vec3 getPreviousPosition() const {return previousPosition;}
 
-    void draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const override;
+    void draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const;
 };
 
 #endif
