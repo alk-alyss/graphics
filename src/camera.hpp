@@ -4,9 +4,9 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-#include "orientable.hpp"
+#include "entity.hpp"
 
-class Camera : public Orientable {
+class Camera : public Entity {
 protected:
     float nearCP = 0.1f;
     float farCP = 500.0f;

@@ -4,9 +4,9 @@
 #include <glm/glm.hpp>
 #include <vector>
 
-#include "orientable.hpp"
+#include "entity.hpp"
 
-class Light : public Orientable {
+class Light : public Entity {
 protected:
     glm::vec3 color = glm::vec3(1,1,1);
     float power = 10;
@@ -21,7 +21,7 @@ public:
         const glm::quat rotation,
         const float power,
         const glm::vec3 color
-    ) : Orientable(position, rotation), color(color), power(power){}
+    ) : Entity(position, rotation), color(color), power(power){}
 
     virtual std::vector<glm::vec4> data() const = 0;
 };

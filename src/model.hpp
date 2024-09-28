@@ -3,9 +3,9 @@
 
 #include "mesh.hpp"
 #include "material.hpp"
-#include "orientable.hpp"
+#include "entity.hpp"
 
-class Model : public Orientable {
+class Model : public Entity {
 private:
     const std::shared_ptr<Mesh> mesh;
     const Material material;

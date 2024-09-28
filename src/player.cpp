@@ -7,7 +7,7 @@ Player::Player(
     const glm::vec3 position,
     const glm::quat orientation,
     const glm::vec3 scale
-) : Orientable(position, orientation, scale), model(model) {
+) : Entity(position, orientation, scale), model(model) {
     camera = std::make_unique<Camera>(position, orientation);
     camera->setNC(0.1);
 
@@ -40,29 +40,29 @@ void Player::look(const float mouseX, const float mouseY, const float deltaTime)
 }
 
 void Player::lookAt(const glm::vec3 target, const glm::vec3 up, const glm::vec3 alternativeUp) {
-    Orientable::lookAt(target, up, alternativeUp);
+    Entity::lookAt(target, up, alternativeUp);
     updateComponents();
 }
 
 void Player::setPosition(const glm::vec3 position) {
     previousPosition = position;
-    Orientable::setPosition(position);
+    Entity::setPosition(position);
     updateComponents();
 }
 
 void Player::setOrientation(const glm::quat rotation) {
-    Orientable::setOrientation(rotation);
+    Entity::setOrientation(rotation);
     updateComponents();
 }
 
 void Player::translate(const glm::vec3 translation) {
     previousPosition = position;
-    Orientable::translate(translation);
+    Entity::translate(translation);
     updateComponents();
 }
 
 void Player::rotate(const glm::quat rotation) {
-    Orientable::rotate(rotation);
+    Entity::rotate(rotation);
     updateComponents();
 }
 

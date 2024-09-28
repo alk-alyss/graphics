@@ -1,5 +1,5 @@
-#ifndef ORIENTABLE_HPP
-#define ORIENTABLE_HPP
+#ifndef ENTITY_HPP
+#define ENTITY_HPP
 
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -10,7 +10,7 @@
 
 glm::quat eulerToQuat(const float pitch, const float yaw, const float roll);
 
-class Orientable {
+class Entity {
 protected:
     glm::vec3 position = DEFAULT_POSITION;
     glm::quat orientation = DEFAULT_ORIENTATION;
@@ -22,10 +22,10 @@ public:
     glm::vec3 right() const;
 
 public:
-    Orientable() : Orientable(DEFAULT_POSITION) {};
-    Orientable(const glm::vec3 position) : Orientable(position, DEFAULT_ORIENTATION) {};
-    Orientable(const glm::vec3 position, const glm::quat orientation) : Orientable(position, orientation, DEFAULT_SCALE) {};
-    Orientable(const glm::vec3 position, const glm::quat orientation, const glm::vec3 scale);
+    Entity() : Entity(DEFAULT_POSITION) {};
+    Entity(const glm::vec3 position) : Entity(position, DEFAULT_ORIENTATION) {};
+    Entity(const glm::vec3 position, const glm::quat orientation) : Entity(position, orientation, DEFAULT_SCALE) {};
+    Entity(const glm::vec3 position, const glm::quat orientation, const glm::vec3 scale);
 
     // Setters
     virtual void setPosition(const glm::vec3 position);

@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "context.hpp"
-#include "orientable.hpp"
+#include "entity.hpp"
 #include "renderer.hpp"
 #include "player.hpp"
 #include "controls.hpp"

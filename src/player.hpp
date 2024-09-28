@@ -4,10 +4,10 @@
 #include <memory>
 
 #include "model.hpp"
-#include "orientable.hpp"
+#include "entity.hpp"
 #include "camera.hpp"
 
-class Player : public Orientable {
+class Player : public Entity {
     std::unique_ptr<Camera> camera;
     std::shared_ptr<Model> model;
 

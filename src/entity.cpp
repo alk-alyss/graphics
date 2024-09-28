@@ -1,4 +1,4 @@
-#include "orientable.hpp"
+#include "entity.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -14,68 +14,68 @@ quat eulerToQuat(const float pitch, const float yaw, const float roll) {
     return normalize(rotationZ * rotationY * rotationX);
 }
 
-Orientable::Orientable(const vec3 position, const quat orientation, const vec3 scale) {
+Entity::Entity(const vec3 position, const quat orientation, const vec3 scale) {
     this->position = position;
     setOrientation(orientation);
     this->scale = scale;
 }
 
 // Cartesian vectors
-vec3 Orientable::up() const {
+vec3 Entity::up() const {
     return orientation * vec3(0,1,0);
 }
-vec3 Orientable::forward() const {
+vec3 Entity::forward() const {
     return orientation * vec3(0,0,-1);
 }
-vec3 Orientable::right() const {
+vec3 Entity::right() const {
     return orientation * vec3(1,0,0);
 }
 
 // Setters
-void Orientable::setPosition(const glm::vec3 position) {
+void Entity::setPosition(const glm::vec3 position) {
     this->position = position;
 }
-void Orientable::setOrientation(const quat orientation) {
+void Entity::setOrientation(const quat orientation) {
     this->orientation = normalize(orientation);
 }
-void Orientable::setScale(const vec3 scale) {
+void Entity::setScale(const vec3 scale) {
     this->scale = scale;
 }
 
 // Transformations
-void Orientable::translate(const vec3 translation) {
+void Entity::translate(const vec3 translation) {
     position += translation;
 }
-void Orientable::rotate(const quat rotation) {
+void Entity::rotate(const quat rotation) {
     quat rotationQuat = normalize(rotation);
 
     orientation = normalize(rotationQuat * orientation);
 }
-void Orientable::rotate(const float angle, const vec3 axis) {
+void Entity::rotate(const float angle, const vec3 axis) {
     quat rotationQuat = normalize(angleAxis(angle, axis));
 
     orientation = normalize(rotationQuat * orientation);
 }
-void Orientable::changeScale(const vec3 scaleFactor) {
+void Entity::changeScale(const vec3 scaleFactor) {
     scale += scaleFactor;
 }
 
 // Matrices
-mat4 Orientable::translationMatrix() const {
+mat4 Entity::translationMatrix() const {
     return glm::translate(glm::mat4(1), position);
 }
-mat4 Orientable::rotationMatrix() const {
+mat4 Entity::rotationMatrix() const {
     return toMat4(orientation);
 }
-mat4 Orientable::scallingMatrix() const {
+mat4 Entity::scallingMatrix() const {
     return glm::scale(glm::mat4(1), scale);
 }
-mat4 Orientable::modelMatrix() const {
+mat4 Entity::modelMatrix() const {
     return translationMatrix() * rotationMatrix() * scallingMatrix();
 }
 
 // Look at target
-void Orientable::lookAt(const vec3 target, const vec3 up, const vec3 alternativeUp) {
+void Entity::lookAt(const vec3 target, const vec3 up, const vec3 alternativeUp) {
     assert(target != position);
 
     vec3 direction = target - position;

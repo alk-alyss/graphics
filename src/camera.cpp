@@ -5,7 +5,7 @@
 
 using namespace glm;
 
-Camera::Camera(const vec3 position, const quat orientation) : Orientable(position, orientation){
+Camera::Camera(const vec3 position, const quat orientation) : Entity(position, orientation){
     updateViewMatrix();
     updateProjectionMatrix();
 }
@@ -45,37 +45,37 @@ void Camera::zoom(const float amount) {
 
 
 void Camera::setPosition(const glm::vec3 position) {
-    Orientable::setPosition(position);
+    Entity::setPosition(position);
     updateViewMatrix();
 }
 
 void Camera::setOrientation(const glm::quat orientation) {
-    Orientable::setOrientation(orientation);
+    Entity::setOrientation(orientation);
     updateViewMatrix();
 }
 
 void Camera::setScale(const glm::vec3 newScale) {
-    Orientable::setScale(newScale);
+    Entity::setScale(newScale);
     updateViewMatrix();
 }
 
 void Camera::translate(const glm::vec3 translation) {
-    Orientable::translate(translation);
+    Entity::translate(translation);
     updateViewMatrix();
 }
 
 void Camera::changeScale(const glm::vec3 scaleFactor) {
-    Orientable::changeScale(scaleFactor);
+    Entity::changeScale(scaleFactor);
     updateViewMatrix();
 }
 
 void Camera::rotate(const glm::quat rotation) {
-    Orientable::rotate(rotation);
+    Entity::rotate(rotation);
     updateViewMatrix();
 }
 
 void Camera::rotate(const float angle, const glm::vec3 axis) {
-    Orientable::rotate(angle, axis);
+    Entity::rotate(angle, axis);
     updateViewMatrix();
 }
 
@@ -98,6 +98,6 @@ void Camera::look(const float pitch, const float yaw) {
 }
 
 void Camera::lookAt(const glm::vec3 target, const glm::vec3 up, const glm::vec3 alternativeUp) {
-    Orientable::lookAt(target, up, alternativeUp);
+    Entity::lookAt(target, up, alternativeUp);
     updateViewMatrix();
 }
