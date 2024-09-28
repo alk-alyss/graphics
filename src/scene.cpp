@@ -4,6 +4,9 @@
 #include <glm/gtx/string_cast.hpp>
 
 void Scene::createPortal(const int portalIndex) {
+    // If player is in noclip mode, don't create portal
+    if (player->isNoClip()) return;
+
     glm::vec3 normalVector;
     auto block = castRay(player->getPosition(), player->forward(), normalVector);
     if (block == nullptr) return;
