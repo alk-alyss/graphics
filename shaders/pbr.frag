@@ -61,8 +61,7 @@ float shadows() {
 
 // Normal mapping
 //https://learnopengl.com/Advanced-Lighting/Normal-Mapping
-vec3 normalFromMap() {
-	vec3 normal = texture(normalMap, uvCoords).rgb;
+vec3 tangentSpaceNormal(vec3 normal) {
 	normal = normalize(normal * 2.0 - 1.0);
 	normal = normalize(TBN * normal);
 	return normal;
@@ -142,11 +141,12 @@ vec3 pbrLighting(float visibility, vec3 defaultF0) {
 	// Lighting parameters for fragment
 	vec3 albedo     = texture(albedoMap, uvCoords).rgb;
     float metallic  = texture(metallicMap, uvCoords).r;
+	vec3 normal = texture(normalMap, uvCoords).rgb;
     float roughness = texture(roughnessMap, uvCoords).r;
     float ao        = texture(aoMap, uvCoords).r;
 
 	// vec3 N = normalize(worldSpace.normal); // Fragment normal
-	vec3 N = normalFromMap();
+	vec3 N = tangentSpaceNormal(normal);
 	vec3 V = normalize(cameraPosition - worldSpace.position); // View vector
 
 	vec3 F0 = mix(defaultF0, albedo, metallic);
