@@ -57,7 +57,7 @@ struct AABB {
 
 class Mesh {
 protected:
-    std::vector<Vertex> vertices, indexedVertices;
+    std::vector<Vertex> indexedVertices;
     std::vector<unsigned int> indices;
 
     GLuint VAO, verticesVBO, EBO;
@@ -66,7 +66,7 @@ protected:
 
 public:
     Mesh(
-        const std::vector<glm::vec3>& vertices,
+        const std::vector<glm::vec3>& positions,
         const std::vector<glm::vec2>& uvs,
         const std::vector<glm::vec3>& normals
     );
@@ -78,7 +78,6 @@ public:
     Mesh &operator=(const Mesh&) = delete;
 
     Mesh(Mesh&& other) :
-        vertices(other.vertices),
         indexedVertices(other.indexedVertices),
         indices(other.indices),
         VAO(other.VAO),
@@ -97,7 +96,6 @@ public:
             std::swap(VAO, other.VAO);
             std::swap(verticesVBO, other.verticesVBO);
             std::swap(EBO, other.EBO);
-            std::swap(vertices, other.vertices);
             std::swap(indexedVertices, other.indexedVertices);
             std::swap(indices, other.indices);
             std::swap(aabb, other.aabb);
@@ -111,8 +109,8 @@ public:
 
     const AABB getAABB() const {return aabb;}
 
-    int vertexCount() const {return vertices.size();}
     int indexCount() const {return indices.size();}
+    int vertexCount() const {return indexedVertices.size();}
     GLuint getVao() const {return VAO;}
 
     void draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shader) const;

@@ -188,30 +188,34 @@ bool AABB::intersects(const glm::vec3 point) const {
 }
 
 Mesh::Mesh(
-    const vector<vec3>& vertices,
+    const vector<vec3>& positions,
     const vector<vec2>& uvs,
     const vector<vec3>& normals
 ) {
-    for (size_t i=0; i<vertices.size(); i++) {
-        Vertex vertex = {vertices[i], uvs[i], normals[i]};
-        this->vertices.push_back(vertex);
+    vector<Vertex> vertices;
+
+    for (size_t i=0; i<positions.size(); i++) {
+        Vertex vertex = {positions[i], uvs[i], normals[i]};
+        vertices.push_back(vertex);
     }
 
-    aabb = AABB(this->vertices);
-    indexVBO(this->vertices, indices, indexedVertices);
+    indexVBO(vertices, indices, indexedVertices);
+    aabb = AABB(indexedVertices);
     calculateTangents(this->indexedVertices, indices);
     loadVram();
 }
 
 Mesh::Mesh(const std::string path) {
+    vector<Vertex> vertices;
+
     if (path.substr(path.size() - 3, 3) == "obj") {
         loadOBJWithTiny(path.c_str(), vertices, VEC_UINT_DEFAUTL_VALUE);
     } else {
         throw runtime_error("File format not supported: " + path);
     }
 
-    aabb = AABB(vertices);
     indexVBO(vertices, indices, indexedVertices);
+    aabb = AABB(indexedVertices);
     calculateTangents(indexedVertices, indices);
     loadVram();
 }
@@ -260,7 +264,7 @@ void Mesh::draw(const glm::mat4 modelMatrix, const std::shared_ptr<Shader> shade
 }
 
 std::shared_ptr<Mesh> Mesh::plane() {
-    vector<vec3> vertices = {
+    vector<vec3> positions = {
         vec3(-1.0f, -1.0f, 0),
         vec3(-1.0f,  1.0f, 0),
         vec3( 1.0f,  1.0f, 0),
@@ -288,5 +292,5 @@ std::shared_ptr<Mesh> Mesh::plane() {
         vec2(0.0f, 0.0f),
     };
 
-    return std::make_shared<Mesh>(vertices, uvs, normals);
+    return std::make_shared<Mesh>(positions, uvs, normals);
 }
