@@ -224,8 +224,8 @@ void Mesh::loadVram() {
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
-    glGenBuffers(1, &verticesVBO);
-    glBindBuffer(GL_ARRAY_BUFFER, verticesVBO);
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, indexedVertices.size() * sizeof(indexedVertices[0]), indexedVertices.data(), GL_STATIC_DRAW);
 
     glVertexAttribPointer(POSITION_LOCATION, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), NULL);
@@ -250,7 +250,7 @@ void Mesh::loadVram() {
 }
 
 void Mesh::unloadVram() {
-    glDeleteBuffers(1, &verticesVBO);
+    glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
     glDeleteVertexArrays(1, &VAO);
 }

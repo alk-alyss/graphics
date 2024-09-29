@@ -60,7 +60,7 @@ protected:
     std::vector<Vertex> indexedVertices;
     std::vector<unsigned int> indices;
 
-    GLuint VAO, verticesVBO, EBO;
+    GLuint VAO, VBO, EBO;
 
     AABB aabb;
 
@@ -81,7 +81,7 @@ public:
         indexedVertices(other.indexedVertices),
         indices(other.indices),
         VAO(other.VAO),
-        verticesVBO(other.verticesVBO),
+        VBO(other.VBO),
         EBO(other.EBO),
         aabb(other.aabb)
     {
@@ -94,7 +94,7 @@ public:
         {
             unloadVram();
             std::swap(VAO, other.VAO);
-            std::swap(verticesVBO, other.verticesVBO);
+            std::swap(VBO, other.VBO);
             std::swap(EBO, other.EBO);
             std::swap(indexedVertices, other.indexedVertices);
             std::swap(indices, other.indices);
