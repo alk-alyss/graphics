@@ -48,15 +48,4 @@ public:
     }
 };
 
-class FlashLight : public Light {
-public:
-    using Light::Light;
-
-    std::vector<glm::vec4> data() const;
-
-    constexpr static size_t sizeofData() {
-        return 3*sizeof(glm::vec4);
-    }
-};
-
 #endif
